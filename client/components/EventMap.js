@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import getEventsFromSeatGeek from '../resources/seatgeek';
-import getEventsFromTicketMaster from '../resources/ticketmaster';
+import getEventsFromTicketmaster from '../resources/ticketmaster';
+import { SEAT_GEEK_KEY, TICKETMASTER_KEY } from '@env';
 
 const EventMap = () => {
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
-    const [ticketMasterEvents, setTicketMasterEvents] = useState([]);
+    const [ticketmasterEvents, setTicketmasterEvents] = useState([]);
 
     useEffect(async () => {
-        await loadEventsFromSeatGeek();
-        // await loadEventsFromTicketMaster();
+        await loadEvents();
     }, []);
 
     useEffect(() => {
@@ -18,23 +18,19 @@ const EventMap = () => {
     }, [seatGeekEvents]);
 
     useEffect(() => {
-        console.log('TICKET MASTER EVENTS IN MAPS: ---->', ticketMasterEvents.length);
-    }, [ticketMasterEvents]);
+        console.log('TICKET MASTER EVENTS IN MAPS: ---->', ticketmasterEvents.length);
+    }, [ticketmasterEvents]);
 
-    const loadEventsFromSeatGeek = async () => {
+    const loadEvents = async () => {
         try {
-            const nearbyEvents = await getEventsFromSeatGeek('10003', 1);
-            setSeatGeekEvents(nearbyEvents);
+            // Seat Geek  events
+            const seatgeek = await getEventsFromSeatGeek('10003', 2, SEAT_GEEK_KEY);
+            setSeatGeekEvents(seatgeek);
 
-        } catch (err) {
-            console.log('error: ', err);
-        }
-    }
+            // Ticketmaster events
+            const ticketmaster = await getEventsFromTicketmaster('11221', 5, TICKETMASTER_KEY);
+            setTicketmasterEvents(ticketmaster);
 
-    const loadEventsFromTicketMaster = async () => {
-        try {
-            const nearbyEvents = await getEventsFromTicketMaster('11221', 5);
-            setTicketMasterEvents(nearbyEvents);
         } catch (err) {
             console.log('error: ', err);
         }
@@ -63,8 +59,8 @@ const EventMap = () => {
                         />
                     ))
                 }
-                {/* {
-                    ticketMasterEvents.map((event, idx) => (
+                {
+                    ticketmasterEvents.map((event, idx) => (
                         <Marker
                             key={`tm-${idx}`}
                             pinColor={'blue'}
@@ -75,7 +71,7 @@ const EventMap = () => {
                             title={event.name}
                         />
                     ))
-                } */}
+                }
             </MapView>
         </View>
 
@@ -85,7 +81,8 @@ const EventMap = () => {
 const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.5,
+        height: Dimensions.get('window').height * 0.6,
+        margin: 10
     }
 });
 
