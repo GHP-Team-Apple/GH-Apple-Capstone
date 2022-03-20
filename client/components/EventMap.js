@@ -4,6 +4,7 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import getEventsFromSeatGeek from '../resources/seatgeek';
 import getEventsFromTicketmaster from '../resources/ticketmaster';
 import { SEAT_GEEK_KEY, TICKETMASTER_KEY } from '@env';
+import EventList from './EventList';
 
 const EventMap = () => {
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
@@ -24,7 +25,7 @@ const EventMap = () => {
     const loadEvents = async () => {
         try {
             // Seat Geek  events
-            const seatgeek = await getEventsFromSeatGeek('10003', 2, SEAT_GEEK_KEY);
+            const seatgeek = await getEventsFromSeatGeek('10003', 1, SEAT_GEEK_KEY);
             setSeatGeekEvents(seatgeek);
 
             // Ticketmaster events
@@ -73,6 +74,9 @@ const EventMap = () => {
                     ))
                 }
             </MapView>
+
+            <EventList events={seatGeekEvents} />
+
         </View>
 
     )
@@ -81,8 +85,8 @@ const EventMap = () => {
 const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.6,
-        margin: 10
+        height: Dimensions.get('window').height * 0.5,
+        // margin: 10
     }
 });
 
