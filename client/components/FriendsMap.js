@@ -16,7 +16,7 @@ const FriendsMap = (props) => {
       >
         <Marker
           coordinate={{ latitude: 33.76418473401285, longitude: -84.39513125767164  }} 
-          image={require("../assets/dog.png")} 
+          image={require("../../assets/dog.png")} 
         >
           <Callout>
             <Text>Attending Event: Bubble Tea Tasting</Text>
@@ -25,7 +25,7 @@ const FriendsMap = (props) => {
 
         <Marker
           coordinate={{ latitude: 40.733, longitude: -73.985 }}
-          image={require("../assets/rabbit.png")}
+          image={require("../../assets/rabbit.png")}
         >
           <Callout>
             <Text>Attending Event: Beginner's Coding Workshop</Text>
