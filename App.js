@@ -1,15 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import EventMap from './client/components/EventMap';
-import Chat from './client/components/Chat';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
+import Nav from "./client/components/Nav"
+import Chat from "./client/components/Chat";
+import EventMap from "./client/components/EventMap"
+
 
 export default function App() {
   return (
       <View style={styles.container}>
-        <Text>Hi Team Apple! This is the start of our App!!</Text>
-        <Chat />
+        <Text style={styles.header}>Hi Team Apple! This is the start of our App!!</Text>
         {/* <EventMap /> */}
-        
+        {/* <Chat /> */}
+        <Nav />
         <StatusBar style="auto" />
       </View>
   );
@@ -18,9 +20,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "stretch",
     marginTop: 50,
-    marginBottom: 30
+    marginBottom: 30,
+    width: Dimensions.get("window").width,
   },
-})
+  header:{
+      alignSelf: "center",
+  }
+});
