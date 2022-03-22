@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 //         {currUser.displayName && (
 //       <Stack.Screen name="pro" component={Profile} />
 //         )}
-//         <Stack.Screen name="home" component={Home} options={{title: "The Collective"}}/>
+//         <Stack.Screen name="home" component={Home} options={{title: "Appining"}}/>
 //     </Stack.Navigator>}
    
 

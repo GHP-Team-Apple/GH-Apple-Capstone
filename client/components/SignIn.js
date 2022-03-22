@@ -32,11 +32,11 @@ export default function SignIn() {
 			<Text
 				style={{ color: colors.foreground, fontSize: 24, marginBottom: 20 }}
 			>
-				The Collective
+				Appining
 			</Text>
 			<Image
 				source={
-					'https://cdn.dribbble.com/users/675553/screenshots/3120374/media/dd1b23ba4f2e972052716fe5d5627075.png?compress=1&resize=800x600&vertical=top'
+					'https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png'
 				}
 				style={{ width: 180, height: 180 }}
 				resizeMode="cover"
