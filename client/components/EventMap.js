@@ -3,7 +3,6 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import getEventsFromSeatGeek from '../resources/seatgeek';
 import getEventsFromTicketmaster from '../resources/ticketmaster';
-import { SEAT_GEEK_KEY, TICKETMASTER_KEY } from '@env';
 import EventList from './EventList';
 
 const EventMap = () => {
@@ -25,11 +24,11 @@ const EventMap = () => {
     const loadEvents = async () => {
         try {
             // Seat Geek  events
-            const seatgeek = await getEventsFromSeatGeek('10003', 1, SEAT_GEEK_KEY);
+            const seatgeek = await getEventsFromSeatGeek('10003', 1);
             setSeatGeekEvents(seatgeek);
 
             // Ticketmaster events
-            const ticketmaster = await getEventsFromTicketmaster('11221', 5, TICKETMASTER_KEY);
+            const ticketmaster = await getEventsFromTicketmaster('11221', 5);
             setTicketmasterEvents(ticketmaster);
 
         } catch (err) {

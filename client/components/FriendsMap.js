@@ -7,6 +7,7 @@ const FriendsMap = (props) => {
     <View style={styles.container}>
       <MapView
         style={styles.map}
+        provider={PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 35.7128,
           longitude: -104.006,
