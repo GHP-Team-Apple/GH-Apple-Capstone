@@ -7,7 +7,7 @@ import { StyleSheet, TextInput, View, Button, Dimensions } from "react-native";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 
 
 const firebaseConfig = {
@@ -25,7 +25,7 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const db = firebase.firestore();
+export const db = firebase.firestore();
 const chatsRef = db.collection("Chats");
 
 export default function Chat() {
@@ -33,7 +33,7 @@ export default function Chat() {
   const [name, setName] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const navigation = useNavigation();
+//   const navigation = useNavigation();
 
   useEffect(() => {
     readUser();
