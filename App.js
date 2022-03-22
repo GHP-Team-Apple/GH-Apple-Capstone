@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import Nav from "./client/components/Nav"
-import Chat from "./client/components/Chat";
-import EventMap from "./client/components/EventMap"
-
+// import Chat from "./client/components/Chat";
+// import EventMap from "./client/components/EventMap"
+// import FriendsMap from './client/components/FriendsMap';
 
 export default function App() {
   return (

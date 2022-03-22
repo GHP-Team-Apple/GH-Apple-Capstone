@@ -6,10 +6,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Screens
 import EventMap from "./EventMap";
 import Chat from "./Chat";
+import FriendsMap from './FriendsMap';
 
 //Screen names
 const eventMap = "EventMap";
 const chat = "Chat";
+const friendsMap = "FriendsMap"
 
 const Tab = createBottomTabNavigator();
 
@@ -29,6 +31,9 @@ function MainContainer() {
             } else if (rn === chat) {
               iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
 
+            } else if (rn === friendsMap) {
+              iconName = focused ? 'man' : 'man-outline';
+
             }
 
             // return any component that you like here
@@ -44,6 +49,7 @@ function MainContainer() {
 
         <Tab.Screen name={eventMap} component={EventMap} />
         <Tab.Screen name={chat} component={Chat} />
+        <Tab.Screen name={friendsMap} component={FriendsMap} />
 
       </Tab.Navigator>
     </NavigationContainer>
