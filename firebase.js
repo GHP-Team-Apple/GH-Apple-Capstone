@@ -1,10 +1,10 @@
 import { FIREBASE_KEY } from '@env';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import { getFirestore, collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: FIREBASE_KEY,
+    apiKey: "AIzaSyCrTUJ7X_1J7ZE5A_fIh-TiMmA6TgeyaKc",
     authDomain: "gh-apple-capstone-f8e82.firebaseapp.com",
     databaseURL: "https://gh-apple-capstone-f8e82-default-rtdb.firebaseio.com",
     projectId: "gh-apple-capstone-f8e82",
@@ -17,12 +17,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-
-const getUsers = async (db) => {
-    const usersCollection = collection(db, 'Users');
-    const userSnapshot = await getDocs(usersCollection);
-    const userList = userSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-    return userList;
-}
-
-export default getUsers;
