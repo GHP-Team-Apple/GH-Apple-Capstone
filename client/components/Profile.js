@@ -10,9 +10,10 @@ import { updateProfile } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 
+
 export default function Profile() {
 	const [displayName, setDisplayName] = useState('');
-	const [selectedImage, setSelectedImage] = useState(null);
+	// const [selectedImage, setSelectedImage] = useState(null);
     const navigation = useNavigation()
 	const {
 		theme: { colors },
@@ -27,10 +28,12 @@ export default function Profile() {
         // if(photoURL){
         //     userData.photoURL = photoURL
         // }
-        await Promise.all([
+		console.log('hello')
+        const thePromise = await Promise.all([
             updateProfile(user, userData),
-            setDoc(doc(db, "users", user.uid), {... userData, uid: user.uid})
+            setDoc(doc(db, "Users", user.uid), {... userData, uid: user.uid})
         ])
+		console.log(thePromise)
         navigation.navigate("home")
 
     }

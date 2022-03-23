@@ -1,7 +1,7 @@
 import { FIREBASE_KEY } from '@env';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: FIREBASE_KEY,
@@ -23,6 +23,13 @@ const getUsers = async (db) => {
     const userSnapshot = await getDocs(usersCollection);
     const userList = userSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     return userList;
+}
+
+export function signIn(email,password){
+    return signInWithEmailAndPassword(auth, email, password)
+}
+export function signUp(email,password){
+    return createUserWithEmailAndPassword(auth, email, password)
 }
 
 export default getUsers;
