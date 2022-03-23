@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: FIREBASE_KEY,
+    apiKey: "AIzaSyCrTUJ7X_1J7ZE5A_fIh-TiMmA6TgeyaKc",
     authDomain: "gh-apple-capstone-f8e82.firebaseapp.com",
     databaseURL: "https://gh-apple-capstone-f8e82-default-rtdb.firebaseio.com",
     projectId: "gh-apple-capstone-f8e82",
@@ -18,13 +18,6 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-const getUsers = async (db) => {
-    const usersCollection = collection(db, 'Users');
-    const userSnapshot = await getDocs(usersCollection);
-    const userList = userSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-    return userList;
-}
-
 export function signIn(email,password){
     return signInWithEmailAndPassword(auth, email, password)
 }
@@ -32,4 +25,3 @@ export function signUp(email,password){
     return createUserWithEmailAndPassword(auth, email, password)
 }
 
-export default getUsers;
