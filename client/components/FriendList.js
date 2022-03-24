@@ -1,39 +1,86 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { getUserById, getFollowing, getIsFollowing } from '../services/users';
 import { getUsers } from '../../firebase';
 
 const FriendList = () => {
+    const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const [user, setUser] = useState({});
-    const [following, setFollowing] = useState([]);
-    const [isFollowing, setIsFollowing] = useState(false);
+    const [followingArr, setFollowingArr] = useState([]);
+    const [friends, setFriends] = useState([]);
 
     useEffect(async () => {
-        // const userFromDB = await getUserById("AeJL2gCPw5DK2fHA5szw");
+        // grab user data 
+        // const userFromDB = await getUserById(userId);
         // setUser(userFromDB);
 
-        const followingFromDB = await getFollowing("AeJL2gCPw5DK2fHA5szw");
-        setFollowing(followingFromDB);
+        // grab array of following data
+        const followingFromDB = await getFollowing(userId);
+        setFollowingArr(followingFromDB);
 
-        // const followingStatus = await getIsFollowing("AeJL2gCPw5DK2fHA5szw", "X0JSZAYLnMUlh5DLdpMP");
-        // setIsFollowing(followingStatus);
-    }, [])
-
-    // useEffect(async () => {
-    //     console.log('CURRENT USER ----->', user);
-    // }, [user]);
-
-    // useEffect(async () => {
-    //     console.log('IS FOLLOWING', isFollowing);
-    // }, [isFollowing]);
+    }, []);
 
     useEffect(async () => {
-        console.log('FOLLOWING', following);
-    }, [following]);
+        // console.log('total following: ', followingArr.length);
+        await checkFriendship();
+    }, [followingArr])
+
+    useEffect(() => {
+        console.log('FRIENDS -----> ', friends);
+    }, [friends])
+
+    const checkFriendship = async () => {
+        const currentFriends = [];
+        for (let i = 0; i < followingArr.length; i++) {
+            let following = followingArr[i];
+            let isFollowing = await getIsFollowing(following.id, userId);
+            if (isFollowing) {
+                currentFriends.push(following);
+            }
+        }
+        setFriends(currentFriends);
+    }
 
     return (
-        <Text>Hello</Text>
+        <View style={styles.container}>
+            <Text style={{ fontSize: 30 }}>FRIENDS:</Text>
+            {
+                friends.map(friend => {
+                    const image = getImage(friend.profilePicture);
+                    return (
+                        <View key={friend.id} style={styles.friend}>
+                        <Image source={image} />
+                        <Text style={{ fontSize: 20}}>{friend.username}</Text>
+                    </View>
+                    )
+                })
+            }
+        </View>
     )
 }
+
+const getImage = (image) => {
+    switch(image) {
+        case "alpaca.png":
+            return require('../../assets/alpaca.png');
+        case "rabbit.png":
+            return require('../../assets/rabbit.png')
+    }
+}
+
+
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 30,
+        alignContent: 'center',
+        padding: 20
+    }, 
+    friend: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 20,
+    }
+})
 
 export default FriendList;
