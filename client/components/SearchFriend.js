@@ -10,60 +10,43 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function App() {
   const [contacts, setContacts] = useState([]);
-  const numArr =[];
-
-  async function getUsersNum () {
-    const q = query(collection(db, "Users"), where("number", "!=", null));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      const data = doc.data().number
-      numArr.push(data)
-    });
-  }
-           
-  
 
   useEffect(() => {
     (async () => {
       const { status } = await Contacts.requestPermissionsAsync();
-      if (status === "granted") {
-        const { data } = await Contacts.getContactsAsync({
-          fields: [Contacts.Fields.PhoneNumbers],
-        });
+      const q = query(collection(db, "Users"), where("number", "!=", null));
+      const querySnapshot = await getDocs(q);
+      const numArr =[];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data().number
+        numArr.push(data)
+      });
 
-        if (data.length > 0) {
-          const filteredData = data.filter((item) => {
-            const phoneNumbers = item.phoneNumbers;
-            if (phoneNumbers === undefined || phoneNumbers.length === 0) {
-              return false;
-            }
-            console.log('numArr', numArr)
-            return numArr.includes(phoneNumbers[0].number);
-          });
-          setContacts([...contacts, ...filteredData]);
-        }
+      if (status != "granted") {
+        return;
+      }
+
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.PhoneNumbers],
+      });
+
+      if (data.length > 0) {
+        const filteredData = data.filter((item) => {
+          const phoneNumbers = item.phoneNumbers;
+          if (phoneNumbers === undefined || phoneNumbers.length === 0) {
+            return false;
+          }
+          return numArr.includes(phoneNumbers[0].number);
+        });
+        setContacts([...filteredData]);
       }
     })();
   }, []);
 
-  if (contacts.length === 0 || contacts === undefined) {
-    return (
-      <View>
-        <Text>No Friends Yet</Text>
-      </View>
-    );
-  }
-
-  if(numArr.length ===0){
-    getUsersNum();
-  }
-  
   return (
     <FlatList
       data={contacts}
-      keyExtractor={(item) => {
-        item.id + "contact";
-      }}
+      keyExtractor={(item) => item.id}
       renderItem={({ item }) => {
         return (
           <View>
