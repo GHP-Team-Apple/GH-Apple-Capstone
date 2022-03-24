@@ -20,15 +20,22 @@ export const getFollowing = async (userId) => {
     const followingCollection = collection(db, `Users/${userId}/following`);
     const followingSnapshot = await getDocs(followingCollection);
 
-    // return an array of following userIds
-    return followingSnapshot.docs.map(doc => doc.id);
+    return Promise.all(followingSnapshot.docs.map(async (doc) => {
+        let following = { ...doc.data() };
+        if (following.userRef) {
+            let userData = await getDoc(following.userRef);
+            if (userData.exists()) {
+                return { ...userData.data(), id: userData.id }
+            }
+        }
+    }));
 }
 
 export const getIsFollowing = async (userId, otherUserId) => {
     const followingRef = doc(db, `Users/${userId}/following/${otherUserId}`);
-    const followingSnap = await getDoc(followingRef);
+    const followingDoc = await getDoc(followingRef);
 
     // return boolean whether userId follows otherUserId
-    return followingSnap.exists();
+    return followingDoc.exists();
 }
 
