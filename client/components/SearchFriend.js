@@ -5,21 +5,22 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import * as Contacts from "expo-contacts";
 import { FlatList } from "react-native-gesture-handler";
-import getUsers, {db} from "../../firebase"
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
+import { collection, query, where, getDocs, setDoc, doc, addDoc } from "firebase/firestore";
 
 export default function App() {
   const [contacts, setContacts] = useState([]);
+  const userId = "13ByjS5Rcc9MgJAv2ZZj";
 
   useEffect(() => {
     (async () => {
       const { status } = await Contacts.requestPermissionsAsync();
       const q = query(collection(db, "Users"), where("number", "!=", null));
       const querySnapshot = await getDocs(q);
-      const numArr =[];
+      const numArr = [];
       querySnapshot.forEach((doc) => {
-        const data = doc.data().number
-        numArr.push(data)
+        const data = doc.data().number;
+        numArr.push(data);
       });
 
       if (status != "granted") {
@@ -43,6 +44,17 @@ export default function App() {
     })();
   }, []);
 
+  async function handlePress(str, userId) {
+    //add the person in the friend array
+    const q = query(collection(db, "Users"), where("number", "==", str));
+    const friend = await getDocs(q);
+    const id = friend.docs[0].id
+    await addDoc(collection(db, "Users", userId, "following"), {userRef: doc(db,"Users",id)})
+
+  
+    // console.log(str);
+  }
+
   return (
     <FlatList
       data={contacts}
@@ -60,8 +72,8 @@ export default function App() {
             <Button
               style={{ fontSize: 20, color: "green" }}
               styleDisabled={{ color: "red" }}
-              onPress={() => this._handlePress()}
-              title="Add Friend"
+              onPress={() => handlePress(item.phoneNumbers[0].number, userId)}
+              title="Follow"
             >
               Follow
             </Button>
