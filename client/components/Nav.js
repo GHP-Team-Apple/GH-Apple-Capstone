@@ -7,11 +7,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import EventMap from "./EventMap";
 import Chat from "./Chat";
 import FriendsMap from './FriendsMap';
+import SearchFriend from './SearchFriend'
 
 //Screen names
 const eventMap = "EventMap";
 const chat = "Chat";
 const friendsMap = "FriendsMap"
+const searchFriend = "SearchFriend"
 
 const Tab = createBottomTabNavigator();
 
@@ -34,6 +36,9 @@ function MainContainer() {
             } else if (rn === friendsMap) {
               iconName = focused ? 'man' : 'man-outline';
 
+            } else if (rn === searchFriend) {
+              iconName = focused ? 'man' : 'man-outline';
+
             }
 
             // return any component that you like here
@@ -50,6 +55,7 @@ function MainContainer() {
         <Tab.Screen name={eventMap} component={EventMap} />
         <Tab.Screen name={chat} component={Chat} />
         <Tab.Screen name={friendsMap} component={FriendsMap} />
+        <Tab.Screen name={searchFriend} component={SearchFriend} />
 
       </Tab.Navigator>
     </NavigationContainer>

@@ -10,6 +10,7 @@ import "firebase/compat/firestore";
 import { useNavigation } from '@react-navigation/native';
 
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyCrTUJ7X_1J7ZE5A_fIh-TiMmA6TgeyaKc",
   authDomain: "gh-apple-capstone-f8e82.firebaseapp.com",
