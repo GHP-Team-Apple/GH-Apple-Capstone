@@ -113,7 +113,7 @@ const FriendsMap = (props) => {
           longitudeDelta: 38,
         }}
       >
-        <Marker
+        {/* <Marker
           coordinate={{
             latitude: 33.76418473401285,
             longitude: -84.39513125767164,
@@ -132,7 +132,7 @@ const FriendsMap = (props) => {
           <Callout>
             <Text>Attending Event: Beginner's Coding Workshop</Text>
           </Callout>
-        </Marker>
+        </Marker> */}
 
         {location ? (
           <Marker
