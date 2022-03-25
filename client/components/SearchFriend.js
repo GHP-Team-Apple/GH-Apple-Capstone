@@ -50,9 +50,7 @@ export default function App() {
     const friend = await getDocs(q);
     const id = friend.docs[0].id
     await addDoc(collection(db, "Users", userId, "following"), {userRef: doc(db,"Users",id)})
-
-  
-    // console.log(str);
+    // send following notification
   }
 
   return (
