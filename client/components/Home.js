@@ -7,6 +7,7 @@ import Context from '../../context/Context';
 import EventMap from "./EventMap";
 import Chat from "./Chat";
 import FriendsMap from './FriendsMap';
+import SavedEvents from './SavedEvents';
 
 
 function Empty() {
@@ -48,7 +49,7 @@ export default function Home() {
 			/>
 			<Tab.Screen
 				name="saved"
-				component={Empty}
+				component={SavedEvents}
 				options={{
 					tabBarIcon: () => <AntDesign name="hearto" size={24} color="white" />
 				}}
