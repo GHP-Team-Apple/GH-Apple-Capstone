@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { getUserById, getFollowing, getIsFollowing } from '../services/users';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { getUserById, getFollowing, getIsFollowing, addFollowing } from '../services/users';
 import { getUsers } from '../../firebase';
 
 const FriendList = () => {
@@ -17,23 +17,18 @@ const FriendList = () => {
         // grab array of following data
         const followingFromDB = await getFollowing(userId);
         setFollowingArr(followingFromDB);
-
     }, []);
 
     useEffect(async () => {
-        // console.log('total following: ', followingArr.length);
         await checkFriendship();
     }, [followingArr])
 
-    useEffect(() => {
-        console.log('FRIENDS -----> ', friends);
-    }, [friends])
 
     const checkFriendship = async () => {
         const currentFriends = [];
         for (let i = 0; i < followingArr.length; i++) {
             let following = followingArr[i];
-            let isFollowing = await getIsFollowing(following.id, userId);
+            let isFollowing = await getIsFollowing(following.uid, userId);
             if (isFollowing) {
                 currentFriends.push(following);
             }
@@ -42,33 +37,37 @@ const FriendList = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={{ fontSize: 30 }}>FRIENDS:</Text>
+        <ScrollView style={styles.container}>
+            <Text style={{ fontSize: 25, margin: 10 }}>Friends:</Text>
             {
                 friends.map(friend => {
                     const image = getImage(friend.profilePicture);
                     return (
                         <View key={friend.id} style={styles.friend}>
-                        <Image source={image} />
+                        <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }}/>
                         <Text style={{ fontSize: 20}}>{friend.username}</Text>
                     </View>
                     )
                 })
             }
-        </View>
+        </ScrollView>
     )
 }
 
 const getImage = (image) => {
     switch(image) {
-        case "alpaca.png":
+        case 'alpaca.png':
             return require('../../assets/alpaca.png');
-        case "rabbit.png":
-            return require('../../assets/rabbit.png')
+        case 'rabbit.png':
+            return require('../../assets/rabbit.png');
+        case 'chameleon.png':
+            return require('../../assets/chameleon.png');
+        case 'dog.png':
+            return require('../../assets/dog.png');
+        case 'koala.png':
+            return require('../../assets/koala.png');
     }
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
     friend: {
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 20,
+        margin: 10,
     }
 })
 
