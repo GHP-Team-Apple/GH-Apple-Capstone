@@ -2,13 +2,15 @@ import React from 'react';
 import { ScrollView, View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 
 const EventList = (props) => {
-    const events = props.events || [];
+    const seatGeek = props.seatGeek || [];
+    const ticketMaster = props.ticketMaster || [];
+    const localEvents = props.localEvents || [];
 
     return (
         <ScrollView style={styles.container}>
             {
-                events.map((event, idx) => (
-                    <View key={idx} style={styles.event}>
+                seatGeek.map((event, idx) => (
+                    <View key={`sg-${idx}`} style={styles.event}>
                         <Image
                             style={styles.image}
                             source={{
@@ -22,6 +24,22 @@ const EventList = (props) => {
                         <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.datetime_utc)}</Text>
                     </View>
                 ))
+            }
+            {
+                 localEvents.map((event, idx) => (
+                    <View key={`le-${idx}`} style={styles.event}>
+                        <Image
+                            style={styles.image}
+                            source={{
+                                uri: event.imageUrl,
+                            }}
+                        />
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
+                        <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.start)}</Text>
+                    </View>
+                ))
+
+
             }
         </ScrollView>
     )
