@@ -10,6 +10,7 @@ import FriendsMap from './FriendsMap';
 import SavedEvents from './SavedEvents';
 
 
+
 function Empty() {
 	return <View><Text>hey</Text></View>;
 }
