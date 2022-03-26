@@ -8,7 +8,7 @@ import EventList from './EventList';
 
 const EventMap = () => {
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
-    const [ticketmasterEvents, setTicketmasterEvents] = useState([]);
+    // const [ticketmasterEvents, setTicketmasterEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);
 
     useEffect(async () => {
@@ -19,9 +19,9 @@ const EventMap = () => {
         console.log('SEAT GEEK EVENTS IN MAPS: ---->', seatGeekEvents.length);
     }, [seatGeekEvents]);
 
-    useEffect(() => {
-        console.log('TICKET MASTER EVENTS IN MAPS: ---->', ticketmasterEvents.length);
-    }, [ticketmasterEvents]);
+    // useEffect(() => {
+    //     console.log('TICKET MASTER EVENTS IN MAPS: ---->', ticketmasterEvents.length);
+    // }, [ticketmasterEvents]);
 
     useEffect(() => {
         console.log('LOCAL EVENTS IN MAPS: ---->', localEvents.length);
@@ -34,8 +34,8 @@ const EventMap = () => {
             setSeatGeekEvents(seatgeek);
 
             // Ticketmaster events
-            const ticketmaster = await getEventsFromTicketmaster('11221', 5);
-            setTicketmasterEvents(ticketmaster);
+            // const ticketmaster = await getEventsFromTicketmaster('11221', 5);
+            // setTicketmasterEvents(ticketmaster);
 
             // Local events
             const local = await getLocalEvents('NYC');
@@ -69,7 +69,7 @@ const EventMap = () => {
                         />
                     ))
                 }
-                {
+                {/* {
                     ticketmasterEvents.map((event, idx) => (
                         <Marker
                             key={`tm-${idx}`}
@@ -81,7 +81,7 @@ const EventMap = () => {
                             title={event.name}
                         />
                     ))
-                }
+                } */}
                 {
                     localEvents.map((event, idx) => (
                         <Marker
@@ -97,7 +97,8 @@ const EventMap = () => {
                 }
             </MapView>
 
-            <EventList seatGeek={seatGeekEvents} ticketMaster={ticketmasterEvents} localEvents={localEvents}/>
+            {/* <EventList seatGeek={seatGeekEvents} ticketMaster={ticketmasterEvents} localEvents={localEvents}/> */}
+            <EventList seatGeek={seatGeekEvents} localEvents={localEvents}/>
 
         </View>
 

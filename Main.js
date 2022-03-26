@@ -1,16 +1,16 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, Text } from 'react-native';
-import AppStack from './navigation.js/AppStack';
-import AuthStack from './navigation.js/AuthStack';
+import AppStack from './navigation/AppStack';
+import AuthStack from './navigation/AuthStack';
 
 export default function Main() {
 	return (
-    <NavigationContainer>
-      {/* <AppStack /> */}
-      <AuthStack />
-    </NavigationContainer>
-  );
+		<NavigationContainer>
+			<AppStack />
+			{/* <AuthStack /> */}
+		</NavigationContainer>
+	);
 }
 
 // import React, {useState, useEffect, useContext} from 'react';

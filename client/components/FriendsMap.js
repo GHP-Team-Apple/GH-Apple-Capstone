@@ -101,7 +101,7 @@ const FriendsMap = (props) => {
 
   return (
     <View style={styles.container}>
-      <Button title="Load Markers" onPress={loadMarkers} />
+      {/* <Button title="Load Markers" onPress={loadMarkers} /> */}
 
       <MapView
         style={styles.map}

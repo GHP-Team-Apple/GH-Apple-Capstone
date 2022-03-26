@@ -29,7 +29,7 @@ const SingleEvent = (props) => {
                 lat: event.venue.location.lat,
                 lon: event.venue.location.lon
             },
-            checkIn: false
+            checkIn: false,
             imageUrl: event.imageUrl
         }
 

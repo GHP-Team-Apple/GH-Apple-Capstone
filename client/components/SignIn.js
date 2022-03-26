@@ -39,13 +39,7 @@ export default function SignIn() {
 				Appining
 			</Text>
 			<Image
-<<<<<<< HEAD
-				source={{
-					uri: 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png',
-				}}
-=======
 				source={{ uri: 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png' }}
->>>>>>> main
 				style={{ width: 180, height: 180 }}
 				resizeMode="cover"
 			/>
