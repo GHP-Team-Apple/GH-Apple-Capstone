@@ -3,11 +3,13 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import getEventsFromSeatGeek from '../resources/seatgeek';
 import getEventsFromTicketmaster from '../resources/ticketmaster';
+import { getLocalEvents } from '../services/events';
 import EventList from './EventList';
 
 const EventMap = () => {
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
     const [ticketmasterEvents, setTicketmasterEvents] = useState([]);
+    const [localEvents, setLocalEvents] = useState([]);
 
     useEffect(async () => {
         await loadEvents();
@@ -21,6 +23,10 @@ const EventMap = () => {
         console.log('TICKET MASTER EVENTS IN MAPS: ---->', ticketmasterEvents.length);
     }, [ticketmasterEvents]);
 
+    useEffect(() => {
+        console.log('LOCAL EVENTS IN MAPS: ---->', localEvents.length);
+    }, [localEvents]);
+
     const loadEvents = async () => {
         try {
             // Seat Geek  events
@@ -30,6 +36,10 @@ const EventMap = () => {
             // Ticketmaster events
             const ticketmaster = await getEventsFromTicketmaster('11221', 5);
             setTicketmasterEvents(ticketmaster);
+
+            // Local events
+            const local = await getLocalEvents('NYC');
+            setLocalEvents(local);
 
         } catch (err) {
             console.log('error: ', err);
@@ -72,9 +82,22 @@ const EventMap = () => {
                         />
                     ))
                 }
+                {
+                    localEvents.map((event, idx) => (
+                        <Marker
+                            key={`le-${idx}`}
+                            pinColor={'green'}
+                            coordinate={{ 
+                                latitude: event.location.lat, 
+                                longitude: event.location.lon,
+                            }}
+                            title={event.name}
+                        />
+                    ))
+                }
             </MapView>
 
-            <EventList events={seatGeekEvents} />
+            <EventList seatGeek={seatGeekEvents} ticketMaster={ticketmasterEvents} localEvents={localEvents}/>
 
         </View>
 
@@ -84,8 +107,7 @@ const EventMap = () => {
 const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.5,
-        // margin: 10
+        height: Dimensions.get('window').height * 0.4,
     }
 });
 
