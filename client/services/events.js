@@ -52,7 +52,7 @@ export const getSavedEventsByUserId = async (userId) => {
   });
 };
 
-export const saveEvent = async (event, userId, savedEvent) => {
+export const saveEvent = async (userId, event) => {
   const q = query(
     collection(db, "SavedEvents"),
     where("eventId", "==", event.id),
