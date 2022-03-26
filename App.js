@@ -6,7 +6,9 @@ import { Text, View, SafeAreaView } from 'react-native';
 
 function App() {
 	return (
-				<Main />
+		<ContextWrapper>
+			<Main />
+		</ContextWrapper>
 	);
 }
 

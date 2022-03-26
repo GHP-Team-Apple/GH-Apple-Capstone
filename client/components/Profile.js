@@ -2,7 +2,7 @@ import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState, useEffect } from 'react';
 import Constants from 'expo-constants';
-// import Context from '../../context/Context';
+import Context from '../../context/Context';
 import * as Location from 'expo-location';
 import { auth, db } from '../../firebase';
 import { updateProfile } from 'firebase/auth';

@@ -62,7 +62,7 @@ export default function AppStack() {
         component={Notifications}
         options={{
           drawerIcon: () => (
-            <AntDesign name="notifications" size={22} color="white" />
+            <AntDesign name="notification" size={22} color="white" />
           ),
         }}
       />
