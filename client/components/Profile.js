@@ -1,9 +1,8 @@
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState, useEffect } from 'react';
 import Constants from 'expo-constants';
-import Context from '../../context/Context';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+// import Context from '../../context/Context';
 import * as Location from 'expo-location';
 import { auth, db } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
@@ -12,7 +11,9 @@ import { useNavigation } from '@react-navigation/native';
 
 
 export default function Profile() {
-	const [displayName, setDisplayName] = useState('');
+	const [username, setUsername] = useState('');
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
 	// const [selectedImage, setSelectedImage] = useState(null);
     const navigation = useNavigation()
 	const {
@@ -22,7 +23,9 @@ export default function Profile() {
      async function handlePress(){
         const user = auth.currentUser
         const userData = {
-            displayName,
+            username,
+			firstName,
+			lastName,
             email: user.email
         }
         // if(photoURL){
@@ -74,7 +77,7 @@ export default function Profile() {
 				<Text style={{ fontSize: 22, color: colors.foreground }}>
 					Profile Info
 				</Text>
-				<Text style={{ fontSize: 14, color: colors.text, marginTop: 20 }}>
+				<Text style={{ fontSize: 14, color: 'black', marginTop: 20 }}>
 					Please provide displayName
 				</Text>
 				<TouchableOpacity
@@ -83,7 +86,7 @@ export default function Profile() {
 						borderRadius: 120,
 						width: 120,
 						height: 120,
-						backgroundColor: colors.background,
+						backgroundColor: 'green',
 						alignItems: 'center',
 						justifyContent: 'center',
 					}}
@@ -102,22 +105,44 @@ export default function Profile() {
           )} */}
 				</TouchableOpacity>
 				<TextInput
-					placeholder="Type your name"
-					value={displayName}
-					onChangeText={setDisplayName}
+					placeholder="Enter First Name"
+					value={firstName}
+					onChangeText={setFirstName}
 					style={{
-						borderBottomColor: colors.primary,
+						borderBottomColor: 'gold',
 						marginTop: 40,
 						borderBottomWidth: 2,
 						width: '100%',
 					}}
 				/>
+				<TextInput
+					placeholder="Enter Last Name"
+					value={lastName}
+					onChangeText={setLastName}
+					style={{
+						borderBottomColor: 'green',
+						marginTop: 40,
+						borderBottomWidth: 2,
+						width: '100%',
+					}}
+				/>
+					<TextInput
+						placeholder="Enter Username"
+						value={username}
+						onChangeText={setUsername}
+						style={{
+							borderBottomColor: 'gold',
+							marginTop: 40,
+							borderBottomWidth: 2,
+							width: '100%',
+						}}
+					/>
 				<View style={{ marginTop: 'auto', width: 80 }}>
 					<Button
 						title="Next"
-						color={colors.secondary}
+						color='green'
 						onPress={handlePress}
-						disabled={!displayName}
+						// disabled={!displayName}
 					/>
 				</View>
 			</View>

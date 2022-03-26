@@ -1,26 +1,45 @@
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import React, { useContext } from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Profile from './Profile';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 import Context from '../../context/Context';
+<<<<<<< HEAD
+=======
 import EventMap from "./EventMap";
 import Chat from "./Chat";
 import FriendsMap from './FriendsMap';
 import SavedEvents from './SavedEvents';
+>>>>>>> main
 
 
-function Empty() {
-	return <View><Text>hey</Text></View>;
-}
 
-const Tab = createMaterialBottomTabNavigator();
-
-export default function Home() {
+export default function Home({navigation}) {
 	const {
 		theme: { colors },
 	} = useContext(Context);
 	return (
+<<<<<<< HEAD
+		<View><Text>hey</Text></View>
+		// <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+		// 	<ScrollView style={{padding: 20}}>
+		// 	<View
+        //   style={{
+        //     flexDirection: 'row',
+        //     justifyContent: 'space-between',
+        //     marginBottom: 20,
+        //   }}>
+        //   <Text style={{fontSize: 18}}>
+        //     Hello Username
+        //   </Text>
+        //   <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        //     <ImageBackground
+        //       source={require('../../assets/dog.png')}
+        //       style={{width: 35, height: 35}}
+        //       imageStyle={{borderRadius: 25}}
+        //     />
+        //   </TouchableOpacity>
+        // </View>
+		// 	</ScrollView>
+		// </SafeAreaView>
+=======
 		 <Tab.Navigator
 			barStyle={{ backgroundColor: 'black' }}
 			initialRouteName="home">
@@ -66,5 +85,6 @@ export default function Home() {
 
 		// 	<Text>Hello again</Text>
 		// </View>
+>>>>>>> main
 	);
 }
