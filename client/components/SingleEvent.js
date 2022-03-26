@@ -18,7 +18,7 @@ const SingleEvent = (props) => {
     const handleSaveEvent = async () => {
         const savedEvent = {
             userId: userId,
-            eventId: event.id,
+            id: event.id,
             name: event.name,
             type: event.type,
             startDate: event.date,
@@ -30,11 +30,12 @@ const SingleEvent = (props) => {
                 lon: event.venue.location.lon
             },
             checkIn: false
+            imageUrl: event.imageUrl
         }
 
         //check if the user has already saved the event
         // if not, then save the event 
-        saveEvent(event, userId, savedEvent);
+        await saveEvent(userId, savedEvent);
     }
     
     return (
