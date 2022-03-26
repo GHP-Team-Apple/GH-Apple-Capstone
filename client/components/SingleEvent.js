@@ -36,7 +36,7 @@ const SingleEvent = (props) => {
         // if not, then save the event 
         saveEvent(event, userId, savedEvent);
     }
-
+    
     return (
         <Modal
             isVisible={true}
