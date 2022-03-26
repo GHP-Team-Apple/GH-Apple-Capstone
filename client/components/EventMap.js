@@ -107,8 +107,7 @@ const EventMap = () => {
 const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.5,
-        // margin: 10
+        height: Dimensions.get('window').height * 0.4,
     }
 });
 

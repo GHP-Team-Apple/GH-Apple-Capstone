@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
 import * as Location from "expo-location";
-import { saveEvent } from "../services/events";
 import { getFriendEvents } from "../services/events";
 import { getUserById } from "../services/users";
+import { saveEvent } from "../services/events";
 
 const FriendsMap = (props) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [friendMarkers, setFriendsMarkers] = useState(<View></View>);
-  const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // should use auth.currentUser
+  const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // should use auth.currentUser?
 
   useEffect(() => {
     (async () => {
@@ -25,36 +25,36 @@ const FriendsMap = (props) => {
     })();
   }, []);
 
-  useEffect(async () => {
-    let friendEventsArr = await getFriendEvents(userId);
+  // useEffect(async () => {
+  //   let friendEventsArr = await getFriendEvents(userId);
 
-    let friendMarkers = await Promise.all(friendEventsArr.map( async (event) => {
-      let now = new Date();
-      let startTime = event.start ? event.start : event.startDate;
-      let endTime = event.end ? event.end : event.visibleUntil;
-      let profileUrl = await getUserById(event.userId).profilePicture;
-      console.log(">>>>>>>", profileUrl)
+  //   let friendMarkers = await Promise.all(friendEventsArr.map( async (event) => {
+  //     let now = new Date();
+  //     let startTime = event.start ? event.start : event.startDate;
+  //     let endTime = event.end ? event.end : event.visibleUntil;
+  //     let profileUrl = await getUserById(event.userId).profilePicture;
+  //     console.log(">>>>>>>", profileUrl)
 
-      if (now >= startTime && now <= endTime) {
-        return (
-          <Marker
-            key={event.eventId}
-            coordinate={{
-              latitude: event.location.lat,
-              longitude: event.location.lon,
-            }}
-            // image={image}
-          >
-            <Callout>
-              <Text>{event.name}</Text>
-            </Callout>
-          </Marker>
-        );
-      }
-    }));
+  //     if (now >= startTime && now <= endTime) {
+  //       return (
+  //         <Marker
+  //           key={event.eventId}
+  //           coordinate={{
+  //             latitude: event.location.lat,
+  //             longitude: event.location.lon,
+  //           }}
+  //           // image={image}
+  //         >
+  //           <Callout>
+  //             <Text>{event.name}</Text>
+  //           </Callout>
+  //         </Marker>
+  //       );
+  //     }
+  //   }));
 
-    setFriendsMarkers(friendMarkers);
-  },[]);
+  //   setFriendsMarkers(friendMarkers);
+  // },[]);
 
 
   // THE LOAD MARKER HANDLER:
@@ -147,7 +147,7 @@ const FriendsMap = (props) => {
           </Marker>
         ) : null}
 
-        {friendMarkers}
+        {/* {friendMarkers} */}
       </MapView>
     </View>
   );

@@ -42,11 +42,30 @@ export const getFriendEvents = async (userId) => {
   return friendEventsArr;
 };
 
-// Single Event View should have event params passed down when navigating screens
-// userId = auth.currentUser.uid
-// import saveEvent to Single Event View
-// onPress saveEvent button should invoke:
-export const saveEvent = async (event, userId) => {
-  const eventsCollection = collection(db, "SavedEvents");
-  await addDoc(eventsCollection, { ...event, checkIn: false, userId: userId });
+export const getSavedEventsByUserId = async (userId) => {
+  const q = query(collection(db, "SavedEvents"), where("userId", "==", userId));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => {
+    const obj = doc.data();
+    obj["id"] = doc.id;
+    return obj;
+  });
 };
+
+export const saveEvent = async (event, userId, savedEvent) => {
+  const q = query(
+    collection(db, "SavedEvents"),
+    where("eventId", "==", event.id),
+    where("userId", "==", userId)
+  );
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.docs.length !== 0) {
+    console.log("EVENT ALREADY SAVED");
+    return;
+  } else {
+    await addDoc(collection(db, "SavedEvents"), savedEvent);
+    //console.log('EVENT TO BE SAVED ---->', savedEvent);
+  }
+};
+
