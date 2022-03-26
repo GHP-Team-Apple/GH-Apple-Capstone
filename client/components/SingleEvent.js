@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Dimensions, Linking } from 'react-native';
 import Modal from 'react-native-modal';
-import { db } from '../../firebase';
-import { collection, addDoc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { saveEvent } from '../services/events';
 
 const SingleEvent = (props) => {
     const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
@@ -34,18 +33,10 @@ const SingleEvent = (props) => {
         }
 
         //check if the user has already saved the event
-        const q = query(collection(db, 'SavedEvents'), where('eventId', '==', event.id), where('userId', '==', userId));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.docs.length !== 0) {
-            console.log('EVENT ALREADY SAVED')
-            return;
-        } else {
-            await addDoc(collection(db, 'SavedEvents'), savedEvent);
-            //console.log('EVENT TO BE SAVED ---->', savedEvent);
-        }
+        // if not, then save the event 
+        saveEvent(event, userId, savedEvent);
     }
-
+    
     return (
         <Modal
             isVisible={true}

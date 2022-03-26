@@ -22,7 +22,7 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import {getSavedEventsByUserId} from "../services/savedEvents"
+import {getSavedEventsByUserId} from "../services/events"
 
 const SavedEvents = () => {
   const [events, setEvents] = useState([]);

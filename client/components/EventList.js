@@ -3,8 +3,9 @@ import { ScrollView, Pressable, View, Text, Image, StyleSheet, Dimensions } from
 import SingleEvent from './SingleEvent';
 
 const EventList = (props) => {
-    const events = props.events || [];
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const seatGeek = props.seatGeek || [];
+    const localEvents = props.localEvents || [];
 
     const handlePress = (event) => {
         if (event) {
@@ -36,7 +37,7 @@ const EventList = (props) => {
     return (
         <ScrollView style={styles.container}>
             {
-                events.map((event, idx) => (
+                seatGeek.map((event, idx) => (
                     <Pressable key={idx} style={styles.event}
                         onPress={() => handlePress(event)}
                     >
@@ -54,6 +55,20 @@ const EventList = (props) => {
                             <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.datetime_utc)}</Text>
                         </View>
                     </Pressable>
+                ))
+            }
+            {
+                localEvents.map((event, idx) => (
+                    <View key={`le-${idx}`} style={styles.event}>
+                        <Image
+                            style={styles.image}
+                            source={{
+                                uri: event.imageUrl,
+                            }}
+                        />
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
+                        <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.start)}</Text>
+                    </View>
                 ))
             }
             {

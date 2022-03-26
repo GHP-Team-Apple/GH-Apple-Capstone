@@ -24,13 +24,13 @@ export default function Home() {
 		 <Tab.Navigator
 			barStyle={{ backgroundColor: 'black' }}
 			initialRouteName="home">
-			<Tab.Screen
+			{/* <Tab.Screen
 				name="home"
 				component={Empty}
 				options={{
 					tabBarIcon: () => <AntDesign name="home" size={24} color="white" />
 				}}
-			/>
+			/> */}
 			<Tab.Screen
 				name="explore"
 				component={EventMap}
@@ -47,20 +47,20 @@ export default function Home() {
 					tabBarIcon: () => <Ionicons name="man-outline" size={24} color="white" />
 				}}
 			/>
-			<Tab.Screen
+			{/* <Tab.Screen
 				name="saved"
 				component={SavedEvents}
 				options={{
 					tabBarIcon: () => <AntDesign name="hearto" size={24} color="white" />
 				}}
-			/>
-			<Tab.Screen
+			/> */}
+			{/* <Tab.Screen
 				name="profile"
 				component={Profile}
 				options={{
 					tabBarIcon: () => <AntDesign name="user" size={24} color="white" />,
 				}}
-			/>
+			/> */}
 		</Tab.Navigator>
 		// <View>
 
