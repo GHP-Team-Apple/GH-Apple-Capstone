@@ -24,9 +24,9 @@ const EventList = (props) => {
                     }
                 },
                 imageUrl: event.performers[0].image,
-                type: event.type, 
+                type: event.type,
                 eventUrl: event.url
-    
+
             }
             setSelectedEvent(eventObj);
         } else {
@@ -57,9 +57,11 @@ const EventList = (props) => {
                     </Pressable>
                 ))
             }
-            {
+            {/* {
                 localEvents.map((event, idx) => (
-                    <View key={`le-${idx}`} style={styles.event}>
+                    <Pressable key={`le-${idx}`} style={styles.event}
+                        onPress={() => handlePress(event)}
+                    >
                         <Image
                             style={styles.image}
                             source={{
@@ -68,9 +70,9 @@ const EventList = (props) => {
                         />
                         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
                         <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.start)}</Text>
-                    </View>
+                    </Pressable>
                 ))
-            }
+            } */}
             {
                 selectedEvent ? <SingleEvent event={selectedEvent} handlePress={handlePress} /> : null
             }
@@ -86,19 +88,19 @@ const dateFormatter = (dateStr) => {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.38,
+        height: Dimensions.get('window').height * 0.35,
     },
     event: {
         flexDirection: 'row',
         // flexWrap: 'wrap',
         alignItems: 'center',
-        margin: 5, 
+        margin: 5,
     },
     image: {
         width: 150,
         height: 90,
         margin: 2
-    }, 
+    },
     text: {
         margin: 2
     }

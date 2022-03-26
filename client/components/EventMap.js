@@ -1,72 +1,120 @@
 import React, { useState, useEffect } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
+import * as Location from "expo-location";
 import getEventsFromSeatGeek from '../resources/seatgeek';
 import getEventsFromTicketmaster from '../resources/ticketmaster';
 import { getLocalEvents } from '../services/events';
 import EventList from './EventList';
+import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
 
 const EventMap = () => {
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
     // const [ticketmasterEvents, setTicketmasterEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);
-
-    useEffect(async () => {
-        await loadEvents();
-    }, []);
+    const [currentRegion, setCurrentRegion] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
 
     useEffect(() => {
-        console.log('SEAT GEEK EVENTS IN MAPS: ---->', seatGeekEvents.length);
-    }, [seatGeekEvents]);
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
+                setErrorMsg("Permission to access location was denied");
+                return;
+            }
+
+            // set map to current location
+            const currentLocation = await Location.getCurrentPositionAsync({});
+            setLocation(currentLocation);
+            
+            // get Seat Geek events near current location
+            const events = await getEventsFromSeatGeek(currentLocation.coords.latitude, currentLocation.coords.longitude, 2);
+            setSeatGeekEvents(events);
+
+        })();
+    }, []);
+
+    useEffect(async () => {
+        // await loadEvents();
+    }, []);
+
+    useEffect(async () => {
+        if (currentRegion) {
+            const { latitude, longitude } = currentRegion;
+            const events = await getEventsFromSeatGeek(currentRegion.latitude, currentRegion.longitude, 2);
+            setSeatGeekEvents(events);
+        }
+    }, [currentRegion]);
+
+    // useEffect(() => {
+    //     console.log('SEAT GEEK EVENTS IN MAPS: ---->', seatGeekEvents.length);
+    // }, [seatGeekEvents]);
 
     // useEffect(() => {
     //     console.log('TICKET MASTER EVENTS IN MAPS: ---->', ticketmasterEvents.length);
     // }, [ticketmasterEvents]);
 
-    useEffect(() => {
-        console.log('LOCAL EVENTS IN MAPS: ---->', localEvents.length);
-    }, [localEvents]);
+    // useEffect(() => {
+    //     console.log('LOCAL EVENTS IN MAPS: ---->', localEvents.length);
+    // }, [localEvents]);
 
     const loadEvents = async () => {
         try {
-            // Seat Geek  events
-            const seatgeek = await getEventsFromSeatGeek('10003', 1);
-            setSeatGeekEvents(seatgeek);
-
             // Ticketmaster events
             // const ticketmaster = await getEventsFromTicketmaster('11221', 5);
             // setTicketmasterEvents(ticketmaster);
 
             // Local events
-            const local = await getLocalEvents('NYC');
-            setLocalEvents(local);
+            // const local = await getLocalEvents('NYC');
+            // setLocalEvents(local);
 
         } catch (err) {
             console.log('error: ', err);
         }
     }
 
-    return (
+    const handleRegionChange = (region) => {
+        setCurrentRegion(region);
+    }
+
+    const CustomMarker = (eventType) => {
+        switch(eventType) {
+            case "concert":
+                return <Entypo name="music" size={33} color="#304795" />
+            case "theater":
+                return <FontAwesome5 name="theater-masks" size={30} color="#B93D46" />
+            case "dance_performance_tour":
+                return <FontAwesome5 name="user-friends" size={30} color="#B95821" />
+            default:
+                return <Ionicons name="heart-circle" size={33} color="#E06268" />
+        }
+    }
+
+    return location ? (
         <View>
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
                 initialRegion={{
-                    latitude: 40.7128,
-                    longitude: -74.0060,
-                    latitudeDelta: 0.21,
-                    longitudeDelta: 0.2
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.05
                 }}
+                onRegionChangeComplete={(region) => handleRegionChange(region)}
             >
                 {
                     seatGeekEvents.map((event, idx) => (
                         <Marker
                             key={`sg-${idx}`}
-                            pinColor={'red'}
+                            //pinColor={'red'}
                             coordinate={{ latitude: event.venue.location.lat, longitude: event.venue.location.lon }}
                             title={`${event.performers[0].name} (${event.type.split('_')[0]})`}
                             description={`${event.venue.address}\n${event.venue.extended_address}`}
-                        />
+                        >
+                            {CustomMarker(event.type)}
+                        </Marker>
                     ))
                 }
                 {/* {
@@ -82,7 +130,7 @@ const EventMap = () => {
                         />
                     ))
                 } */}
-                {
+                {/* {
                     localEvents.map((event, idx) => (
                         <Marker
                             key={`le-${idx}`}
@@ -94,21 +142,22 @@ const EventMap = () => {
                             title={event.name}
                         />
                     ))
-                }
+                } */}
             </MapView>
 
             {/* <EventList seatGeek={seatGeekEvents} ticketMaster={ticketmasterEvents} localEvents={localEvents}/> */}
-            <EventList seatGeek={seatGeekEvents} localEvents={localEvents}/>
+            <EventList seatGeek={seatGeekEvents} />
 
         </View>
-
     )
+        : null
+
 }
 
 const styles = StyleSheet.create({
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.4,
+        height: Dimensions.get('window').height * 0.55,
     }
 });
 
