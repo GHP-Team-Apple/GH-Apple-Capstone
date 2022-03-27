@@ -8,60 +8,60 @@ import { auth, db } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
-
+import Interest from './Interest'
 
 export default function Profile() {
 	const [username, setUsername] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
+	
 	// const [selectedImage, setSelectedImage] = useState(null);
-    const navigation = useNavigation()
+	const navigation = useNavigation();
 	const {
 		theme: { colors },
 	} = useContext(Context);
 
-     async function handlePress(){
-        const user = auth.currentUser
-        const userData = {
-            username,
+	async function handlePress() {
+		const user = auth.currentUser;
+		const userData = {
+			username,
 			firstName,
 			lastName,
-            email: user.email
-        }
-        // if(photoURL){
-        //     userData.photoURL = photoURL
-        // }
-		console.log('hello')
-        const thePromise = await Promise.all([
-            updateProfile(user, userData),
-            setDoc(doc(db, "Users", user.uid), {... userData, uid: user.uid})
-        ])
-		console.log(thePromise)
-        navigation.navigate("home")
+			email: user.email,
+		};
+		// if(photoURL){
+		//     userData.photoURL = photoURL
+		// }
+		console.log('hello');
+		const thePromise = await Promise.all([
+			updateProfile(user, userData),
+			setDoc(doc(db, 'Users', user.uid), { ...userData, uid: user.uid }),
+		]);
+		console.log(thePromise);
+		navigation.navigate('home');
+	}
+	const [location, setLocation] = useState(null);
+	const [errorMsg, setErrorMsg] = useState(null);
 
-    }
-    const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+	//   useEffect(() => {
+	//     (async () => {
+	//       let { status } = await Location.requestForegroundPermissionsAsync();
+	//       if (status !== 'granted') {
+	//         setErrorMsg('Permission to access location was denied');
+	//         return;
+	//       }
 
-//   useEffect(() => {
-//     (async () => {
-//       let { status } = await Location.requestForegroundPermissionsAsync();
-//       if (status !== 'granted') {
-//         setErrorMsg('Permission to access location was denied');
-//         return;
-//       }
+	//       let location = await Location.getCurrentPositionAsync({});
+	//       setLocation(location);
+	//     })();
+	//   }, []);
 
-//       let location = await Location.getCurrentPositionAsync({});
-//       setLocation(location);
-//     })();
-//   }, []);
-
-//   let text = 'Waiting..';
-//   if (errorMsg) {
-//     text = errorMsg;
-//   } else if (location) {
-//     text = JSON.stringify(location);
-//   }
+	//   let text = 'Waiting..';
+	//   if (errorMsg) {
+	//     text = errorMsg;
+	//   } else if (location) {
+	//     text = JSON.stringify(location);
+	//   }
 	return (
 		<React.Fragment>
 			<StatusBar style="auto" />
@@ -126,21 +126,24 @@ export default function Profile() {
 						width: '100%',
 					}}
 				/>
-					<TextInput
-						placeholder="Enter Username"
-						value={username}
-						onChangeText={setUsername}
-						style={{
-							borderBottomColor: 'gold',
-							marginTop: 40,
-							borderBottomWidth: 2,
-							width: '100%',
-						}}
-					/>
+				<TextInput
+					placeholder="Enter Username"
+					value={username}
+					onChangeText={setUsername}
+					style={{
+						borderBottomColor: 'gold',
+						marginTop: 40,
+						borderBottomWidth: 2,
+						width: '100%',
+					}}
+				/>
+				<View>
+					<Interest/>
+				</View>
 				<View style={{ marginTop: 'auto', width: 80 }}>
 					<Button
 						title="Next"
-						color='green'
+						color="green"
 						onPress={handlePress}
 						// disabled={!displayName}
 					/>
