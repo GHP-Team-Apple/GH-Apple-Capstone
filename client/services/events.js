@@ -2,11 +2,11 @@ import { db } from "../../firebase";
 import {
   collection,
   doc,
+  addDoc,
   getDocs,
   getDoc,
   query,
   where,
-  addDoc
 } from "firebase/firestore";
 import { getFriends } from "./friends";
 
@@ -68,7 +68,7 @@ export const saveEvent = async (userId, event) => {
     return;
   } else {
     await addDoc(collection(db, "SavedEvents"), event);
-    console.log('EVENT TO BE SAVED ---->', event);
+    //console.log('EVENT TO BE SAVED ---->', savedEvent);
   }
 };
 
