@@ -30,7 +30,7 @@ const AuthStack = () => {
   return (
       <Stack.Navigator >
       {/* <Stack.Screen name="Onboarding" component={LandingPage} /> */}
-      {/* <Stack.Screen name="Login" component={SignIn} /> */}
+      <Stack.Screen name="Login" component={SignIn} />
       <Stack.Screen name='hi' component={Notifications}/>
       <Stack.Screen
           name="AppStack"
