@@ -108,7 +108,7 @@ const FriendsMap = (props) => {
           const endTime = event.visibleUntil.seconds;
           const category = event.type;
           
-          if (now >= startTime && now <= endTime && myCategory.includes(category)) {
+          if (now >= startTime && now <= endTime) {
             return (
               <Marker
                 pinColor={"green"}

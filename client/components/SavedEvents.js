@@ -10,28 +10,16 @@ import {
   TouchableOpacity,
   RefreshControl, SafeAreaView,
 } from "react-native";
-import {
-  deleteDoc,
-  doc,
-  updateDoc,
-  deleteField,
-} from "firebase/firestore";
-import { db } from "../../firebase";
-import {
-  AntDesign,
-  Ionicons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
 import {getSavedEventsByUserId} from "../services/events"
+import SavedEventCard from "./SavedEventCard"
 
 const SavedEvents = () => {
   const [events, setEvents] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-  const userId = "13ByjS5Rcc9MgJAv2ZZj";
-  const userId1 ="mNBpiFdzucPgNIWnrAtuVJUUsUM2"
 
   async function fetchSavedEvents() {
-    const userId1 ="mNBpiFdzucPgNIWnrAtuVJUUsUM2"
+    const userId1 = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+    const userId = "WalEUjuIy6nEp2DvzVdd";
     const eventArr = await getSavedEventsByUserId(userId1)
       setEvents(eventArr);
   }
@@ -61,6 +49,7 @@ const SavedEvents = () => {
         onRefresh={onRefresh}
       />}
     >
+      <Text style={{fontSize:30, marginLeft:125, marginBottom: 20}}> My Events </Text>      
       {events.length === 0
       ?(
           <View><Text>No Events Saved</Text></View>
@@ -72,8 +61,9 @@ const SavedEvents = () => {
               activeOpacity={0.6}
               underlayColor="#DDDDDD"
               onPress={() => alert("Pressed!")}
+              style={styles.savedEvents}
             >
-              <MyComponent event={event} fetchSavedEvents={fetchSavedEvents}/>
+              <SavedEventCard event={event} fetchSavedEvents={fetchSavedEvents}/>
             </TouchableHighlight>
           ))
           )
@@ -82,122 +72,20 @@ const SavedEvents = () => {
         </SafeAreaView>
   );
 };
-
-const MyComponent = (props) => {
-  console.log(props.event);
-
-  async function handleCheckIn(id) {
-    await updateDoc(doc(db, "SavedEvents", id), {
-      checkIn: true,
-    });
-    await props.fetchSavedEvents();
-  }
-
-  async function handleRemoveCheckIn(id) {
-    await updateDoc(doc(db, "SavedEvents", id), {
-      checkIn: deleteField(),
-    });
-    await props.fetchSavedEvents();
-  }
-
-  async function handleDelete(id) {
-    await deleteDoc(doc(db, "SavedEvents", id));
-    await props.fetchSavedEvents();
-  }
-
-  const IconButton = ({ title, onPress, icon }) => (
-    <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
-      {icon}
-      <Text style={{fontSize:12}}>{title}</Text>
-    </TouchableOpacity>
-  );
-
-  return (
-    <>
-      <View style={styles.event}>
-        <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-          {props.event.name}
-        </Text>
-        <Image
-        style={styles.image}
-        source={{
-          uri: props.event.image,
-        }}
-      />
-      </View>
-      {/* <IconButton onPress={() => handleDelete(props.event.id)} name="favorite-outline"
-//   backgroundColor="#3b5998"
-  >
-      </IconButton> */}
-      {props.event.checkIn ? (
-        <View style={styles.buttons}>
-          <IconButton
-            title={"Remove"}
-            onPress={() => handleDelete(props.event.id)}
-            icon={<AntDesign name="delete" size={24} color="black" />}
-          />
-          <IconButton
-            title={"Checked In"}
-            onPress={() => handleRemoveCheckIn(props.event.id)}
-            icon={
-              <MaterialCommunityIcons
-                name="map-marker-check"
-                size={24}
-                color="black"
-              />
-            }
-          />
-        </View>
-      ) : (
-        <View style={styles.buttons}>
-          <IconButton
-            title={"Remove"}
-            onPress={() => handleDelete(props.event.id)}
-            icon={<AntDesign name="delete" size={24} color="black" />}
-          />
-          <IconButton
-            title={"Check In"}
-            onPress={() => handleCheckIn(props.event.id)}
-            icon={
-              <MaterialCommunityIcons
-                name="map-marker-check-outline"
-                size={24}
-                color="black"
-              />
-            }
-          />
-        </View>
-      )}
-    </>
-  );
-};
-
-const dateFormatter = (dateStr) => {
-  return `${new Date(Date.parse(dateStr))}`.slice(0, 24);
-};
-
+  
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("window").width,
-    flexDirection: "column",
-    margin: 0,
-    borderBottomColor: "black"
+    height: Dimensions.get("window").height,
+    marginTop: 30,
   },
-  event: {
-    alignItems: "center",
-    margin: 10,
-  },
-  image: {
-    width: 350,
-    height: 210,
-    borderRadius: 8,
-    margin: 5,
-  },
-  buttons: {
+  savedEvents:{
     display: "flex",
-    flexDirection: "row",
-    margin: 10,
-    justifyContent: "space-around",
+    borderBottomColor: "gray",
+    borderBottomWidth: 1,
+    justifyContent: "space-between",
+    margin: 9,
+
   },
 });
 

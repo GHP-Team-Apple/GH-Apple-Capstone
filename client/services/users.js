@@ -1,5 +1,13 @@
-import { db } from '../../firebase';
-import { collection, doc, getDocs, getDoc } from 'firebase/firestore';
+import { db } from "../../firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  query,
+  where,
+  setDoc
+} from "firebase/firestore";
 
 export const getUsers = async () => {
     const usersCollection = collection(db, 'Users');
@@ -38,4 +46,28 @@ export const getIsFollowing = async (userId, otherUserId) => {
     // return boolean whether userId follows otherUserId
     return followingDoc.exists();
 }
+
+export const getUsersNumbers = async () => {
+    const q = query(collection(db, "Users"), where("number", "!=", null));
+    const querySnapshot = await getDocs(q);
+    const numArr = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data().number;
+      numArr.push(data);
+    });
+    return numArr;
+  };
+
+  export const getUsersByPhoneNumbers = async (numbers) => {
+    const q = query(collection(db, "Users"), where("number", "in", numbers));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(item => item.data());
+};
+
+export const addFollower = async (myUserId, targetUserId) => {
+  // await addDoc(collection(db, "Users", myUserId, "following"), {userRef: doc(db,"Users",id)})
+  await setDoc(doc(db, "Users", myUserId, "following", targetUserId), {
+    userRef: doc(db, "Users", targetUserId),
+  });
+};
 

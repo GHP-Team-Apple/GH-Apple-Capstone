@@ -56,7 +56,7 @@ export const getSavedEventsByUserId = async (userId) => {
 export const saveEvent = async (userId, event) => {
   const q = query(
     collection(db, "SavedEvents"),
-    where("eventId", "==", event.id),
+    where("id", "==", event.id),
     where("userId", "==", userId)
   );
   const querySnapshot = await getDocs(q);
