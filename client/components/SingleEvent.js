@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Dimensions, Linking } from 'react-native';
 import Modal from 'react-native-modal';
 import { saveEvent } from '../services/events';
+import { LocalEventView } from '../templates/localEvents';
 
 const SingleEvent = (props) => {
     const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
@@ -37,42 +38,93 @@ const SingleEvent = (props) => {
         // if not, then save the event 
         await saveEvent(userId, savedEvent);
     }
+
+    // if (event.hostId) {
+    //     const LocalEventView = LocalEventModal(event)
+    // }
     
     return (
         <Modal
             isVisible={true}
         >
-            <View style={styles.container}>
-                <Pressable
-                    onPress={() => props.handlePress(null)}
-                    style={{ alignSelf: 'flex-end', margin: 10 }}
-                >
-                    <Text>{'[close x]'}</Text>
-                </Pressable>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{event.name}</Text>
-                <Text style={{ fontSize: 20, }}>{dateFormatter(event.date)}</Text>
-                {/* <Text style={{ fontSize: 16 }}>({event.type})</Text> */}
+            {
+                event.hostId
+                ?
+                ( <View style={styles.container}>
 
-                <Image source={{ uri: event.imageUrl }} style={styles.image} />
+                    <Pressable
+                      onPress={() => props.handlePress(null)}
+                      style={{ alignSelf: "flex-end", margin: 10 }}
+                    >
+                      <Text>{"[close x]"}</Text>
+                    </Pressable>
+              
+                    <Text style={{ fontSize: 25, fontWeight: "bold" }}>{event.name}</Text>
+                    <Text style={{ fontSize: 20 }}>{dateFormatter(event.date)}</Text>
+                    <Text style={{ fontSize: 16 }}>({event.type})</Text>
+              
+                    <Image source={{ uri: event.imageUrl }} style={styles.image} />
+              
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                      {event.venue.name}
+                    </Text>
+              
+                    <Text
+                      style={{ marginBottom: 10 }}
+                    >{`${event.venue.address}, ${event.venue.extended_address}`}
+                    </Text>
+              
+                    <Pressable
+                      style={{ ...styles.button, backgroundColor: "#FF6B6B" }}
+                      onPress={handleSaveEvent}
+                    >
+                      <Text>Save Event</Text>
+                    </Pressable>
+              
+                    <Pressable style={{ ...styles.button, backgroundColor: "#4D96FF" }}>
+                      <Text>More Details</Text>
+                    </Pressable>
+              
+                  </View>
 
-                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.venue.name}</Text>
-                <Text style={{ marginBottom: 10 }}>{`${event.venue.address}, ${event.venue.extended_address}`}</Text>
+                )
+                :
+                (<View style={styles.container}>
+                    <Pressable
+                        onPress={() => props.handlePress(null)}
+                        style={{ alignSelf: 'flex-end', margin: 10 }}
+                    >
+                        <Text>{'[close x]'}</Text>
+                    </Pressable>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{event.name}</Text>
+                        <Text style={{ fontSize: 20, }}>{dateFormatter(event.date)}</Text>
+                        <Text style={{ fontSize: 16 }}>({event.type})</Text>
 
-                <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>
-                    <Text>Save Event</Text>
-                </Pressable>
+                        <Image source={{ uri: event.imageUrl }} style={styles.image} />
 
-                <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={handleLink}>
-                    <Text>Get Tickets</Text>
-                </Pressable>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.venue.name}</Text>
+                        <Text style={{ marginBottom: 10 }}>{`${event.venue.address}, ${event.venue.extended_address}`}</Text>
 
-            </View>
+                    <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>
+                        <Text>Save Event</Text>
+                    </Pressable>
+
+                    <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={handleLink}>
+                        <Text>Get Tickets</Text>
+                    </Pressable>
+                </View>)
+            }
+            
         </Modal>
     )
 }
 
 const dateFormatter = (dateStr) => {
     return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+}
+
+const dateFormatterLocal = (timestamp) => {
+    return `${new Date(timestamp * 1000)}`.slice(0, 21);
 }
 
 const styles = StyleSheet.create({
@@ -98,4 +150,6 @@ const styles = StyleSheet.create({
 });
 
 export default SingleEvent;
+
+
 

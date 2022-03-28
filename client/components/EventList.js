@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, Pressable, View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import SingleEvent from './SingleEvent';
+import { LocalEventObj } from '../templates/localEvents';
 
 const EventList = (props) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -8,7 +9,10 @@ const EventList = (props) => {
     const localEvents = props.localEvents || [];
 
     const handlePress = (event) => {
-        if (event) {
+        if (event && event.hostId) {
+            const eventObj = LocalEventObj(event)
+            setSelectedEvent(eventObj); 
+        } else if (event) {
             const eventObj = {
                 id: event.id,
                 name: event.performers[0].name,
@@ -59,16 +63,22 @@ const EventList = (props) => {
             }
             {
                 localEvents.map((event, idx) => (
-                    <View key={`le-${idx}`} style={styles.event}>
+                    <Pressable key={`le-${idx}`} style={styles.event}
+                        onPress={() => handlePress(event)}
+                    >
                         <Image
                             style={styles.image}
                             source={{
                                 uri: event.imageUrl,
                             }}
                         />
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
-                        <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.start)}</Text>
-                    </View>
+                        <View style={styles.text}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
+                            <Text style={{ fontWeight: 'bold' }}>{event.venueName}</Text>
+                            <Text>{event.venueAddress}</Text>
+                            <Text style={{ fontWeight: 'bold' }}>{dateFormatterLocal(event.startDate.seconds)}</Text>
+                        </View>
+                    </Pressable>
                 ))
             }
             {
@@ -81,6 +91,10 @@ const EventList = (props) => {
 
 const dateFormatter = (dateStr) => {
     return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+}
+
+const dateFormatterLocal = (timestamp) => {
+    return `${new Date(timestamp * 1000)}`.slice(0, 21);
 }
 
 const styles = StyleSheet.create({
