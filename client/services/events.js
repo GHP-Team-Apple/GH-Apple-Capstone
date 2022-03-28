@@ -6,6 +6,7 @@ import {
   getDoc,
   query,
   where,
+  addDoc
 } from "firebase/firestore";
 import { getFriends } from "./friends";
 
@@ -55,17 +56,19 @@ export const getSavedEventsByUserId = async (userId) => {
 export const saveEvent = async (userId, event) => {
   const q = query(
     collection(db, "SavedEvents"),
-    where("eventId", "==", event.id),
+    where("id", "==", event.id),
     where("userId", "==", userId)
   );
   const querySnapshot = await getDocs(q);
-
+  // const savedEvent = querySnapshot.docs[0]
+  console.log(querySnapshot.docs)
+  console.log('length',querySnapshot.docs.lenth)
   if (querySnapshot.docs.length !== 0) {
     console.log("EVENT ALREADY SAVED");
     return;
   } else {
-    await addDoc(collection(db, "SavedEvents"), savedEvent);
-    //console.log('EVENT TO BE SAVED ---->', savedEvent);
+    await addDoc(collection(db, "SavedEvents"), event);
+    console.log('EVENT TO BE SAVED ---->', event);
   }
 };
 
