@@ -6,11 +6,11 @@ import AuthStack from './navigation/AuthStack';
 
 export default function Main() {
 	return (
-		<NavigationContainer>
-			<AppStack />
-			{/* <AuthStack /> */}
-		</NavigationContainer>
-	);
+    <NavigationContainer>
+      <AppStack />
+      {/* <AuthStack /> */}
+    </NavigationContainer>
+  );
 }
 
 // import React, {useState, useEffect, useContext} from 'react';

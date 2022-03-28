@@ -8,9 +8,6 @@ import CustomDrawer from '../client/components/CustomDrawer';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import TabNavigator from './TabNavigator';
-import { useDrawerStatus } from '@react-navigation/drawer';
-
-// ...
 
 
 const Drawer = createDrawerNavigator();
@@ -62,10 +59,11 @@ export default function AppStack() {
         component={Notifications}
         options={{
           drawerIcon: () => (
-            <AntDesign name="notification" size={22} color="white" />
+			<AntDesign name="notification" size={24} color="black" />
           ),
         }}
       />
+	{console.log('---> herllo')}
     </Drawer.Navigator>
   );
 	// return (

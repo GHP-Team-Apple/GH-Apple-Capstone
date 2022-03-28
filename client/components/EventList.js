@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { ScrollView, Pressable, View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import SingleEvent from './SingleEvent';
+import { LocalEventObj } from '../templates/localEvents';
 
 const EventList = (props) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const seatGeek = props.seatGeek || [];
     const localEvents = props.localEvents || [];
-    const handlePress = props.handleSelectEvent;
+    // const handlePress = props.handleSelectEvent;
 
     // const handlePress = (event) => {
     //     if (event) {
@@ -35,6 +36,36 @@ const EventList = (props) => {
     //     }
     // }
 
+    const handlePress = (event) => {
+        if (event && event.hostId) {
+            const eventObj = LocalEventObj(event)
+            setSelectedEvent(eventObj); 
+        } else if (event) {
+            const eventObj = {
+                id: event.id,
+                name: event.performers[0].name,
+                date: event.datetime_utc,
+                visible: event.visible_until_utc,
+                venue: {
+                    name: event.venue.name,
+                    address: event.venue.address,
+                    extended_address: event.venue.extended_address,
+                    location: {
+                        lat: event.venue.location.lat,
+                        lon: event.venue.location.lon
+                    }
+                },
+                imageUrl: event.performers[0].image,
+                type: event.type, 
+                eventUrl: event.url
+    
+            }
+            setSelectedEvent(eventObj);
+        } else {
+            setSelectedEvent(event);
+        }
+    }
+
     return (
             <ScrollView style={styles.container}>
                 {
@@ -58,7 +89,7 @@ const EventList = (props) => {
                         </Pressable>
                     ))
                 }
-                {/* {
+                { /* {
                 localEvents.map((event, idx) => (
                     <Pressable key={`le-${idx}`} style={styles.event}
                         onPress={() => handlePress(event)}
@@ -69,8 +100,12 @@ const EventList = (props) => {
                                 uri: event.imageUrl,
                             }}
                         />
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
-                        <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.start)}</Text>
+                        <View style={styles.text}>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
+                            <Text style={{ fontWeight: 'bold' }}>{event.venueName}</Text>
+                            <Text>{event.venueAddress}</Text>
+                            <Text style={{ fontWeight: 'bold' }}>{dateFormatterLocal(event.startDate.seconds)}</Text>
+                        </View>
                     </Pressable>
                 ))
             } */}
@@ -84,6 +119,10 @@ const EventList = (props) => {
 
 const dateFormatter = (dateStr) => {
     return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+}
+
+const dateFormatterLocal = (timestamp) => {
+    return `${new Date(timestamp * 1000)}`.slice(0, 21);
 }
 
 const styles = StyleSheet.create({

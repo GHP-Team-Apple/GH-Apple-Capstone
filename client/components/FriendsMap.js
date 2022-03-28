@@ -1,16 +1,50 @@
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
-import { StyleSheet, View, Dimensions, Text, Button } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import {
+  StyleSheet,
+  Pressable,
+  View,
+  Dimensions,
+  Text,
+  Button,
+} from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import * as Location from "expo-location";
 import { getFriendEvents } from "../services/events";
-import { getUserById } from "../services/users";
 import { saveEvent } from "../services/events";
+import SingleEvent from "./SingleEvent";
+import EventList from "./EventList";
+import { LocalEventObj } from '../templates/localEvents';
 
 const FriendsMap = (props) => {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [friendMarkers, setFriendsMarkers] = useState(<View></View>);
   const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // should use auth.currentUser?
+  const [location, setLocation] = useState(null);
+  const [friendEvents, setFriendEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  // const [myCategory, setMyCategory] = useState([]);
+  // const [myCity, setMyCity] = useState([]);
+  // const navigation = useNavigation();
+
+  // useEffect(async () => {
+  //   try {
+  //     const categoryList = require("../data/category");
+  //     setMyCategory(categoryList);
+  //     const cityList = require("../data/city");
+  //     setMyCity(cityList);
+  //   } catch (err) {
+  //     console.log("error: ", err);
+  //   }
+  // }, []);
+
+  useEffect(async () => {
+    try {
+      const friendEvents = await getFriendEvents(userId);
+      setFriendEvents(friendEvents);
+    } catch (err) {
+      console.log("error: ", err);
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -25,83 +59,25 @@ const FriendsMap = (props) => {
     })();
   }, []);
 
-  // useEffect(async () => {
-  //   let friendEventsArr = await getFriendEvents(userId);
+  // check savedEvent format
+  const handlePress = (event) => {
+    if (event && event.hostId) {
+      const eventObj = LocalEventObj(event)
+      setSelectedEvent(eventObj); 
+  } else {
+      setSelectedEvent(event);
+    }
+  };
 
-  //   let friendMarkers = await Promise.all(friendEventsArr.map( async (event) => {
-  //     let now = new Date();
-  //     let startTime = event.start ? event.start : event.startDate;
-  //     let endTime = event.end ? event.end : event.visibleUntil;
-  //     let profileUrl = await getUserById(event.userId).profilePicture;
-  //     console.log(">>>>>>>", profileUrl)
-
-  //     if (now >= startTime && now <= endTime) {
-  //       return (
-  //         <Marker
-  //           key={event.eventId}
-  //           coordinate={{
-  //             latitude: event.location.lat,
-  //             longitude: event.location.lon,
-  //           }}
-  //           // image={image}
-  //         >
-  //           <Callout>
-  //             <Text>{event.name}</Text>
-  //           </Callout>
-  //         </Marker>
-  //       );
-  //     }
-  //   }));
-
-  //   setFriendsMarkers(friendMarkers);
-  // },[]);
-
-
-  // THE LOAD MARKER HANDLER:
-  // const loadMarkers = async () => {
-
-  //   let friendEventsArr = await getFriendEvents(userId);
-
-  //   let friendMarkers = await Promise.all(
-  //     friendEventsArr.map(async (event) => {
-  //       //   let now = new Date();
-  //       //   let startTime = event.start ? event.start : event.startDate;
-  //       //   let endTime = event.end ? event.end : event.visibleUntil;
-  //       // let image = await getImage(getUserById(event.userId).profilePicture);
-  //       //   // console.log("CHIRP", image)
-
-  //       //   if (now >= startTime && now <= endTime) {
-  //       return (
-  //         <Marker
-  //           key={event.eventId}
-  //           coordinate={{
-  //             latitude: event.location.lat,
-  //             longitude: event.location.lon,
-  //           }}
-  //           pinColor={'green'}
-  //           // image={require(image)}
-  //         >
-  //           <Callout>
-  //             <Text>{event.name}</Text>
-  //           </Callout>
-  //         </Marker>
-  //       );
-  //       // }
-  //     })
-  //   );
-  //   setFriendsMarkers(friendMarkers);
+  // const goToFilter = () => {
+  //   navigation.navigate("FilterEvents");
   // };
-
-  let text = "Loading...";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
 
   return (
     <View style={styles.container}>
-      {/* <Button title="Load Markers" onPress={loadMarkers} /> */}
+      {/* <Pressable onPress={goToFilter}>
+        <Ionicons name="options" size={28} />
+      </Pressable> */}
 
       <MapView
         style={styles.map}
@@ -113,27 +89,6 @@ const FriendsMap = (props) => {
           longitudeDelta: 38,
         }}
       >
-        {/* <Marker
-          coordinate={{
-            latitude: 33.76418473401285,
-            longitude: -84.39513125767164,
-          }}
-          image={require("../../assets/dog.png")}
-        >
-          <Callout>
-            <Text>Attending Event: Bubble Tea Tasting</Text>
-          </Callout>
-        </Marker>
-
-        <Marker
-          coordinate={{ latitude: 40.733, longitude: -73.985 }}
-          image={require("../../assets/rabbit.png")}
-        >
-          <Callout>
-            <Text>Attending Event: Beginner's Coding Workshop</Text>
-          </Callout>
-        </Marker> */}
-
         {location ? (
           <Marker
             coordinate={{
@@ -147,8 +102,39 @@ const FriendsMap = (props) => {
           </Marker>
         ) : null}
 
-        {/* {friendMarkers} */}
+        {friendEvents.map((event) => {
+          const now = new Date().getTime() / 1000;
+          const startTime = event.startDate.seconds;
+          const endTime = event.visibleUntil.seconds;
+          const category = event.type;
+          
+          if (now >= startTime && now <= endTime && myCategory.includes(category)) {
+            return (
+              <Marker
+                pinColor={"green"}
+                key={event.id}
+                coordinate={{
+                  latitude: event.location.lat,
+                  longitude: event.location.lon,
+                }}
+                // image={image}
+              >
+                <Callout>
+                  <Button
+                    onPress={() => handlePress(event)}
+                    style={styles.event}
+                    title={event.name}
+                  />
+                </Callout>
+              </Marker>
+            );
+          }
+        })}
       </MapView>
+      {/* {selectedEvent ? (
+        <SingleEvent event={selectedEvent} handlePress={handlePress} />
+      ) : null} */}
+      {/* <EventList friendEvents={friendEvents}/> */}
     </View>
   );
 };
@@ -177,7 +163,13 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.5,
+    height: Dimensions.get("window").height * 0.75,
+  },
+  event: {
+    flexDirection: "row",
+    // flexWrap: 'wrap',
+    alignItems: "center",
+    margin: 5,
   },
 });
 
