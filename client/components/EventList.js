@@ -1,70 +1,12 @@
 import React, { useState } from 'react';
 import { ScrollView, Pressable, View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import SingleEvent from './SingleEvent';
-import { LocalEventObj } from '../templates/localEvents';
 
 const EventList = (props) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const seatGeek = props.seatGeek || [];
     const localEvents = props.localEvents || [];
-    // const handlePress = props.handleSelectEvent;
-
-    // const handlePress = (event) => {
-    //     if (event) {
-    //         const eventObj = {
-    //             id: event.id,
-    //             name: event.performers[0].name,
-    //             date: event.datetime_utc,
-    //             visible: event.visible_until_utc,
-    //             venue: {
-    //                 name: event.venue.name,
-    //                 address: event.venue.address,
-    //                 extended_address: event.venue.extended_address,
-    //                 location: {
-    //                     lat: event.venue.location.lat,
-    //                     lon: event.venue.location.lon
-    //                 }
-    //             },
-    //             imageUrl: event.performers[0].image,
-    //             type: event.type,
-    //             eventUrl: event.url
-
-    //         }
-    //         setSelectedEvent(eventObj);
-    //     } else {
-    //         setSelectedEvent(event);
-    //     }
-    // }
-
-    const handlePress = (event) => {
-        if (event && event.hostId) {
-            const eventObj = LocalEventObj(event)
-            setSelectedEvent(eventObj); 
-        } else if (event) {
-            const eventObj = {
-                id: event.id,
-                name: event.performers[0].name,
-                date: event.datetime_utc,
-                visible: event.visible_until_utc,
-                venue: {
-                    name: event.venue.name,
-                    address: event.venue.address,
-                    extended_address: event.venue.extended_address,
-                    location: {
-                        lat: event.venue.location.lat,
-                        lon: event.venue.location.lon
-                    }
-                },
-                imageUrl: event.performers[0].image,
-                type: event.type, 
-                eventUrl: event.url
-    
-            }
-            setSelectedEvent(eventObj);
-        } else {
-            setSelectedEvent(event);
-        }
-    }
+    const handlePress = props.handleSelectEvent;
 
     return (
             <ScrollView style={styles.container}>
