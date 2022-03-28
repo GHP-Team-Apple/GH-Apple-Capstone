@@ -37,6 +37,9 @@ const SingleEvent = (props) => {
         //check if the user has already saved the event
         // if not, then save the event 
         await saveEvent(userId, savedEvent);
+
+        //close modal after saving the event
+        props.handlePress(null);
     }
 
     // if (event.hostId) {
