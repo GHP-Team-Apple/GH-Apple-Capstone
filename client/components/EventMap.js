@@ -8,10 +8,10 @@ import { getLocalEvents } from '../services/events';
 import EventList from './EventList';
 import SingleEvent from './SingleEvent';
 import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
+import { LocalEventObj } from '../templates/localEvents';
 
 const EventMap = () => {
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
-    // const [ticketmasterEvents, setTicketmasterEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);
     const [currentRegion, setCurrentRegion] = useState(null);
     const [location, setLocation] = useState(null);
@@ -35,12 +35,9 @@ const EventMap = () => {
             const events = await getEventsFromSeatGeek(eventType, currentLocation.coords.latitude, currentLocation.coords.longitude, 2);
             
             setSeatGeekEvents(events);
+            await loadLocalEvents()
 
         })();
-    }, []);
-
-    useEffect(async () => {
-        // await loadEvents();
     }, []);
 
     useEffect(async () => {
@@ -51,27 +48,11 @@ const EventMap = () => {
         }
     }, [currentRegion]);
 
-    // useEffect(() => {
-    //     console.log('SEAT GEEK EVENTS IN MAPS: ---->', seatGeekEvents.length);
-    // }, [seatGeekEvents]);
-
-    // useEffect(() => {
-    //     console.log('TICKET MASTER EVENTS IN MAPS: ---->', ticketmasterEvents.length);
-    // }, [ticketmasterEvents]);
-
-    // useEffect(() => {
-    //     console.log('LOCAL EVENTS IN MAPS: ---->', localEvents.length);
-    // }, [localEvents]);
-
-    const loadEvents = async () => {
+    const loadLocalEvents = async () => {
         try {
-            // Ticketmaster events
-            // const ticketmaster = await getEventsFromTicketmaster('11221', 5);
-            // setTicketmasterEvents(ticketmaster);
-
             // Local events
-            // const local = await getLocalEvents('NYC');
-            // setLocalEvents(local);
+            const local = await getLocalEvents('NYC');
+            setLocalEvents(local);
 
         } catch (err) {
             console.log('error: ', err);
@@ -83,7 +64,10 @@ const EventMap = () => {
     }
 
     const handleSelectEvent = (event) => {
-        if (event) {
+        if (event && event.hostId) {
+            const eventObj = LocalEventObj(event)
+            setSelectedEvent(eventObj); 
+        } else if (event) {
             const eventObj = {
                 id: event.id,
                 name: event.performers[0].name,
@@ -154,20 +138,7 @@ const EventMap = () => {
                         </Marker>
                     ))
                 }
-                {/* {
-                    ticketmasterEvents.map((event, idx) => (
-                        <Marker
-                            key={`tm-${idx}`}
-                            pinColor={'blue'}
-                            coordinate={{ 
-                                latitude: Number(event['_embedded'].venues[0].location.latitude), 
-                                longitude: Number(event['_embedded'].venues[0].location.longitude)
-                            }}
-                            title={event.name}
-                        />
-                    ))
-                } */}
-                {/* {
+                {
                     localEvents.map((event, idx) => (
                         <Marker
                             key={`le-${idx}`}
@@ -177,13 +148,14 @@ const EventMap = () => {
                                 longitude: event.location.lon,
                             }}
                             title={event.name}
+                            onPress={() => handleSelectEvent(event)}
                         />
                     ))
-                } */}
+                }
             </MapView>
 
-            {/* <EventList seatGeek={seatGeekEvents} ticketMaster={ticketmasterEvents} localEvents={localEvents}/> */}
-            <EventList seatGeek={seatGeekEvents} handleSelectEvent={handleSelectEvent} />
+            <EventList seatGeek={seatGeekEvents} localEvents={localEvents} handleSelectEvent={handleSelectEvent} />
+            
             {
                 selectedEvent ? <SingleEvent event={selectedEvent} handlePress={handleSelectEvent} /> : null
             }
