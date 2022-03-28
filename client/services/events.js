@@ -64,7 +64,7 @@ export const saveEvent = async (userId, event) => {
     console.log("EVENT ALREADY SAVED");
     return;
   } else {
-    await addDoc(collection(db, "SavedEvents"), savedEvent);
+    await addDoc(collection(db, "SavedEvents"), event);
     //console.log('EVENT TO BE SAVED ---->', savedEvent);
   }
 };
