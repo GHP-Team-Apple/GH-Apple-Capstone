@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.25,
         backgroundColor: '#fff',
+        margin: 2
     },
     event: {
         flexDirection: 'row',

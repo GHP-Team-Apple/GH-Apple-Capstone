@@ -121,7 +121,7 @@ const EventMap = () => {
     }
 
     return location ? (
-        <View>
+        <View style={{ flex: 1 }}>
             <View style={styles.container}>
                 <MapView
                     style={styles.map}
@@ -209,15 +209,11 @@ const EventMap = () => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-end',
+        margin: 0
     },
     map: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.65,
-    },
-    callout: {
-        width: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     eventType: {
         position: 'absolute',
