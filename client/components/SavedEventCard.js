@@ -15,7 +15,7 @@ import {
 
 
 export default SavedEventCard = (props) => {
-  console.log(props.event);
+  // console.log(props.event);
 
   async function handleCheckIn(id) {
     await updateDoc(doc(db, "SavedEvents", id), {
@@ -53,8 +53,8 @@ export default SavedEventCard = (props) => {
           }}
         />
       </View>
-      <View>
-        <Text style={{fontSize: 20, fontWeight:"bold", marginTop:10}}>{props.event.name}</Text>
+      <View style={styles.info}>
+        <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: 'center' }}>{props.event.name}</Text>
         {props.event.checkIn ? (
           <View style={styles.buttons}>
             <IconButton
@@ -104,21 +104,25 @@ const styles = StyleSheet.create({
   event: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around"
-    // alignItems: "center",
-    // margin: 10,
+    justifyContent: "space-between",
+    alignContent: "center",
   },
   image: {
     width: 120,
     height: 120,
     borderRadius: 8,
-    margin: 5,
+    marginLeft: 10,
     marginBottom: 20
   },
-    buttons: {
-      display: "flex",
-      flexDirection: "row",
-      marginTop: 40,
-      justifyContent: "space-between",
-    },
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: 40,
+    justifyContent: "space-between",
+  },
+  info: {
+    width: 200,
+    margin: 10,
+    marginRight: 15
+  }
 });
