@@ -137,14 +137,9 @@ const EventMap = () => {
                             <Marker
                                 key={`sg-${idx}`}
                                 coordinate={{ latitude: event.venue.location.lat, longitude: event.venue.location.lon }}
+                                onPress={() => handleSelectEvent(event)}
                             >
                                 {CustomMarker(event.type)}
-                                <Callout
-                                    style={styles.callout}
-                                    onPress={() => handleSelectEvent(event)}
-                                >
-                                    <Text style={{ fontSize: 16, textAlign: 'center' }}>{event.performers[0].name}</Text>
-                                </Callout>
                             </Marker>
                         ))
                     }
