@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Dimensions } from 'react-native';
 import * as Location from "expo-location";
 import getEventsFromSeatGeek from '../resources/seatgeek';
 import getEventsFromTicketmaster from '../resources/ticketmaster';
@@ -9,6 +9,8 @@ import EventList from './EventList';
 import SingleEvent from './SingleEvent';
 import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
 import { LocalEventObj } from '../templates/localEvents';
+import { Picker } from '@react-native-picker/picker';
+
 
 const EventMap = () => {
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
@@ -17,6 +19,9 @@ const EventMap = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [selectedEventType, setSelectedEventType] = useState('concert'); 
+    const [isOpen, setIsOpen] = useState(false);
+
     const eventType = 'concert';
 
     useEffect(() => {
@@ -32,8 +37,8 @@ const EventMap = () => {
             setLocation(currentLocation);
 
             // get Seat Geek events near current location
-            const events = await getEventsFromSeatGeek(eventType, currentLocation.coords.latitude, currentLocation.coords.longitude, 2);
-            
+            const events = await getEventsFromSeatGeek(selectedEventType, currentLocation.coords.latitude, currentLocation.coords.longitude, 2);
+
             setSeatGeekEvents(events);
             await loadLocalEvents()
 
@@ -43,10 +48,15 @@ const EventMap = () => {
     useEffect(async () => {
         if (currentRegion) {
             const { latitude, longitude } = currentRegion;
-            const events = await getEventsFromSeatGeek(eventType, currentRegion.latitude, currentRegion.longitude, 2);
+            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, 2);
             setSeatGeekEvents(events);
         }
     }, [currentRegion]);
+
+    useEffect(async () => {
+        const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, 2);
+        setSeatGeekEvents(events);
+    }, [selectedEventType])
 
     const loadLocalEvents = async () => {
         try {
@@ -66,7 +76,7 @@ const EventMap = () => {
     const handleSelectEvent = (event) => {
         if (event && event.hostId) {
             const eventObj = LocalEventObj(event)
-            setSelectedEvent(eventObj); 
+            setSelectedEvent(eventObj);
         } else if (event) {
             const eventObj = {
                 id: event.id,
@@ -96,8 +106,10 @@ const EventMap = () => {
     const CustomMarker = (eventType) => {
         switch (eventType) {
             case "concert":
+            case "music_festival":
                 return <Entypo name="music" size={33} color="#304795" />
             case "theater":
+            case "broadway":
                 return <FontAwesome5 name="theater-masks" size={30} color="#B93D46" />
             case "dance_performance_tour":
                 return <FontAwesome5 name="user-friends" size={30} color="#B95821" />
@@ -108,54 +120,82 @@ const EventMap = () => {
 
     return location ? (
         <View>
-            <MapView
-                style={styles.map}
-                provider={PROVIDER_GOOGLE}
-                initialRegion={{
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.05
-                }}
-                onRegionChangeComplete={(region) => handleRegionChange(region)}
-            >
-                {
-                    seatGeekEvents.map((event, idx) => (
-                        <Marker
-                            key={`sg-${idx}`}
-                            //pinColor={'red'}
-                            coordinate={{ latitude: event.venue.location.lat, longitude: event.venue.location.lon }}
-                        // title={`${event.performers[0].name} (${event.type.split('_')[0]})`}
-                        // description={`${event.venue.address}\n${event.venue.extended_address}`}
-                        >
-                            {CustomMarker(event.type)}
-                            <Callout
-                                style={styles.callout}
-                                onPress={() => handleSelectEvent(event)}
+            <View style={styles.container}>
+                <MapView
+                    style={styles.map}
+                    provider={PROVIDER_GOOGLE}
+                    initialRegion={{
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.05
+                    }}
+                    onRegionChangeComplete={(region) => handleRegionChange(region)}
+                >
+                    {
+                        seatGeekEvents.map((event, idx) => (
+                            <Marker
+                                key={`sg-${idx}`}
+                                coordinate={{ latitude: event.venue.location.lat, longitude: event.venue.location.lon }}
                             >
-                                <Text style={{ fontSize: 16, textAlign: 'center' }}>{event.performers[0].name}</Text>
-                            </Callout>
-                        </Marker>
-                    ))
-                }
-                {
-                    localEvents.map((event, idx) => (
-                        <Marker
-                            key={`le-${idx}`}
-                            pinColor={'green'}
-                            coordinate={{ 
-                                latitude: event.location.lat, 
-                                longitude: event.location.lon,
-                            }}
-                            title={event.name}
-                            onPress={() => handleSelectEvent(event)}
-                        />
-                    ))
-                }
-            </MapView>
+                                {CustomMarker(event.type)}
+                                <Callout
+                                    style={styles.callout}
+                                    onPress={() => handleSelectEvent(event)}
+                                >
+                                    <Text style={{ fontSize: 16, textAlign: 'center' }}>{event.performers[0].name}</Text>
+                                </Callout>
+                            </Marker>
+                        ))
+                    }
+                    {
+                        localEvents.map((event, idx) => (
+                            <Marker
+                                key={`le-${idx}`}
+                                pinColor={'green'}
+                                coordinate={{
+                                    latitude: event.location.lat,
+                                    longitude: event.location.lon,
+                                }}
+                                title={event.name}
+                                onPress={() => handleSelectEvent(event)}
+                            />
+                        ))
+                    }
+                </MapView>
+                <Pressable
+                    style={styles.selection}
+                    onPress={() => {
+                        const picker = !isOpen;
+                        setIsOpen(picker);
+                    }}
+                >
+                    <MaterialCommunityIcons name="account-heart" size={40} color="#B83B5E" />
+                </Pressable>
+            </View>
+            {isOpen ?
+                        <View>
+                            <Picker
+                                selectedValue={selectedEventType}
+                                onValueChange={value => {
+                                    setSelectedEventType(value);
+                                    setIsOpen(false);
+                                }}
+                            >
+                                <Picker.Item label='Concert' value='concert' />
+                                <Picker.Item label='Theater' value='theater' />
+                                <Picker.Item label='Comedy' value='comedy' />
+                                <Picker.Item label='Dance' value='dance_performance_tour' />
+                                <Picker.Item label='Classical' value='classical' />
+                                <Picker.Item label='Broadway' value='broadway_tickets_national' />
+                                <Picker.Item label='Sports' value='sports' />
+
+                            </Picker>
+                        </View>
+                        : null}
 
             <EventList seatGeek={seatGeekEvents} localEvents={localEvents} handleSelectEvent={handleSelectEvent} />
-            
+
             {
                 selectedEvent ? <SingleEvent event={selectedEvent} handlePress={handleSelectEvent} /> : null
             }
@@ -167,6 +207,9 @@ const EventMap = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'flex-end'
+    },
     map: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.65,
@@ -175,6 +218,12 @@ const styles = StyleSheet.create({
         width: 100,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    selection: {
+        position: 'absolute',
+        alignSelf: 'flex-end',
+        padding: 5,
+        paddingRight: 10
     }
 });
 

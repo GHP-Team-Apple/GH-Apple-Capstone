@@ -42,10 +42,6 @@ const SingleEvent = (props) => {
         props.handlePress(null);
     }
 
-    // if (event.hostId) {
-    //     const LocalEventView = LocalEventModal(event)
-    // }
-    
     return (
         <Modal
             isVisible={true}
@@ -57,9 +53,9 @@ const SingleEvent = (props) => {
 
                     <Pressable
                       onPress={() => props.handlePress(null)}
-                      style={{ alignSelf: "flex-end", margin: 10 }}
+                      style={{ alignSelf: "flex-end", margin: 5 }}
                     >
-                      <Text>{"[close x]"}</Text>
+                      <Text style={{ fontSize: 10 }}>{"[close x]"}</Text>
                     </Pressable>
               
                     <Text style={{ fontSize: 25, fontWeight: "bold" }}>{event.name}</Text>
