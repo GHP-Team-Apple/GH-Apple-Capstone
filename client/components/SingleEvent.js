@@ -97,11 +97,11 @@ const SingleEvent = (props) => {
                     </Pressable>
                         <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{event.name}</Text>
                         <Text style={{ fontSize: 20, }}>{dateFormatter(event.date)}</Text>
-                        <Text style={{ fontSize: 16 }}>({event.type})</Text>
+                        <Text style={{ fontSize: 16 }}>({event.type.split('_')[0]})</Text>
 
                         <Image source={{ uri: event.imageUrl }} style={styles.image} />
 
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.venue.name}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>{event.venue.name}</Text>
                         <Text style={{ marginBottom: 10 }}>{`${event.venue.address}, ${event.venue.extended_address}`}</Text>
 
                     <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>

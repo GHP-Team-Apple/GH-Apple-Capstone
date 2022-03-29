@@ -19,7 +19,7 @@ const EventMap = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const [selectedEventType, setSelectedEventType] = useState('concert'); 
+    const [selectedEventType, setSelectedEventType] = useState('concert');
     const [isOpen, setIsOpen] = useState(false);
 
     const eventType = 'concert';
@@ -107,12 +107,14 @@ const EventMap = () => {
         switch (eventType) {
             case "concert":
             case "music_festival":
-                return <Entypo name="music" size={33} color="#304795" />
+                return <Entypo name="music" size={32} color="#304795" />
             case "theater":
-            case "broadway":
-                return <FontAwesome5 name="theater-masks" size={30} color="#B93D46" />
+            case "broadway_tickets_national":
+                return <FontAwesome5 name="theater-masks" size={28} color="#B93D46" />
             case "dance_performance_tour":
-                return <FontAwesome5 name="user-friends" size={30} color="#B95821" />
+                return <FontAwesome5 name="user-friends" size={28} color="#B95821" />
+            case "comedy":
+                return <FontAwesome5 name="laugh-squint" size={30} color="#EA5455" />
             default:
                 return <Ionicons name="heart-circle" size={33} color="#E06268" />
         }
@@ -158,36 +160,41 @@ const EventMap = () => {
                         ))
                     }
                 </MapView>
-                <Pressable
-                    style={styles.selection}
-                    onPress={() => {
-                        const picker = !isOpen;
-                        setIsOpen(picker);
-                    }}
-                >
-                    <MaterialCommunityIcons name="account-heart" size={40} color="#B83B5E" />
-                </Pressable>
+                <View style={styles.eventType}>
+                    <Pressable
+                        style={styles.icon}
+                        onPress={() => {
+                            const picker = !isOpen;
+                            setIsOpen(picker);
+                        }}
+                    >
+                        {/* <MaterialCommunityIcons name="heart-multiple" size={33} color="#B83B5E" /> */}
+                        <AntDesign name="search1" size={23} color="white" />
+                        {/* <MaterialCommunityIcons name="account-heart" size={40} color="#B83B5E" /> */}
+                    </Pressable>
+                </View>
+
             </View>
             {isOpen ?
-                        <View>
-                            <Picker
-                                selectedValue={selectedEventType}
-                                onValueChange={value => {
-                                    setSelectedEventType(value);
-                                    setIsOpen(false);
-                                }}
-                            >
-                                <Picker.Item label='Concert' value='concert' />
-                                <Picker.Item label='Theater' value='theater' />
-                                <Picker.Item label='Comedy' value='comedy' />
-                                <Picker.Item label='Dance' value='dance_performance_tour' />
-                                <Picker.Item label='Classical' value='classical' />
-                                <Picker.Item label='Broadway' value='broadway_tickets_national' />
-                                <Picker.Item label='Sports' value='sports' />
+                <View>
+                    <Picker
+                        selectedValue={selectedEventType}
+                        onValueChange={value => {
+                            setSelectedEventType(value);
+                            setIsOpen(false);
+                        }}
+                    >
+                        <Picker.Item label='Concert' value='concert' />
+                        <Picker.Item label='Theater' value='theater' />
+                        <Picker.Item label='Comedy' value='comedy' />
+                        <Picker.Item label='Dance' value='dance_performance_tour' />
+                        <Picker.Item label='Classical' value='classical' />
+                        <Picker.Item label='Broadway' value='broadway_tickets_national' />
+                        <Picker.Item label='Sports' value='sports' />
 
-                            </Picker>
-                        </View>
-                        : null}
+                    </Picker>
+                </View>
+                : null}
 
             <EventList seatGeek={seatGeekEvents} localEvents={localEvents} handleSelectEvent={handleSelectEvent} />
 
@@ -203,7 +210,7 @@ const EventMap = () => {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     map: {
         width: Dimensions.get('window').width,
@@ -214,11 +221,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    selection: {
+    eventType: {
         position: 'absolute',
         alignSelf: 'flex-end',
-        padding: 5,
-        paddingRight: 10
+        padding: 5
+    },
+    icon: {
+        padding: 7,
+        backgroundColor: "#AD40AF",
+        borderRadius: 50,
+        alignSelf: 'center'
     }
 });
 
