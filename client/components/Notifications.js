@@ -1,26 +1,35 @@
-import { View, Text, StyleSheet, RefreshControl, SafeAreaView,ScrollView } from "react-native";
+import { View, Text, StyleSheet, RefreshControl, SafeAreaView,ScrollView, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import FriendFromContactList from "./SearchFriend";
-import {fetchSuggestedUsers} from "../services/contacts"
+import {fetchSuggestedUsers, fetchNoFriendshipFollowers} from "../services/contacts"
 import {addFollower} from "../services/users"
+import FollowingBackList from "./SearchFollowing"
 
 export default function Notifications() {
   const [refreshing, setRefreshing] = React.useState(false);
   const [contacts, setContacts] = useState([]);
+  const [followingContacts, setFollowingContacts] = useState([]);
   const myUserId = "ihzddcHz7WSarDGk6kn3";
   
   //fetchsuggested Users via contactList
   useEffect(async() => {
     const userArr = await fetchSuggestedUsers(myUserId)
     setContacts(userArr);
-
+    const followingUserArr = await fetchNoFriendshipFollowers(myUserId)
+    setFollowingContacts(followingUserArr)
   }, []);
 
   //Add Follower in the user's subcollection - following
-  async function handlePress(myUserId, targetUserId) {
+  async function followUser(myUserId, targetUserId) {
     await addFollower(myUserId, targetUserId)
     const updatedContactList = contacts.filter(contact=> contact.uid !== targetUserId)
     setContacts(updatedContactList)
+  }
+
+  async function acceptFollowRequest(myUserId, targetUserId) {
+    await addFollower(targetUserId, myUserId)
+    const updatedFollowingContactList = followingContacts.filter(contact=> contact.uid !== targetUserId)
+    setFollowingContacts(updatedFollowingContactList)
   }
 
   const wait = (timeout) => {
@@ -28,7 +37,10 @@ export default function Notifications() {
   }
 //fresh the screen
   const onRefresh = React.useCallback(async() => {
-    await fetchSuggestedUsers(myUserId);
+    const userArr = await fetchSuggestedUsers(myUserId)
+    setContacts(userArr);
+    const followingUserArr = await fetchNoFriendshipFollowers(myUserId)
+    setFollowingContacts(followingUserArr)
     setRefreshing(true)
     wait(2000).then(() => setRefreshing(false));
   }, []);
@@ -43,7 +55,8 @@ export default function Notifications() {
         }
       >
           <Text>Notifications</Text>
-        <FriendFromContactList styles={styles.container} contacts={contacts} handlePress={handlePress}/>
+        <FriendFromContactList styles={styles.container} contacts={contacts} handlePress={followUser}/>
+        <FollowingBackList styles={styles.container} followingContacts={followingContacts} handlePress={acceptFollowRequest}/>
       </ScrollView>
     </SafeAreaView>
   );
@@ -54,6 +67,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignContent: "center",
     padding: 18,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height
   },
 });
 

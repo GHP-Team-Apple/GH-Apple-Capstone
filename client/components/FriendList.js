@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Button } from 'react-native';
 import { getUserById, getFollowing, getIsFollowing, addFollowing } from '../services/users';
 import { getUsers } from '../../firebase';
+import FriendChat from "../components/FriendChat"
 
-const FriendList = () => {
+const FriendList = ({navigation}) => {
     const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const [user, setUser] = useState({});
     const [followingArr, setFollowingArr] = useState([]);
     const [friends, setFriends] = useState([]);
+    const [chatUser,setChatUser] = useState(null)
 
     useEffect(async () => {
         // grab user data 
-        // const userFromDB = await getUserById(userId);
-        // setUser(userFromDB);
+        const userFromDB = await getUserById(userId);
+        setUser(userFromDB);
 
         // grab array of following data
         const followingFromDB = await getFollowing(userId);
@@ -23,6 +25,15 @@ const FriendList = () => {
         await checkFriendship();
     }, [followingArr])
 
+
+    const handlePress = (friendId, friendName) => {
+        const friend = {"_id":friendId,"name":friendName}
+        setChatUser(friend);
+    }
+
+    const backToFriendList = () => {
+        setChatUser(null);
+    }
 
     const checkFriendship = async () => {
         const currentFriends = [];
@@ -36,21 +47,32 @@ const FriendList = () => {
         setFriends(currentFriends);
     }
 
+    console.log('chatUser before return',chatUser)
     return (
-        <ScrollView style={styles.container}>
-            <Text style={{ fontSize: 25, margin: 10 }}>Friends:</Text>
-            {
-                friends.map(friend => {
-                    const image = getImage(friend.profilePicture);
-                    return (
-                        <View key={friend.id} style={styles.friend}>
-                        <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }}/>
-                        <Text style={{ fontSize: 20}}>{friend.username}</Text>
-                    </View>
-                    )
-                })
-            }
-        </ScrollView>
+           chatUser !== null
+            ? (<FriendChat chatUser={chatUser} user={user} handleBack={backToFriendList}/>)
+            : (<>
+                <ScrollView style={styles.container}>
+                <Text style={{ fontSize: 25, margin: 10 }}>Friends:</Text>
+                {
+                    friends.map(friend => {
+                        const image = getImage(friend.profilePicture);
+                        return (
+                            <View key={friend.id} style={styles.friend} >
+                            <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }}/>
+                            <Text style={{ fontSize: 20}}>{friend.username}</Text>
+                            <Button 
+                                title="Chat"
+                                onPress={() =>
+                                    handlePress(friend.uid, friend.firstName)
+                                }
+                                />
+                        </View>
+                        )
+                    })
+                }
+                </ScrollView>
+                </>)
     )
 }
 
