@@ -168,9 +168,7 @@ const EventMap = () => {
                             setIsOpen(picker);
                         }}
                     >
-                        {/* <MaterialCommunityIcons name="heart-multiple" size={33} color="#B83B5E" /> */}
                         <AntDesign name="search1" size={23} color="white" />
-                        {/* <MaterialCommunityIcons name="account-heart" size={40} color="#B83B5E" /> */}
                     </Pressable>
                 </View>
 
