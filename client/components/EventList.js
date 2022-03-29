@@ -25,7 +25,7 @@ const EventList = (props) => {
                                 <Text style={{ fontSize: 16, fontWeight: 'bold', alignContent: 'stretch' }}>{event.performers[0].name}</Text>
                                 <Text>{event.venue.name}</Text>
                                 <Text style={{ fontSize: 13 }}>{event.venue.address}</Text>
-                                <Text>{event.venue.extended_address}</Text>
+                                <Text style={{ fontSize: 13 }}>{event.venue.extended_address}</Text>
                                 <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.datetime_utc)}</Text>
                             </View>
                         </Pressable>
@@ -72,11 +72,10 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.25,
         backgroundColor: '#fff',
-        marginBottom: 100,
+        margin: 2
     },
     event: {
         flexDirection: 'row',
-        // flexWrap: 'wrap',
         alignItems: 'center',
         margin: 5,
     },
