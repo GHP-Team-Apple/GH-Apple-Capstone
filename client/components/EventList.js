@@ -25,7 +25,7 @@ const EventList = (props) => {
                                 <Text style={{ fontSize: 16, fontWeight: 'bold', alignContent: 'stretch' }}>{event.performers[0].name}</Text>
                                 <Text>{event.venue.name}</Text>
                                 <Text style={{ fontSize: 13 }}>{event.venue.address}</Text>
-                                <Text>{event.venue.extended_address}</Text>
+                                <Text style={{ fontSize: 13 }}>{event.venue.extended_address}</Text>
                                 <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.datetime_utc)}</Text>
                             </View>
                         </Pressable>
