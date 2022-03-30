@@ -272,14 +272,14 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'flex-end',
         padding: 5,
-        flexDirection: 'row'
+        flexDirection: 'column',
     },
     icon: {
         padding: 7,
         backgroundColor: "#AD40AF",
         borderRadius: 50,
         alignSelf: 'center',
-        marginLeft: 2
+        marginTop: 5
     }
 });
 
