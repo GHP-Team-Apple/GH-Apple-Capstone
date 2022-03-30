@@ -11,9 +11,11 @@ import {
 import Modal from "react-native-modal";
 import { saveEvent } from "../services/events";
 import { LocalEventView } from "../templates/localEvents";
+import { auth, db } from '../../firebase';
 
 const SingleEvent = (props) => {
-  const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+  // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+  const userId = auth.currentUser.uid;
   const event = props.event;
   const supportedUrl = props.event.eventUrl;
 

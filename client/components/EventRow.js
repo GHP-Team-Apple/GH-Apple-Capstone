@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, Pressable, View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
 import { saveEvent, unsaveEvent } from '../services/events';
+import { auth, db } from '../../firebase';
+
 
 const EventRow = (props) => {
-    const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+    // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+    const userId = auth.currentUser.uid;
     const event = props.event;
     const handlePress = props.handlePress;
     const savedEventsIDArr = props.savedEventsIDArr;
