@@ -12,6 +12,7 @@ import { Picker } from '@react-native-picker/picker';
 import { auth, db } from '../../firebase';
 
 const EventMap = () => {
+    // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const userId = auth.currentUser.uid;
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);
