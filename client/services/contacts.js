@@ -6,9 +6,17 @@ import {
   getUserById,
   getFollowing,
 } from "../services/users";
+import { db } from "../../firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  where,
+  get
+} from "firebase/firestore";
 
 export const fetchSuggestedUsers = async (userId) => {
-  
   const { status } = await Contacts.requestPermissionsAsync();
   if (status != "granted") {
     return "Permission Denied";
@@ -31,24 +39,42 @@ export const fetchSuggestedUsers = async (userId) => {
       const userArr = await getUsersByPhoneNumbers(phoneNumbers);
       //check already followed
       const following = await getFollowing(userId);
-      const followingNumber = following.filter(user=>user!==undefined&&user.number!==null).map((user) => user.number);
-      const PhoneNumbersNFollowing = phoneNumbers.filter((number) =>
-        !followingNumber.includes(number)
+      const followingNumber = following
+        .filter((user) => user !== undefined && user.number !== null)
+        .map((user) => user.number);
+      const PhoneNumbersNFollowing = phoneNumbers.filter(
+        (number) => !followingNumber.includes(number)
       );
       //check if matches my phone number
-      const myUserInfo = await getUserById(userId)
-      const myPhoneNumber = myUserInfo.number
-      const updatedPhoneNumbersArr = PhoneNumbersNFollowing.filter((number) =>
-      number!==myPhoneNumber
-    )
+      const myUserInfo = await getUserById(userId);
+      const myPhoneNumber = myUserInfo.number;
+      const updatedPhoneNumbersArr = PhoneNumbersNFollowing.filter(
+        (number) => number !== myPhoneNumber
+      );
       //get users
       if (updatedPhoneNumbersArr.length <= 0) {
         return [];
       } else {
-        const updatedUserArr = await getUsersByPhoneNumbers(updatedPhoneNumbersArr);
-        return updatedUserArr
+        const updatedUserArr = await getUsersByPhoneNumbers(
+          updatedPhoneNumbersArr
+        );
+        return updatedUserArr;
       }
     }
   }
-  ;
 };
+
+export const fetchNoFriendshipFollowers = async (userId) => {
+  const followersId = (await getFollowing(userId)).map(user => user.uid);
+  //check already followed
+  const unfollowedUser = [];
+  for (let i = 0; i < followersId.length; i++) {
+    const id = followersId[i];
+    const secondDegreeFollowers = (await getFollowing(id)).map(user => user.uid);
+    if (!secondDegreeFollowers.includes(userId)) {
+      const user = await getUserById(id);
+      unfollowedUser.push(user);
+    }
+  }
+  return unfollowedUser;
+}

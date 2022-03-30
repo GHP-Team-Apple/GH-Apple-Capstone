@@ -42,7 +42,6 @@ export const getFollowing = async (userId) => {
 export const getIsFollowing = async (userId, otherUserId) => {
     const followingRef = doc(db, `Users/${userId}/following/${otherUserId}`);
     const followingDoc = await getDoc(followingRef);
-
     // return boolean whether userId follows otherUserId
     return followingDoc.exists();
 }

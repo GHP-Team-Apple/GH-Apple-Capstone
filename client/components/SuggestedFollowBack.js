@@ -32,12 +32,13 @@ export default function SuggestContact(props) {
     setImage(image)
   }, [])
 
+
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={image} />
       <Text style={styles.text}>
         {props.contact.firstName},{`\n`}
-        who you might know{"         "}
+        followed you {'                      '}   
       </Text>
       <View
         style={{
@@ -56,18 +57,18 @@ export default function SuggestContact(props) {
 }
 
 const getImage = (image) => {
-  switch(image) {
-      case 'alpaca.png':
-          return require('../../assets/alpaca.png');
-      case 'rabbit.png':
-          return require('../../assets/rabbit.png');
-      case 'chameleon.png':
-          return require('../../assets/chameleon.png');
-      case 'dog.png':
-          return require('../../assets/dog.png');
-      case 'koala.png':
-          return require('../../assets/koala.png');
-  }
+    switch(image) {
+        case 'alpaca.png':
+            return require('../../assets/alpaca.png');
+        case 'rabbit.png':
+            return require('../../assets/rabbit.png');
+        case 'chameleon.png':
+            return require('../../assets/chameleon.png');
+        case 'dog.png':
+            return require('../../assets/dog.png');
+        case 'koala.png':
+            return require('../../assets/koala.png');
+    }
 }
 
 const styles = StyleSheet.create({
