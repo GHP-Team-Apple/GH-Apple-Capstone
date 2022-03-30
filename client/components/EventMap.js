@@ -10,7 +10,6 @@ import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } fro
 import { LocalEventObj } from '../templates/localEvents';
 import { Picker } from '@react-native-picker/picker';
 
-
 const EventMap = () => {
     const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
@@ -20,7 +19,9 @@ const EventMap = () => {
     const [errorMsg, setErrorMsg] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [selectedEventType, setSelectedEventType] = useState('concert');
-    const [isOpen, setIsOpen] = useState(false);
+    const [selectedMaxRadius, setSetlectedMaxRadius] = useState(2);
+    const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
+    const [isMaxRadiusOpen, setIsMaxRadiusOpen] = useState(false);
     const [savedEventsIDArr, setSavedEventsIDArr] = useState([]);
 
     useEffect(() => {
@@ -36,7 +37,7 @@ const EventMap = () => {
             setLocation(currentLocation);
 
             // get Seat Geek events near current location
-            const events = await getEventsFromSeatGeek(selectedEventType, currentLocation.coords.latitude, currentLocation.coords.longitude, 2);
+            const events = await getEventsFromSeatGeek(selectedEventType, currentLocation.coords.latitude, currentLocation.coords.longitude, selectedMaxRadius);
 
             setSeatGeekEvents(events);
             await loadLocalEvents()
@@ -53,17 +54,17 @@ const EventMap = () => {
     useEffect(async () => {
         if (currentRegion) {
             const { latitude, longitude } = currentRegion;
-            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, 2);
+            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, selectedMaxRadius);
             setSeatGeekEvents(events);
         }
     }, [currentRegion]);
 
     useEffect(async () => {
         if (currentRegion) {
-            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, 2);
+            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, selectedMaxRadius);
             setSeatGeekEvents(events);
         }
-    }, [selectedEventType])
+    }, [selectedEventType, selectedMaxRadius])
 
     const loadLocalEvents = async () => {
         try {
@@ -171,26 +172,35 @@ const EventMap = () => {
                         ))
                     }
                 </MapView>
-                <View style={styles.eventType}>
+                <View style={styles.selection}>
                     <Pressable
                         style={styles.icon}
                         onPress={() => {
-                            const picker = !isOpen;
-                            setIsOpen(picker);
+                            const maxRadiusPicker = !isMaxRadiusOpen;
+                            setIsMaxRadiusOpen(maxRadiusPicker);
                         }}
                     >
-                        <AntDesign name="search1" size={23} color="white" />
+                        <MaterialCommunityIcons name="map-marker-distance" size={20} color="white" />
+                    </Pressable>
+                    <Pressable
+                        style={styles.icon}
+                        onPress={() => {
+                            const eventTypePicker = !isEventTypeOpen;
+                            setIsEventTypeOpen(eventTypePicker);
+                        }}
+                    >
+                        <AntDesign name="search1" size={20} color="white" />
                     </Pressable>
                 </View>
 
             </View>
-            {isOpen ?
-                <View>
+            {isEventTypeOpen
+                ? (<View>
                     <Picker
                         selectedValue={selectedEventType}
                         onValueChange={value => {
                             setSelectedEventType(value);
-                            setIsOpen(false);
+                            setIsEventTypeOpen(false);
                         }}
                     >
                         <Picker.Item label='Concert' value='concert' />
@@ -202,8 +212,27 @@ const EventMap = () => {
                         <Picker.Item label='Sports' value='sports' />
 
                     </Picker>
-                </View>
+                </View>)
                 : null}
+
+            {isMaxRadiusOpen
+                ? (<View>
+                    <Picker
+                        selectedValue={selectedEventType}
+                        onValueChange={value => {
+                            setSetlectedMaxRadius(value);
+                            setIsMaxRadiusOpen(false);
+                        }}
+                    >
+                        <Picker.Item label='1 mile' value={1} />
+                        <Picker.Item label='2 miles' value={2} />
+                        <Picker.Item label='3 miles' value={3} />
+                        <Picker.Item label='4 miles' value={4} />
+                        <Picker.Item label='5 miles' value={5} />
+                    </Picker>
+                </View>)
+                : null}
+
 
             <EventList
                 seatGeek={seatGeekEvents}
@@ -216,8 +245,8 @@ const EventMap = () => {
             {
                 selectedEvent ?
                     <SingleEvent
-                        event={selectedEvent} 
-                        handlePress={handleSelectEvent} 
+                        event={selectedEvent}
+                        handlePress={handleSelectEvent}
                         updateSaveEventID={updateSaveEventID}
                         savedEventsIDArr={savedEventsIDArr}
                     />
@@ -239,16 +268,18 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.65,
     },
-    eventType: {
+    selection: {
         position: 'absolute',
         alignSelf: 'flex-end',
-        padding: 5
+        padding: 5,
+        flexDirection: 'row'
     },
     icon: {
         padding: 7,
         backgroundColor: "#AD40AF",
         borderRadius: 50,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginLeft: 2
     }
 });
 

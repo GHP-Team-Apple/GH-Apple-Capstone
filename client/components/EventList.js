@@ -14,9 +14,9 @@ const EventList = (props) => {
     return (
         <ScrollView style={styles.container}>
             {
-                seatGeek.map((event, idx) => (
+                seatGeek.map((event) => (
                     <EventRow
-                        key={idx}
+                        key={event.id}
                         event={event}
                         handlePress={handlePress}
                         savedEventsIDArr={props.savedEventsIDArr}
