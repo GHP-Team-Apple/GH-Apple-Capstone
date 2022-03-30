@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { getSavedEventsByUserId } from "../services/events";
 import SavedEventCard from "./SavedEventCard";
-import SingleSavedEvent from "./SingleSavedEvent"
+import SingleSavedEvent from "./SingleSavedEvent";
 import { auth, db } from '../../firebase';
 
 
@@ -24,9 +24,10 @@ const SavedEvents = () => {
 
 
   async function fetchSavedEvents() {
-    const userId1 = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
-    const userId = "WalEUjuIy6nEp2DvzVdd";
-    const eventArr = await getSavedEventsByUserId(userId1);
+    // const userId1 = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+    // const userId = "WalEUjuIy6nEp2DvzVdd";
+    const userId = auth.currentUser.uid;
+    const eventArr = await getSavedEventsByUserId(userId);
     setEvents(eventArr);
   }
 

@@ -10,9 +10,10 @@ import Filter from "./Filter";
 import { LocalEventObj } from "../templates/localEvents";
 const categories = require("../data/categories");
 const cities = require("../data/cities");
+import { auth, db } from '../../firebase';
 
 const FriendsMap = (props) => {
-  const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // should use auth.currentUser?
+  const userId = auth.currentUser.uid; // should use auth.currentUser?
   const [location, setLocation] = useState(null);
   const [friendEvents, setFriendEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -60,13 +61,13 @@ const FriendsMap = (props) => {
   };
 
   const handleNoFilter = () => {
-    catArray = [];
+    const catArray = [];
     for (let i = 0; i < categoryList.length; i++) {
       categoryList[i].isChecked = false;
     }
     setCategoryList(categoryList);
     setFilteredCat(catArray);
-    cityArray = [];
+    let cityArray = [];
     for (let i = 0; i < cityList.length; i++) {
       cityList[i].isChecked = false;
     }
@@ -77,7 +78,7 @@ const FriendsMap = (props) => {
   };
 
   const handleCat = (catId) => {
-    catArray = [];
+    const catArray = [];
     for (let i = 0; i < categoryList.length; i++) {
       if (categoryList[i].id === catId) {
         const isChecked = categoryList[i].isChecked;
@@ -151,7 +152,7 @@ const FriendsMap = (props) => {
           </Marker>
         ) : null}
 
-        {friendEvents.map((event) => {
+        { location ? (friendEvents.map((event) => {
           const now = new Date().getTime() / 1000;
           const startTime = event.startDate.seconds;
           const endTime = event.visibleUntil.seconds;
@@ -196,7 +197,8 @@ const FriendsMap = (props) => {
               </Marker>
             );
           }
-        })}
+        })) : null }
+
       </MapView>
       {selectedEvent ? (
         <AttendingEvents event={selectedEvent} handlePress={handlePress} />

@@ -16,7 +16,6 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 export default function AppStack() {
-	console.log('hello')
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} />}
@@ -36,7 +35,7 @@ export default function AppStack() {
         component={TabNavigator}
         options={{
           drawerIcon: () => (
-            <AntDesign name="home" size={22} color="white" />
+            <AntDesign name="home" size={22} color="black" />
           ),
         }}
       />
@@ -51,7 +50,7 @@ export default function AppStack() {
         component={FriendChatStack}
         options={{
           drawerIcon: () => (
-            <AntDesign name="message1" size={22} color="white" />
+            <AntDesign name="message1" size={22} color="black" />
           ),
 		  headerShown: false,
         }}
@@ -61,7 +60,7 @@ export default function AppStack() {
         component={FriendsMap}
         options={{
           drawerIcon: () => (
-            <Ionicons name="timer-outline" size={22} color="white" />
+            <Ionicons name="timer-outline" size={22} color="black" />
           ),
         }}
       />
@@ -74,7 +73,6 @@ export default function AppStack() {
           ),
         }}
       />
-	{console.log('---> herllo')}
     </Drawer.Navigator>
   );
 	// return (

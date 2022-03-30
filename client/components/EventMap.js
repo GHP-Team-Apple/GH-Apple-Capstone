@@ -9,9 +9,11 @@ import SingleEvent from './SingleEvent';
 import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
 import { LocalEventObj } from '../templates/localEvents';
 import { Picker } from '@react-native-picker/picker';
+import { auth, db } from '../../firebase';
 
 const EventMap = () => {
-    const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+    // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+    const userId = auth.currentUser.uid;
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);
     const [currentRegion, setCurrentRegion] = useState(null);
