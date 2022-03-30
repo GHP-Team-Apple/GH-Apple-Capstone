@@ -27,14 +27,14 @@ const FriendList = ({navigation}) => {
     }, [followingArr])
 
 
-    const handlePress = (friendId, friendName,userId) => {
+    const handlePress = (friendId, friendName,userId, friendImage) => {
         // const channelId = `${friendId}${userId}`
         // setChannelId(channelId)
-        console.log(friendId, friendName,userId)
-        const friend = {"_id":`${friendId}${userId}`,"name":friendName}
+        console.log(friendId, friendName,userId, friendImage)
+        const friend = {"_id":`${friendId}${userId}`,"name":friendName, avatar:"https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg"}
         setChatUser(friend);
-        console.log("===",friend)
-        console.log("===",chatUser)
+        console.log("===friend",friend)
+        console.log("===chatUser",chatUser)
         navigation.navigate('FriendChat', {
             chatUser:friend, myUser:user, chatId:friendId
           })
@@ -68,7 +68,7 @@ const FriendList = ({navigation}) => {
                         const image = getImage(friend.profilePicture);
                         return (
                             <TouchableOpacity key={friend.id} style={styles.friend} onPress={() =>
-                                handlePress(friend.uid, friend.firstName, userId)
+                                handlePress(friend.uid, friend.firstName, userId, friend.profilePicture)
                             } >
                             <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }}/>
                             <Text style={{ fontSize: 20, marginLeft:30}}>{friend.firstName}</Text>
