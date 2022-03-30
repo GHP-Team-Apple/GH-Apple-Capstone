@@ -8,6 +8,7 @@ const SingleEvent = (props) => {
     const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const event = props.event;
     const supportedUrl = props.event.eventUrl;
+    const savedEventsIDArr = props.savedEventsIDArr;
 
     const handleLink = useCallback(async () => {
         const supported = await Linking.canOpenURL(supportedUrl);
@@ -40,6 +41,9 @@ const SingleEvent = (props) => {
 
         //close modal after saving the event
         props.handlePress(null);
+
+        //add event id to savedEventsIDArr
+        props.updateSaveEventID([...savedEventsIDArr, event.id]);
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -16,9 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SuggestContact(props) {
+export default function FollowingBack(props) {
   const myUserId = "ihzddcHz7WSarDGk6kn3";
-  const [image, setImage] = useState("../../assets/rabbit.png")
   const classes = useStyles();
   const IconButton = ({ title, onPress, icon }) => (
     <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
@@ -27,17 +26,12 @@ export default function SuggestContact(props) {
     </TouchableOpacity>
   );
 
-  useEffect(() => {
-    const image = getImage(props.contact.profilePicture)
-    setImage(image)
-  }, [])
-
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={image} />
+      <Image style={styles.image} source={require("../../assets/rabbit.png")} />
       <Text style={styles.text}>
         {props.contact.firstName},{`\n`}
-        who you might know{"         "}
+        followed you
       </Text>
       <View
         style={{
@@ -45,7 +39,7 @@ export default function SuggestContact(props) {
         }}
       >
         <IconButton
-          title={"Follow"}
+          title={"Follow Back"}
           onPress={() => props.banana(myUserId, props.contact.uid)}
           icon={<SimpleLineIcons name="user-follow" size={24} color="black" />}
           className={classes.customHoverFocus}
@@ -53,21 +47,6 @@ export default function SuggestContact(props) {
       </View>
     </View>
   );
-}
-
-const getImage = (image) => {
-  switch(image) {
-      case 'alpaca.png':
-          return require('../../assets/alpaca.png');
-      case 'rabbit.png':
-          return require('../../assets/rabbit.png');
-      case 'chameleon.png':
-          return require('../../assets/chameleon.png');
-      case 'dog.png':
-          return require('../../assets/dog.png');
-      case 'koala.png':
-          return require('../../assets/koala.png');
-  }
 }
 
 const styles = StyleSheet.create({
