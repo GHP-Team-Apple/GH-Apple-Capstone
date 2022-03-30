@@ -10,9 +10,10 @@ import Filter from "./Filter";
 import { LocalEventObj } from "../templates/localEvents";
 const categories = require("../data/categories");
 const cities = require("../data/cities");
+import { auth, db } from '../../firebase';
 
 const FriendsMap = (props) => {
-  const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // should use auth.currentUser?
+  const userId = auth.currentUser.uid; // should use auth.currentUser?
   const [location, setLocation] = useState(null);
   const [friendEvents, setFriendEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -66,7 +67,7 @@ const FriendsMap = (props) => {
     }
     setCategoryList(categoryList);
     setFilteredCat(catArray);
-    cityArray = [];
+    let cityArray = [];
     for (let i = 0; i < cityList.length; i++) {
       cityList[i].isChecked = false;
     }

@@ -133,6 +133,7 @@ const EventMap = () => {
                 return <Ionicons name="heart-circle" size={33} color="#E06268" />
         }
     }
+    console.log('MY ID: ', auth.currentUser.uid);
 
     return location ? (
         <View style={{ flex: 1 }}>
