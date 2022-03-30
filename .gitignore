@@ -12,9 +12,6 @@ web-build/
 .env
 yarn.lock
 package-lock.json
-<<<<<<< HEAD
-=======
 
->>>>>>> main
 # macOS
 .DS_Store
