@@ -60,7 +60,7 @@ const FriendsMap = (props) => {
   };
 
   const handleNoFilter = () => {
-    catArray = [];
+    const catArray = [];
     for (let i = 0; i < categoryList.length; i++) {
       categoryList[i].isChecked = false;
     }
@@ -77,7 +77,7 @@ const FriendsMap = (props) => {
   };
 
   const handleCat = (catId) => {
-    catArray = [];
+    const catArray = [];
     for (let i = 0; i < categoryList.length; i++) {
       if (categoryList[i].id === catId) {
         const isChecked = categoryList[i].isChecked;
@@ -151,7 +151,7 @@ const FriendsMap = (props) => {
           </Marker>
         ) : null}
 
-        {friendEvents.map((event) => {
+        { location ? (friendEvents.map((event) => {
           const now = new Date().getTime() / 1000;
           const startTime = event.startDate.seconds;
           const endTime = event.visibleUntil.seconds;
@@ -196,7 +196,8 @@ const FriendsMap = (props) => {
               </Marker>
             );
           }
-        })}
+        })) : null }
+
       </MapView>
       {selectedEvent ? (
         <AttendingEvents event={selectedEvent} handlePress={handlePress} />
