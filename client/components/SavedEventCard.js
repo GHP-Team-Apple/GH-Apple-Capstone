@@ -15,7 +15,7 @@ import {
 
 
 export default SavedEventCard = (props) => {
-  console.log(props.event);
+  // console.log(props.event);
 
   async function handleCheckIn(id) {
     await updateDoc(doc(db, "SavedEvents", id), {
@@ -106,15 +106,14 @@ const styles = StyleSheet.create({
   event: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around"
-    // alignItems: "center",
-    // margin: 10,
+    justifyContent: "space-between",
+    alignContent: "center",
   },
   image: {
     width: 120,
     height: 120,
     borderRadius: 8,
-    margin: 5,
+    marginLeft: 10,
     marginBottom: 20
   },
     buttons: {
