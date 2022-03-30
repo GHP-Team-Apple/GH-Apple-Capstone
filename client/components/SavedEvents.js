@@ -14,12 +14,14 @@ import {
 import { getSavedEventsByUserId } from "../services/events";
 import SavedEventCard from "./SavedEventCard";
 import SingleSavedEvent from "./SingleSavedEvent"
+import { auth, db } from '../../firebase';
 
 
 const SavedEvents = () => {
   const [events, setEvents] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
 
   async function fetchSavedEvents() {
     const userId1 = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
@@ -51,7 +53,7 @@ const SavedEvents = () => {
       setSelectedEvent(event);
     }
   };
-
+  console.log('MY ID: ', auth.currentUser.uid);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

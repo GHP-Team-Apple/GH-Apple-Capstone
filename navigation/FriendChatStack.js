@@ -13,7 +13,7 @@ export const Stack = createNativeStackNavigator();
 function ChatStack () {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="FriendChatList" component={FriendList} options={{ headerShown: false }}/>
+        <Stack.Screen name="FriendChatList" component={ChatList} options={{ headerShown: false }}/>
         <Stack.Screen name="FriendChat" component={FriendChat} options={{ headerShown: false }}/>
       </Stack.Navigator>
   );
