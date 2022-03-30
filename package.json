@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.16.7",
+    "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@mui/styles": "^5.5.3",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/masked-view": "^0.1.11",
@@ -39,7 +40,6 @@
     "react-native-gifted-chat": "^0.16.3",
     "react-native-maps": "0.29.4",
     "react-native-modal": "^13.0.1",
-    "react-native-multi-selectbox": "^1.5.0",
     "react-native-pager-view": "5.4.9",
     "react-native-paper": "^4.11.2",
     "react-native-reanimated": "~2.3.1",
