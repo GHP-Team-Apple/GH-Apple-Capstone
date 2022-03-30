@@ -45,16 +45,13 @@ export default function Profile({navigation}) {
 			
 		]);
 		setCurrUserData({ ...userData, uid: user.uid })
-		// console.log(thePromise);
-		console.log(currUserData)
+		
 		navigation.navigate('home1');
 	}
-	console.log('is this auth', auth.currentUser.uid)
-
+	
 	const getUserInfo = async () => {
 		console(auth.currentUser)
 	const userInfo = await getDoc(doc(db, "User", auth.currentUser.uid))
-	console.log(userInfo.id)
 	}
 	// getUserInfo()
 	const [location, setLocation] = useState(null);
