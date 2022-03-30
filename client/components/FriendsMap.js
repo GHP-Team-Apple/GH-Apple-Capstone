@@ -152,7 +152,7 @@ const FriendsMap = (props) => {
           </Marker>
         ) : null}
 
-        { location ?  (friendEvents.map((event) => {
+        { location ? (friendEvents.map((event) => {
           const now = new Date().getTime() / 1000;
           const startTime = event.startDate.seconds;
           const endTime = event.visibleUntil.seconds;
@@ -197,7 +197,8 @@ const FriendsMap = (props) => {
               </Marker>
             );
           }
-        })): null}
+        })) : null }
+
       </MapView>
       {selectedEvent ? (
         <AttendingEvents event={selectedEvent} handlePress={handlePress} />
