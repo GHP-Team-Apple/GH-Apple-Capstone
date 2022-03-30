@@ -1,26 +1,35 @@
-import { View, Text, StyleSheet, RefreshControl, SafeAreaView,ScrollView } from "react-native";
+import { View, Text, StyleSheet, RefreshControl, SafeAreaView,ScrollView, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import FriendFromContactList from "./SearchFriend";
-import {fetchSuggestedUsers} from "../services/contacts"
+import {fetchSuggestedUsers, fetchNoFriendshipFollowers} from "../services/contacts"
 import {addFollower} from "../services/users"
+import FollowingBackList from "./SearchFollowing"
 
 export default function Notifications() {
   const [refreshing, setRefreshing] = React.useState(false);
   const [contacts, setContacts] = useState([]);
+  const [followingContacts, setFollowingContacts] = useState([]);
   const myUserId = "ihzddcHz7WSarDGk6kn3";
   
   //fetchsuggested Users via contactList
   useEffect(async() => {
     const userArr = await fetchSuggestedUsers(myUserId)
     setContacts(userArr);
-
+    const followingUserArr = await fetchNoFriendshipFollowers(myUserId)
+    setFollowingContacts(followingUserArr)
   }, []);
 
   //Add Follower in the user's subcollection - following
-  async function handlePress(myUserId, targetUserId) {
+  async function followUser(myUserId, targetUserId) {
     await addFollower(myUserId, targetUserId)
     const updatedContactList = contacts.filter(contact=> contact.uid !== targetUserId)
     setContacts(updatedContactList)
+  }
+
+  async function acceptFollowRequest(myUserId, targetUserId) {
+    await addFollower(targetUserId, myUserId)
+    const updatedFollowingContactList = followingContacts.filter(contact=> contact.uid !== targetUserId)
+    setFollowingContacts(updatedFollowingContactList)
   }
 
   const wait = (timeout) => {
@@ -28,7 +37,10 @@ export default function Notifications() {
   }
 //fresh the screen
   const onRefresh = React.useCallback(async() => {
-    await fetchSuggestedUsers(myUserId);
+    const userArr = await fetchSuggestedUsers(myUserId)
+    setContacts(userArr);
+    const followingUserArr = await fetchNoFriendshipFollowers(myUserId)
+    setFollowingContacts(followingUserArr)
     setRefreshing(true)
     wait(2000).then(() => setRefreshing(false));
   }, []);
@@ -43,7 +55,8 @@ export default function Notifications() {
         }
       >
           <Text>Notifications</Text>
-        <FriendFromContactList styles={styles.container} contacts={contacts} handlePress={handlePress}/>
+        <FriendFromContactList styles={styles.container} contacts={contacts} handlePress={followUser}/>
+        <FollowingBackList styles={styles.container} followingContacts={followingContacts} handlePress={acceptFollowRequest}/>
       </ScrollView>
     </SafeAreaView>
   );
@@ -54,14 +67,23 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignContent: "center",
     padding: 18,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height
   },
 });
 
-// import Constants from 'expo-constants';
+// const styles = StyleSheet.create({
+//   container: {
+//     marginTop: 20,
+//     alignContent: "center",
+//     padding: 18,
+//   },
+// });
+
+// import * as Device from 'expo-device';
 // import * as Notifications from 'expo-notifications';
 // import React, { useState, useEffect, useRef } from 'react';
 // import { Text, View, Button, Platform } from 'react-native';
-// import * as Device from 'expo-device';
 
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -71,7 +93,7 @@ const styles = StyleSheet.create({
 //   }),
 // });
 
-// export default function AppNotification() {
+// export default function App() {
 //   const [expoPushToken, setExpoPushToken] = useState('');
 //   const [notification, setNotification] = useState(false);
 //   const notificationListener = useRef();
@@ -80,10 +102,12 @@ const styles = StyleSheet.create({
 //   useEffect(() => {
 //     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
+//     // This listener is fired whenever a notification is received while the app is foregrounded
 //     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
 //       setNotification(notification);
 //     });
 
+//     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
 //     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
 //       console.log(response);
 //     });
@@ -100,8 +124,7 @@ const styles = StyleSheet.create({
 //         flex: 1,
 //         alignItems: 'center',
 //         justifyContent: 'space-around',
-//       }}
-//     >
+//       }}>
 //       <Text>Your expo push token: {expoPushToken}</Text>
 //       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 //         <Text>Title: {notification && notification.request.content.title} </Text>
@@ -109,23 +132,33 @@ const styles = StyleSheet.create({
 //         <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
 //       </View>
 //       <Button
-//         title="Press to schedule a notification"
+//         title="Press to Send Notification"
 //         onPress={async () => {
-//           await schedulePushNotification();
+//           await sendPushNotification(expoPushToken);
 //         }}
 //       />
 //     </View>
 //   );
 // }
 
-// async function schedulePushNotification() {
-//   await Notifications.scheduleNotificationAsync({
-//     content: {
-//       title: "You've got mail! 📬",
-//       body: 'Here is the notification body',
-//       data: { data: 'goes here' },
+// // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.dev/notifications
+// async function sendPushNotification(expoPushToken) {
+//   const message = {
+//     to: expoPushToken,
+//     sound: 'default',
+//     title: 'Original Title',
+//     body: 'And here is the body!',
+//     data: { someData: 'goes here' },
+//   };
+
+//   await fetch('https://exp.host/--/api/v2/push/send', {
+//     method: 'POST',
+//     headers: {
+//       Accept: 'application/json',
+//       'Accept-encoding': 'gzip, deflate',
+//       'Content-Type': 'application/json',
 //     },
-//     trigger: { seconds: 2 },
+//     body: JSON.stringify(message),
 //   });
 // }
 

@@ -1,42 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {
-  StyleSheet,
-  Pressable,
-  View,
-  Dimensions,
-  Text,
-  Button,
-} from "react-native";
-import { useNavigation } from "@react-navigation/core";
+import { StyleSheet, Pressable, View, Dimensions, Text } from "react-native";
 import * as Location from "expo-location";
 import { getFriendEvents } from "../services/events";
-import { saveEvent } from "../services/events";
-import SingleEvent from "./SingleEvent";
-import EventList from "./EventList";
-import { LocalEventObj } from '../templates/localEvents';
+import { getDistance } from "../services/distance";
+import AttendingEvents from "./AttendingEvent";
+import Filter from "./Filter";
+import { LocalEventObj } from "../templates/localEvents";
+const categories = require("../data/categories");
+const cities = require("../data/cities");
+import { auth, db } from '../../firebase';
 
 const FriendsMap = (props) => {
-  const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // should use auth.currentUser?
+  const userId = auth.currentUser.uid; // should use auth.currentUser?
   const [location, setLocation] = useState(null);
   const [friendEvents, setFriendEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  // const [myCategory, setMyCategory] = useState([]);
-  // const [myCity, setMyCity] = useState([]);
-  // const navigation = useNavigation();
+  const [filterPage, setFilterPage] = useState(false);
+  const [categoryList, setCategoryList] = useState(categories); // need to test if mapping each cat onChanges the isCheck to true
+  const [cityList, setCityList] = useState(cities);
 
-  // useEffect(async () => {
-  //   try {
-  //     const categoryList = require("../data/category");
-  //     setMyCategory(categoryList);
-  //     const cityList = require("../data/city");
-  //     setMyCity(cityList);
-  //   } catch (err) {
-  //     console.log("error: ", err);
-  //   }
-  // }, []);
-
+  // const [isFreeChecked, setIsFreeChecked] = useState(false);
+  const [filteredCat, setFilteredCat] = useState([]);
+  const [filteredCity, setFilteredCity] = useState([]);
+  const [maxDistance, setMaxDistance] = useState(null);
   useEffect(async () => {
     try {
       const friendEvents = await getFriendEvents(userId);
@@ -59,25 +47,87 @@ const FriendsMap = (props) => {
     })();
   }, []);
 
-  // check savedEvent format
   const handlePress = (event) => {
-    if (event && event.hostId) {
-      const eventObj = LocalEventObj(event)
-      setSelectedEvent(eventObj); 
-  } else {
+    if (event) {
+      const eventObj = LocalEventObj(event);
+      setSelectedEvent(eventObj);
+    } else {
       setSelectedEvent(event);
     }
   };
 
-  // const goToFilter = () => {
-  //   navigation.navigate("FilterEvents");
+  const handleFilterPage = (boolean) => {
+    setFilterPage(boolean);
+  };
+
+  const handleNoFilter = () => {
+    const catArray = [];
+    for (let i = 0; i < categoryList.length; i++) {
+      categoryList[i].isChecked = false;
+    }
+    setCategoryList(categoryList);
+    setFilteredCat(catArray);
+    let cityArray = [];
+    for (let i = 0; i < cityList.length; i++) {
+      cityList[i].isChecked = false;
+    }
+    setCityList(cityList);
+    setFilteredCity(cityArray);
+    console.log(filteredCat);
+    console.log(filteredCity);
+  };
+
+  const handleCat = (catId) => {
+    const catArray = [];
+    for (let i = 0; i < categoryList.length; i++) {
+      if (categoryList[i].id === catId) {
+        const isChecked = categoryList[i].isChecked;
+        categoryList[i].isChecked = !isChecked;
+        const newStatus = categoryList[i].isChecked;
+        const tmp = categoryList[i].type;
+        if (newStatus) {
+          const type = tmp.toLowerCase();
+          catArray.push(type);
+        }
+      }
+    }
+    setCategoryList(categoryList);
+    setFilteredCat(catArray);
+    console.log(categoryList);
+    console.log(catArray);
+  };
+
+  const handleCity = (cityId) => {
+    for (let i = 0; i < cityList.length; i++) {
+      if (cityList[i].id === cityId) {
+        const isChecked = cityList[i].isChecked;
+        cityList[i].isChecked = !isChecked;
+      }
+    }
+    setCityList(cityList);
+
+    const filtCity = cityList.map((city) => {
+      if (city.isChecked) {
+        return city.city;
+      }
+    });
+    setFilteredCity(filtCity);
+  };
+
+  const handleMaxDistance = (distance) => {
+    // NEED TO TEST THIS:
+    setMaxDistance(distance);
+  };
+
+  // const handleIsFreeChecked = () => {
+  //   setIsFreeChecked(!isFreeChecked);
   // };
 
   return (
     <View style={styles.container}>
-      {/* <Pressable onPress={goToFilter}>
+      <Pressable onPress={() => handleFilterPage(true)}>
         <Ionicons name="options" size={28} />
-      </Pressable> */}
+      </Pressable>
 
       <MapView
         style={styles.map}
@@ -102,13 +152,32 @@ const FriendsMap = (props) => {
           </Marker>
         ) : null}
 
-        {friendEvents.map((event) => {
+        { location ? (friendEvents.map((event) => {
           const now = new Date().getTime() / 1000;
           const startTime = event.startDate.seconds;
           const endTime = event.visibleUntil.seconds;
+          const checkIn = event.checkIn;
+          const isFreeChecked = event.isFreeChecked;
+          const eventLat = event.location.lat;
+          const eventLon = event.location.lon;
+          const myLat = location.coords.latitude;
+          const myLon = location.coords.longitude;
           const category = event.type;
-          
-          if (now >= startTime && now <= endTime) {
+          const city = event.city;
+          const distanceFromEvent = getDistance(
+            myLat,
+            eventLat,
+            myLon,
+            eventLon
+          ); // mi
+
+          if (
+            now >= startTime &&
+            now <= endTime &&
+            checkIn &&
+            (filteredCat.includes(category) || filteredCat.length === 0) &&
+            (filteredCity.includes(city) || filteredCity.length === 0)
+          ) {
             return (
               <Marker
                 pinColor={"green"}
@@ -119,25 +188,42 @@ const FriendsMap = (props) => {
                 }}
                 // image={image}
               >
-                <Callout>
-                  <Button
-                    onPress={() => handlePress(event)}
-                    style={styles.event}
-                    title={event.name}
-                  />
+                <Callout
+                  onPress={() => handlePress(event)}
+                  style={styles.event}
+                >
+                  <Text>{event.name}</Text>
                 </Callout>
               </Marker>
             );
           }
-        })}
+        })) : null }
+
       </MapView>
-      {/* {selectedEvent ? (
-        <SingleEvent event={selectedEvent} handlePress={handlePress} />
-      ) : null} */}
-      {/* <EventList friendEvents={friendEvents}/> */}
+      {selectedEvent ? (
+        <AttendingEvents event={selectedEvent} handlePress={handlePress} />
+      ) : null}
+      {filterPage ? (
+        <Filter
+          categoryList={categoryList}
+          cityList={cityList}
+          handleFilterPage={handleFilterPage}
+          handleNoFilter={handleNoFilter}
+          handleCat={handleCat}
+          handleCity={handleCity}
+          handleMaxDistance={handleMaxDistance}
+        />
+      ) : null}
     </View>
   );
 };
+
+/*
+
+handleIsFreeChecked={handleIsFreeChecked}
+
+
+*/
 
 // const getImage = (image) => {
 //   switch (image) {

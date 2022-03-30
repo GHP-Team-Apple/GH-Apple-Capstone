@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Chat from '../client/components/Chat';
@@ -6,14 +6,16 @@ import Notifications from '../client/components/Notifications';
 import FriendsMap from '../client/components/FriendsMap';
 import CustomDrawer from '../client/components/CustomDrawer';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-
+import FriendChatStack from "./FriendChatStack"
 import TabNavigator from './TabNavigator';
+import FriendList from '../client/components/FriendList';
+import { createStackNavigator } from '@react-navigation/stack';
 
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 export default function AppStack() {
-	console.log('hello')
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} />}
@@ -27,22 +29,30 @@ export default function AppStack() {
           fontSize: 15,
         },
       }}>
+
       <Drawer.Screen
         name="Home"
         component={TabNavigator}
         options={{
           drawerIcon: () => (
-            <AntDesign name="home" size={22} color="white" />
+            <AntDesign name="home" size={22} color="black" />
           ),
         }}
       />
-      <Drawer.Screen
-        name="Messages"
-        component={Chat}
-        options={{
+	  {/* <Stack.Screen name="Messages" component={FriendList} options={{
           drawerIcon: () => (
             <AntDesign name="message1" size={22} color="white" />
           ),
+		  headerShown: true
+        }}/> */}
+      <Drawer.Screen
+        name="Messages"
+        component={FriendChatStack}
+        options={{
+          drawerIcon: () => (
+            <AntDesign name="message1" size={22} color="black" />
+          ),
+		  headerShown: false,
         }}
       />
       <Drawer.Screen
@@ -50,7 +60,7 @@ export default function AppStack() {
         component={FriendsMap}
         options={{
           drawerIcon: () => (
-            <Ionicons name="timer-outline" size={22} color="white" />
+            <Ionicons name="timer-outline" size={22} color="black" />
           ),
         }}
       />
@@ -63,7 +73,6 @@ export default function AppStack() {
           ),
         }}
       />
-	{console.log('---> herllo')}
     </Drawer.Navigator>
   );
 	// return (

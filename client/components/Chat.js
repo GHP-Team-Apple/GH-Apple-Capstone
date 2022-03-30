@@ -7,7 +7,7 @@ import { StyleSheet, TextInput, View, Button, Dimensions } from "react-native";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-// import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -63,6 +63,7 @@ export default function Chat() {
 
   async function readUser() {
     const user = await AsyncStorage.getItem("user");
+    console.log('user=======', user)
     if (user) {
       setUser(JSON.parse(user));
     }

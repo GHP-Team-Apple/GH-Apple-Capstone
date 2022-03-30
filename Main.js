@@ -7,8 +7,8 @@ import AuthStack from './navigation/AuthStack';
 export default function Main() {
 	return (
     <NavigationContainer>
-      <AppStack />
-      {/* <AuthStack /> */}
+      {/* <AppStack /> */}
+      <AuthStack />
     </NavigationContainer>
   );
 }

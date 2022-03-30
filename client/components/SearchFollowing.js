@@ -3,24 +3,20 @@
 
 import React from "react";
 import { StyleSheet, Dimensions, TouchableHighlight } from "react-native";
-import SuggestContact from "./SuggestContact";
+import SuggestContactFollowBack from "./SuggestedFollowBack";
 
 export default function App(props) {
-  if (props.contact) {
-    return (props.contacts.map((contact, idx) => (
-      <TouchableHighlight
-        key={idx}
-        activeOpacity={0.6}
-        underlayColor="#DDDDDD"
-        onPress={() => alert("Pressed!")}
-      >
-        <SuggestContact contact={contact} banana={props.handlePress} />
-        
-      </TouchableHighlight>
-    )))
-  } else {
-    return null
-  }
+  return props.followingContacts.map((contact, idx) => (
+    <TouchableHighlight
+      key={idx}
+      activeOpacity={0.6}
+      underlayColor="#DDDDDD"
+      onPress={() => alert("Pressed!")}
+    >
+      <SuggestContactFollowBack contact={contact} banana={props.handlePress} />
+      
+    </TouchableHighlight>
+  ));
 }
 
 const styles = StyleSheet.create({
