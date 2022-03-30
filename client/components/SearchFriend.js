@@ -6,17 +6,21 @@ import { StyleSheet, Dimensions, TouchableHighlight } from "react-native";
 import SuggestContact from "./SuggestContact";
 
 export default function App(props) {
-  return props.contacts.map((contact, idx) => (
-    <TouchableHighlight
-      key={idx}
-      activeOpacity={0.6}
-      underlayColor="#DDDDDD"
-      onPress={() => alert("Pressed!")}
-    >
-      <SuggestContact contact={contact} banana={props.handlePress} />
-      
-    </TouchableHighlight>
-  ));
+  if (props.contact) {
+    return (props.contacts.map((contact, idx) => (
+      <TouchableHighlight
+        key={idx}
+        activeOpacity={0.6}
+        underlayColor="#DDDDDD"
+        onPress={() => alert("Pressed!")}
+      >
+        <SuggestContact contact={contact} banana={props.handlePress} />
+        
+      </TouchableHighlight>
+    )))
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({
