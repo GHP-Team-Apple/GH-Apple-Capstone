@@ -32,11 +32,12 @@ export default function SignIn() {
 				flex: 1,
 				backgroundColor: colors.background,
 			}}
+			
 		>
 			<Text
 				style={{ color: colors.foreground, fontSize: 24, marginBottom: 20 }}
 			>
-				Appining
+				Ripple
 			</Text>
 			<Image
 				source={{ uri: 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png' }}

@@ -40,9 +40,10 @@ function Item ({ item }) {
   )};
   
 
-export default function Interest () {
+export default function Interest (props) {
  const [isSelected, setSelection] = useState(userInterests);
-
+	const user = props.user
+	console.log('looking here for user', user)
  const handleChange = (id) => {
     let temp = isSelected.map((select) => {
       if (id === select.id) {
@@ -57,7 +58,7 @@ export default function Interest () {
 
   const selectInterest = (renderData) => {
       return (
-       <SafeAreaView>
+       <View>
          <FlatList
         data={renderData}
         numColumns={3}
@@ -81,16 +82,16 @@ export default function Interest () {
             </View>
         )}
       />
-       </SafeAreaView>
+       </View>
      );
   } 
 
   return (
-          <View>
+          <SafeAreaView>
             <View style={{ flex: .5 }}>{selectInterest(isSelected)}</View>
             <Text>Selected </Text>
             <View style={{ flex: .5 }}>{selectInterest(selected)}</View>
-          </View>
+          </SafeAreaView>
         );
 }
 

@@ -65,7 +65,7 @@ export default function TabNavigator() {
 				name="friends map"
 				component={Empty}
 				options={{
-					tabBarIcon: () => <Ionicons name="man-outline" size={24} color="white" />
+					tabBarIcon: () => <Ionicons name="md-add-circle-outline" size={30} color="black" />
 				}}
 			/>
 			<Tab.Screen
