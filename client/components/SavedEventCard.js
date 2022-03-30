@@ -45,7 +45,7 @@ export default SavedEventCard = (props) => {
 
   return (
     <View style={styles.event}>
-      <View style={styles.noneImage}>
+      <View>
         <Image
           style={styles.image}
           source={{
@@ -53,10 +53,10 @@ export default SavedEventCard = (props) => {
           }}
         />
       </View>
-      <View>
-        <Text style={{fontSize: 20, fontWeight:"bold", marginTop:10}}>{props.event.name}</Text>
-        <Text style={{fontSize: 14, color:"gray", marginTop:7}}>{props.event.venueName}</Text>
-        <Text style={{fontSize: 14, color:"gray", marginTop:7}}>{props.event.startDate}</Text>
+      <View style={styles.info}>
+        <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>{props.event.name}</Text>
+        <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{props.event.venueName}</Text>
+        <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{props.event.startDate}</Text>
         {props.event.checkIn ? (
           <View style={styles.buttons}>
             <IconButton
@@ -107,19 +107,25 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignContent: "center",
+    alignItems: "center",
   },
   image: {
     width: 120,
     height: 120,
     borderRadius: 8,
     marginLeft: 10,
-    marginBottom: 20
+    // marginBottom: 20, 
+    alignSelf: 'center'
   },
-    buttons: {
-      display: "flex",
-      flexDirection: "row",
-      marginTop: 14,
-      justifyContent: "space-between",
-    },
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: 14,
+    justifyContent: "space-between",
+  },
+  info: {
+    width: 200,
+    margin: 10,
+    marginRight: 15
+  }
 });
