@@ -55,6 +55,8 @@ export default SavedEventCard = (props) => {
       </View>
       <View>
         <Text style={{fontSize: 20, fontWeight:"bold", marginTop:10}}>{props.event.name}</Text>
+        <Text style={{fontSize: 14, color:"gray", marginTop:7}}>{props.event.venueName}</Text>
+        <Text style={{fontSize: 14, color:"gray", marginTop:7}}>{props.event.startDate}</Text>
         {props.event.checkIn ? (
           <View style={styles.buttons}>
             <IconButton
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     buttons: {
       display: "flex",
       flexDirection: "row",
-      marginTop: 40,
+      marginTop: 14,
       justifyContent: "space-between",
     },
 });

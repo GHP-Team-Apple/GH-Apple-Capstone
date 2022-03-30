@@ -6,12 +6,14 @@ import Notifications from '../client/components/Notifications';
 import FriendsMap from '../client/components/FriendsMap';
 import CustomDrawer from '../client/components/CustomDrawer';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import FriendChatNav from "../client/components/FriendChatNav"
+import FriendChatStack from "./FriendChatStack"
 import TabNavigator from './TabNavigator';
 import FriendList from '../client/components/FriendList';
+import { createStackNavigator } from '@react-navigation/stack';
 
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 export default function AppStack() {
 	console.log('hello')
@@ -28,6 +30,7 @@ export default function AppStack() {
           fontSize: 15,
         },
       }}>
+
       <Drawer.Screen
         name="Home"
         component={TabNavigator}
@@ -37,13 +40,20 @@ export default function AppStack() {
           ),
         }}
       />
+	  {/* <Stack.Screen name="Messages" component={FriendList} options={{
+          drawerIcon: () => (
+            <AntDesign name="message1" size={22} color="white" />
+          ),
+		  headerShown: true
+        }}/> */}
       <Drawer.Screen
         name="Messages"
-        component={FriendList}
+        component={FriendChatStack}
         options={{
           drawerIcon: () => (
             <AntDesign name="message1" size={22} color="white" />
           ),
+		  headerShown: false,
         }}
       />
       <Drawer.Screen

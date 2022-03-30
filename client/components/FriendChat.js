@@ -11,6 +11,7 @@ import {
   Dimensions,
   Text,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { db } from "../../firebase";
 import {
@@ -23,26 +24,28 @@ import {
   onSnapshot,
   where,
 } from "firebase/firestore";
+import { Ionicons } from "@expo/vector-icons";
+import { makeStyles } from "@mui/styles";
 
-export default function FriendChat(props) {
+const useStyles = makeStyles((theme) => ({
+  customHoverFocus: {
+    "&:hover, &.Mui-focusVisible": { backgroundColor: "yellow" },
+  },
+}));
+
+export default function FriendChat({ route, navigation }) {
+  const { myUser, chatUser, chatId } = route.params;
   const [user, setUser] = useState({
-    _id: `${props.user.uid}`,
-    name: `${props.user.firstName}`,
+    _id: `${myUser.uid}${chatId}`,
+    name: `${myUser.firstName}`,
   });
   const [messages, setMessages] = useState([]);
-
-  function readUser(props) {
-    const user = { _id: `${props.user.uid}`, name: `${props.user.firstName}` };
-    if (user) {
-      setUser(user);
-    }
-  }
+  const classes = useStyles();
 
   useEffect(() => {
-    readUser(props);
     const chatsRef = query(
       collection(db, "Chats"),
-      where("user", "in", [user, props.chatUser])
+      where("user", "in", [user, chatUser])
     );
     const unsubscribe = onSnapshot(chatsRef, (querySnapshot) => {
       const messagesFirestore = querySnapshot
@@ -72,15 +75,36 @@ export default function FriendChat(props) {
     await Promise.all(writes);
   }
 
+  const IconButton = ({ onPress, icon }) => (
+    <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
+      {icon}
+      {/* <Text style={{ fontSize: 12 }}>{title}</Text> */}
+    </TouchableOpacity>
+  );
+  
+  console.log("user",route.params)
   return (
+    chatUser !== null
+    ? (
     <View style={styles.container}>
+      <View style={styles.subcontainer}>
+      <IconButton
+          // title={"Back"}
+          onPress={() => navigation.goBack()}
+          icon={<Ionicons name="chevron-back" size={24} color="black" />}
+          className={classes.customHoverFocus}
+        />
       {/* <Button
         title="Back"
-        onPress={() => props.handleBack()}
+        onPress={() => navigation.goBack()}
         style={styles.button}
         /> */}
+        <Text style={styles.text}>{chatUser.name}</Text>
+        </View>
       <GiftedChat messages={messages} user={user} onSend={handleSend} />
     </View>
+    )
+    : null
   );
 }
 
@@ -92,6 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
     flexDirection: "column",
+    // marginBottom: 10
   },
   input: {
     height: 50,
@@ -101,9 +126,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderColor: "gray",
   },
-  //   button: {
-  //       marginTop: 400,
-  //       justifyContent: "center",
-  //       alignItems:"stretch"
-  //   }
+  text:{
+    fontSize:24,
+    marginLeft: 132,
+  },
+  subcontainer:{
+    display:"flex",
+    marginTop:10,
+    flexDirection: "row",
+  },
 });
