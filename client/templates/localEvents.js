@@ -13,7 +13,7 @@ export const LocalEventObj = (event) => {
     venue: {
       name: event.venueName,
       address: event.venueAddress,
-      extended_address: event.city,
+      extended_address: event.city || '',
       location: {
         lat: event.location.lat,
         lon: event.location.lon,

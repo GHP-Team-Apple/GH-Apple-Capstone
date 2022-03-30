@@ -1,13 +1,64 @@
-import React, { useCallback } from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Dimensions, Linking } from 'react-native';
+import React, { useCallback, useState, useEffect, } from 'react';
+import { ScrollView, View, Text, Image, Pressable, StyleSheet, Dimensions, Linking } from 'react-native';
 import Modal from 'react-native-modal';
 import { saveEvent } from '../services/events';
-import { LocalEventView } from '../templates/localEvents';
+import { getFriendEvents } from "../services/events";
+import { getUserById } from '../services/users'
 
-const SingleEvent = (props) => {
+const AttendingEvents = (props) => {
     const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2";
     const event = props.event;
     const supportedUrl = props.event.eventUrl;
+    const [friendEvents, setFriendEvents] = useState([]);
+    const [friendsAttending, setFriendsAttending] = useState([]);
+
+    useEffect(async () => {
+        try {
+          const friendEvents = await getFriendEvents(userId);
+          setFriendEvents(friendEvents);
+        } catch (err) {
+          console.log("error: ", err);
+        }
+    }, []);
+
+    // useEffect(async () => {
+    //     const friends = [];
+
+    //     friendEvents.map( async (friendEvent) => {
+    //         // check if another friend is attending the same event
+    //         if (event.id === friendEvent.id && friendEvent.checkIn) {
+    //             let friend = await getUserById(friendEvent.userId);
+    //             friends.push(friend)
+    //         }
+    //     })
+
+    //     // need to see if friends show up***
+    //     // if it does, it means you can map it
+        
+    //     setFriendsAttending(friends)
+    //     console.log(">>>>>>>>>>>>>>>>>>>>>", friendsAttending)
+    // }, [])
+
+    useEffect(async () => {
+        await getFriendsAttending();
+        console.log(">>>>>>>>>", friendsAttending)
+    }, [friendsAttending])
+
+    const getFriendsAttending = async () => {
+        const friends = [];
+        for (let i = 0; i < friendEvents.length; i++) {
+            
+            if (event.id === friendEvents[i].id && friendEvents[i].checkIn) {
+                console.log(friendEvents[i].id)
+                // let friend = await getUserById(friendEvents[i].userId);
+                // friends.push(friend)
+            }
+        }
+        setFriendsAttending(friends);
+    }
+
+
+
 
     const handleLink = useCallback(async () => {
         const supported = await Linking.canOpenURL(supportedUrl);
@@ -42,9 +93,6 @@ const SingleEvent = (props) => {
         props.handlePress(null);
     }
 
-    // if (event.hostId) {
-    //     const LocalEventView = LocalEventModal(event)
-    // }
     
     return (
         <Modal
@@ -65,24 +113,14 @@ const SingleEvent = (props) => {
                     <Text style={{ fontSize: 25, fontWeight: "bold" }}>{event.name}</Text>
                     <Text style={{ fontSize: 20 }}>{dateFormatter(event.date)}</Text>
                     <Text style={{ fontSize: 16 }}>({event.type})</Text>
-              
                     <Image source={{ uri: event.imageUrl }} style={styles.image} />
-              
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                       {event.venue.name}
                     </Text>
-              
                     <Text
                       style={{ marginBottom: 10 }}
                     >{`${event.venue.address}, ${event.venue.extended_address}`}
                     </Text>
-              
-                    <Pressable
-                      style={{ ...styles.button, backgroundColor: "#FF6B6B" }}
-                      onPress={handleSaveEvent}
-                    >
-                      <Text>Save Event</Text>
-                    </Pressable>
               
                     <Pressable style={{ ...styles.button, backgroundColor: "#4D96FF" }}>
                       <Text>More Details</Text>
@@ -93,28 +131,40 @@ const SingleEvent = (props) => {
                 )
                 :
                 (<View style={styles.container}>
+                    
                     <Pressable
                         onPress={() => props.handlePress(null)}
                         style={{ alignSelf: 'flex-end', margin: 10 }}
                     >
                         <Text>{'[close x]'}</Text>
                     </Pressable>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{event.name}</Text>
-                        <Text style={{ fontSize: 20, }}>{dateFormatter(event.date)}</Text>
-                        <Text style={{ fontSize: 16 }}>({event.type})</Text>
 
+                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{event.name}</Text>
+                        <Text style={{ fontSize: 16, }}>{dateFormatter(event.date)}</Text>
+                        <Text style={{ fontSize: 14 }}>({event.type})</Text>
                         <Image source={{ uri: event.imageUrl }} style={styles.image} />
-
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.venue.name}</Text>
+                        <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{event.venue.name}</Text>
                         <Text style={{ marginBottom: 10 }}>{`${event.venue.address}, ${event.venue.extended_address}`}</Text>
-
-                    <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>
-                        <Text>Save Event</Text>
-                    </Pressable>
 
                     <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={handleLink}>
                         <Text>Get Tickets</Text>
                     </Pressable>
+
+                    <ScrollView>
+                        <Text>Friends Attending:</Text>
+                        {
+                            // friendsAttending.map( async (friend) => {
+                            
+                            //     // const image = getImage(friend.profilePicture);
+                            //     return (
+                            //     <View key={friend.uid} style={styles.friend}>
+                            //         {/* <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }}/> */}
+                            //         <Text style={{ fontSize: 20}}>{friend.username}</Text>
+                            //     </View>
+                            //     )
+                            // })
+                        }
+                    </ScrollView>
                 </View>)
             }
             
@@ -130,6 +180,21 @@ const dateFormatterLocal = (timestamp) => {
     return `${new Date(timestamp * 1000)}`.slice(0, 21);
 }
 
+const getImage = (image) => {
+    switch(image) {
+        case 'alpaca.png':
+            return require('../../assets/alpaca.png');
+        case 'rabbit.png':
+            return require('../../assets/rabbit.png');
+        case 'chameleon.png':
+            return require('../../assets/chameleon.png');
+        case 'dog.png':
+            return require('../../assets/dog.png');
+        case 'koala.png':
+            return require('../../assets/koala.png');
+    }
+}
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
@@ -139,8 +204,8 @@ const styles = StyleSheet.create({
         height: 500
     },
     image: {
-        width: 320,
-        height: 180,
+        width: 280,
+        height: 120,
         margin: 10,
         borderRadius: 3
     },
@@ -149,10 +214,15 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 12,
         margin: 10
+    },
+    friend: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 10,
     }
 });
 
-export default SingleEvent;
+export default AttendingEvents;
 
 
 
