@@ -210,6 +210,11 @@ const EventMap = () => {
                         <Picker.Item label='Classical' value='classical' />
                         <Picker.Item label='Broadway' value='broadway_tickets_national' />
                         <Picker.Item label='Sports' value='sports' />
+                        <Picker.Item label='Film' value='film' />
+                        <Picker.Item label='Family' value='family' />
+                        <Picker.Item label='Literacy' value='literacy' />
+
+
 
                     </Picker>
                 </View>)
