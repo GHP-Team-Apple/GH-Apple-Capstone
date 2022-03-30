@@ -16,9 +16,9 @@ export default function Profile({navigation}) {
 	const [lastName, setLastName] = useState('');
 	const [currUserData, setCurrUserData] = useState(null)
 
-	useEffect (async () => {
-		await setDoc(doc(db, 'Users', user.uid), { ...userData, uid: user.uid })
-	}, []);
+	// useEffect (async () => {
+	// 	await setDoc(doc(db, 'Users', user.uid), { ...userData, uid: user.uid })
+	// }, []);
 	
 	
 	// const [selectedImage, setSelectedImage] = useState(null);
@@ -49,7 +49,7 @@ export default function Profile({navigation}) {
 		console.log(currUserData)
 		navigation.navigate('home1');
 	}
-	console.log('is this auth', auth.currentUser)
+	console.log('is this auth', auth.currentUser.uid)
 
 	const getUserInfo = async () => {
 		console(auth.currentUser)
