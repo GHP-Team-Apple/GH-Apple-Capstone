@@ -15,6 +15,7 @@ import { getSavedEventsByUserId } from "../services/events";
 import SavedEventCard from "./SavedEventCard";
 import SingleSavedEvent from "./SingleSavedEvent"
 
+
 const SavedEvents = () => {
   const [events, setEvents] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -95,7 +96,7 @@ const SavedEvents = () => {
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height * 0.875,
     marginTop: 30,
   },
   savedEvents: {
