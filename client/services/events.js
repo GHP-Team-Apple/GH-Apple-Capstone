@@ -5,6 +5,7 @@ import {
   addDoc,
   getDocs,
   getDoc,
+  deleteDoc,
   query,
   where,
 } from "firebase/firestore";
@@ -48,6 +49,7 @@ export const getSavedEventsByUserId = async (userId) => {
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => {
     const obj = doc.data();
+    obj.eventId = obj.id;
     obj["id"] = doc.id;
     return obj;
   });
@@ -56,7 +58,7 @@ export const getSavedEventsByUserId = async (userId) => {
 export const saveEvent = async (userId, event) => {
   const q = query(
     collection(db, "SavedEvents"),
-    where("eventId", "==", event.id),
+    where("id", "==", event.id),
     where("userId", "==", userId)
   );
   const querySnapshot = await getDocs(q);
@@ -69,4 +71,20 @@ export const saveEvent = async (userId, event) => {
     //console.log('EVENT TO BE SAVED ---->', savedEvent);
   }
 };
+
+export const unsaveEvent = async (userId, event) => {
+  const q = query(
+    collection(db, "SavedEvents"),
+    where("id", "==", event.id),
+    where("userId", "==", userId)
+  );
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.docs.length !== 0) {
+    // console.log('QS', querySnapshot.docs[0].id);
+    await deleteDoc(doc(db, "SavedEvents", querySnapshot.docs[0].id));
+  } else {
+    return;
+  }
+}
 

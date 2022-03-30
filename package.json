@@ -12,11 +12,13 @@
   "dependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
+    "@mui/styles": "^5.5.3",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-picker/picker": "2.2.1",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/drawer": "^6.3.1",
+    "@react-navigation/material-top-tabs": "^6.1.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.2",
     "@react-navigation/stack": "^6.1.1",

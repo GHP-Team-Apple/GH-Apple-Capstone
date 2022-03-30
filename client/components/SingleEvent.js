@@ -8,6 +8,7 @@ const SingleEvent = (props) => {
     const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2";
     const event = props.event;
     const supportedUrl = props.event.eventUrl;
+    const savedEventsIDArr = props.savedEventsIDArr;
 
     const handleLink = useCallback(async () => {
         const supported = await Linking.canOpenURL(supportedUrl);
@@ -40,12 +41,11 @@ const SingleEvent = (props) => {
 
         //close modal after saving the event
         props.handlePress(null);
+
+        //add event id to savedEventsIDArr
+        props.updateSaveEventID([...savedEventsIDArr, event.id]);
     }
 
-    // if (event.hostId) {
-    //     const LocalEventView = LocalEventModal(event)
-    // }
-    
     return (
         <Modal
             isVisible={true}
@@ -57,9 +57,9 @@ const SingleEvent = (props) => {
 
                     <Pressable
                       onPress={() => props.handlePress(null)}
-                      style={{ alignSelf: "flex-end", margin: 10 }}
+                      style={{ alignSelf: "flex-end", margin: 5 }}
                     >
-                      <Text>{"[close x]"}</Text>
+                      <Text style={{ fontSize: 10 }}>{"[close x]"}</Text>
                     </Pressable>
               
                     <Text style={{ fontSize: 25, fontWeight: "bold" }}>{event.name}</Text>
@@ -101,11 +101,11 @@ const SingleEvent = (props) => {
                     </Pressable>
                         <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{event.name}</Text>
                         <Text style={{ fontSize: 20, }}>{dateFormatter(event.date)}</Text>
-                        <Text style={{ fontSize: 16 }}>({event.type})</Text>
+                        <Text style={{ fontSize: 16 }}>({event.type.split('_')[0]})</Text>
 
                         <Image source={{ uri: event.imageUrl }} style={styles.image} />
 
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.venue.name}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>{event.venue.name}</Text>
                         <Text style={{ marginBottom: 10 }}>{`${event.venue.address}, ${event.venue.extended_address}`}</Text>
 
                     <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>

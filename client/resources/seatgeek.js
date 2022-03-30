@@ -15,6 +15,7 @@ import { SEAT_GEEK_KEY } from '@env';
 const getEventsFromSeatGeek = async (type, lat, lon, maxRadius) => {
     try {
         const key = SEAT_GEEK_KEY;
+        // console.log("=======", key)
         const { data } = await axios.get(`https://api.seatgeek.com/2/events?taxonomies.name=${type}&lat=${lat}&lon=${lon}&range=${maxRadius}mi&per_page=10&client_id=${key}`);
         
         // set filter for events happening within the next 10 days
