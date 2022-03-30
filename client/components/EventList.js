@@ -1,37 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, Pressable, View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import SingleEvent from './SingleEvent';
+import EventRow from './EventRow';
+import { getSavedEventsByUserId } from '../services/events';
 
 const EventList = (props) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const seatGeek = props.seatGeek || [];
     const localEvents = props.localEvents || [];
     const handlePress = props.handleSelectEvent;
+    const savedEventsIDArr = props.savedEventsIDArr;
 
     return (
-            <ScrollView style={styles.container}>
-                {
-                    seatGeek.map((event, idx) => (
-                        <Pressable key={idx} style={styles.event}
-                            onPress={() => handlePress(event)}
-                        >
-                            <Image
-                                style={styles.image}
-                                source={{
-                                    uri: event.performers[0].image,
-                                }}
-                            />
-                            <View style={styles.text}>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold', alignContent: 'stretch' }}>{event.performers[0].name}</Text>
-                                <Text>{event.venue.name}</Text>
-                                <Text style={{ fontSize: 13 }}>{event.venue.address}</Text>
-                                <Text style={{ fontSize: 13 }}>{event.venue.extended_address}</Text>
-                                <Text style={{ fontWeight: 'bold' }}>{dateFormatter(event.datetime_utc)}</Text>
-                            </View>
-                        </Pressable>
-                    ))
-                }
-                { /* {
+        <ScrollView style={styles.container}>
+            {
+                seatGeek.map((event, idx) => (
+                    <EventRow
+                        key={idx}
+                        event={event}
+                        handlePress={handlePress}
+                        savedEventsIDArr={props.savedEventsIDArr}
+                        updateSaveEventID={props.updateSaveEventID} />
+                ))
+            }
+            { /* {
                 localEvents.map((event, idx) => (
                     <Pressable key={`le-${idx}`} style={styles.event}
                         onPress={() => handlePress(event)}
@@ -51,10 +43,16 @@ const EventList = (props) => {
                     </Pressable>
                 ))
             } */}
-                {
-                    selectedEvent ? <SingleEvent event={selectedEvent} handlePress={handlePress} /> : null
-                }
-            </ScrollView>
+            {
+                selectedEvent
+                    ? <SingleEvent
+                        event={selectedEvent}
+                        handlePress={handlePress}
+                        savedEventsIDArr={savedEventsIDArr}
+                    />
+                    : null
+            }
+        </ScrollView>
     )
 
 }

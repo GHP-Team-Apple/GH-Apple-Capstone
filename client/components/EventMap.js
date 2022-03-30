@@ -3,8 +3,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import { StyleSheet, View, Text, Pressable, Dimensions } from 'react-native';
 import * as Location from "expo-location";
 import getEventsFromSeatGeek from '../resources/seatgeek';
-import getEventsFromTicketmaster from '../resources/ticketmaster';
-import { getLocalEvents } from '../services/events';
+import { getLocalEvents, getSavedEventsByUserId } from '../services/events';
 import EventList from './EventList';
 import SingleEvent from './SingleEvent';
 import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
@@ -13,6 +12,7 @@ import { Picker } from '@react-native-picker/picker';
 
 
 const EventMap = () => {
+    const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);
     const [currentRegion, setCurrentRegion] = useState(null);
@@ -21,8 +21,7 @@ const EventMap = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [selectedEventType, setSelectedEventType] = useState('concert');
     const [isOpen, setIsOpen] = useState(false);
-
-    const eventType = 'concert';
+    const [savedEventsIDArr, setSavedEventsIDArr] = useState([]);
 
     useEffect(() => {
         (async () => {
@@ -46,6 +45,12 @@ const EventMap = () => {
     }, []);
 
     useEffect(async () => {
+        const savedEvents = await getSavedEventsByUserId(userId);
+        const eventsIDArr = savedEvents.map(event => event.eventId);
+        setSavedEventsIDArr(eventsIDArr);
+    }, [])
+
+    useEffect(async () => {
         if (currentRegion) {
             const { latitude, longitude } = currentRegion;
             const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, 2);
@@ -54,8 +59,10 @@ const EventMap = () => {
     }, [currentRegion]);
 
     useEffect(async () => {
-        const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, 2);
-        setSeatGeekEvents(events);
+        if (currentRegion) {
+            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, 2);
+            setSeatGeekEvents(events);
+        }
     }, [selectedEventType])
 
     const loadLocalEvents = async () => {
@@ -101,6 +108,10 @@ const EventMap = () => {
         } else {
             setSelectedEvent(null);
         }
+    }
+
+    const updateSaveEventID = (arr) => {
+        setSavedEventsIDArr(arr);
     }
 
     const CustomMarker = (eventType) => {
@@ -194,10 +205,23 @@ const EventMap = () => {
                 </View>
                 : null}
 
-            <EventList seatGeek={seatGeekEvents} localEvents={localEvents} handleSelectEvent={handleSelectEvent} />
+            <EventList
+                seatGeek={seatGeekEvents}
+                localEvents={localEvents}
+                handleSelectEvent={handleSelectEvent}
+                updateSaveEventID={updateSaveEventID}
+                savedEventsIDArr={savedEventsIDArr}
+            />
 
             {
-                selectedEvent ? <SingleEvent event={selectedEvent} handlePress={handleSelectEvent} /> : null
+                selectedEvent ?
+                    <SingleEvent
+                        event={selectedEvent} 
+                        handlePress={handleSelectEvent} 
+                        updateSaveEventID={updateSaveEventID}
+                        savedEventsIDArr={savedEventsIDArr}
+                    />
+                    : null
             }
 
         </View>
