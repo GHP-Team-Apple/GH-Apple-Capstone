@@ -45,16 +45,11 @@ export default function Profile({navigation}) {
 			
 		]);
 		setCurrUserData({ ...userData, uid: user.uid })
-		// console.log(thePromise);
-		console.log(currUserData)
 		navigation.navigate('home1');
 	}
-	console.log('is this auth', auth.currentUser.uid)
 
 	const getUserInfo = async () => {
-		console(auth.currentUser)
 	const userInfo = await getDoc(doc(db, "User", auth.currentUser.uid))
-	console.log(userInfo.id)
 	}
 	// getUserInfo()
 	const [location, setLocation] = useState(null);
@@ -105,7 +100,7 @@ export default function Profile({navigation}) {
 						borderRadius: 120,
 						width: 120,
 						height: 120,
-						backgroundColor: 'green',
+						backgroundColor: '#184e77',
 						alignItems: 'center',
 						justifyContent: 'center',
 					}}
@@ -116,10 +111,11 @@ export default function Profile({navigation}) {
 					value={firstName}
 					onChangeText={setFirstName}
 					style={{
-						borderBottomColor: 'gold',
-						marginTop: 40,
-						borderBottomWidth: 2,
+						borderBottomColor: '#b29ef8',
+						marginTop: 20,
+						borderBottomWidth: 3,
 						width: '100%',
+						fontSize: 16
 					}}
 				/>
 				<TextInput
@@ -127,10 +123,11 @@ export default function Profile({navigation}) {
 					value={lastName}
 					onChangeText={setLastName}
 					style={{
-						borderBottomColor: 'green',
-						marginTop: 40,
-						borderBottomWidth: 2,
+						borderBottomColor: '#b29ef8',
+						marginTop: 20,
+						borderBottomWidth: 3,
 						width: '100%',
+						fontSize: 16
 					}}
 				/>
 				<TextInput
@@ -138,10 +135,11 @@ export default function Profile({navigation}) {
 					value={username}
 					onChangeText={setUsername}
 					style={{
-						borderBottomColor: 'gold',
-						marginTop: 40,
-						borderBottomWidth: 2,
+						borderBottomColor: '#b29ef8',
+						marginTop: 20,
+						borderBottomWidth: 3,
 						width: '100%',
+						fontSize: 16,
 					}}
 				/>
 				<View>
@@ -150,7 +148,7 @@ export default function Profile({navigation}) {
 				<View style={{ marginTop: 'auto', width: 80 }}>
 					<Button
 						title="Next"
-						color="green"
+						color="#184e77"
 						onPress={handlePress}
 						// disabled={!displayName}
 					/>
@@ -173,7 +171,7 @@ export default function Profile({navigation}) {
 				}}
 			>
 				<Text style={{ fontSize: 22, color: colors.foreground }}>
-					{auth.currentUser}
+					{auth.currentUser.displayName}
 				</Text>
 				{/* <Text style={{ fontSize: 14, color: 'black', marginTop: 20 }}>
 					Please provide displayName
@@ -192,25 +190,22 @@ export default function Profile({navigation}) {
 				</TouchableOpacity>
 				<Text
 					style={{
-						borderBottomColor: 'gold',
 						marginTop: 40,
-						borderBottomWidth: 2,
 						width: '100%',
+						fontSize: 14,
 					}}
 				>{auth.currentUser.firstName}</Text>
 				<Text
 					style={{
-						borderBottomColor: 'green',
 						marginTop: 40,
-						borderBottomWidth: 2,
 						width: '100%',
+						fontSize: 14,
 					}}
 				>{auth.currentUser.lastName}</Text>
 				<Text
 					style={{
-						borderBottomColor: 'gold',
 						marginTop: 40,
-						borderBottomWidth: 2,
+						fontSize: 14,
 						width: '100%',
 					}}
 				>{auth.currentUser.username}</Text>

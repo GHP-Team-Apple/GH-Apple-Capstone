@@ -9,7 +9,7 @@ import SingleEvent from './SingleEvent';
 import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
 import { LocalEventObj } from '../templates/localEvents';
 import { Picker } from '@react-native-picker/picker';
-import { auth, db } from '../../firebase';
+import { auth } from '../../firebase';
 
 const EventMap = () => {
     // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
@@ -133,7 +133,6 @@ const EventMap = () => {
                 return <Ionicons name="heart-circle" size={33} color="#E06268" />
         }
     }
-    console.log('MY ID: ', auth.currentUser.uid);
 
     return location ? (
         <View style={{ flex: 1 }}>
