@@ -31,8 +31,8 @@ const SeedEventbrite = () => {
                 imageUrl: event.logo.original.url,
                 isFree: event.is_free,
                 location: {
-                    lat: event.venue.latitude,
-                    lon: event.venue.longitude,
+                    lat: Number(event.venue.latitude),
+                    lon: Number(event.venue.longitude),
                 },
                 name: event.name.text,
                 startDate: event.start.utc,
