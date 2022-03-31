@@ -1,34 +1,36 @@
 import { View, Text, FlatList, StyleSheet, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Checkbox from 'expo-checkbox';
 import { StatusBar } from 'expo-status-bar';
-
+import { auth } from '../../firebase'
 
 const userInterests = [
-    { id: 1, type:'Music', isChecked: false },
-    {id: 2, type: 'Business', isChecked: false },
-    { id: 3, type:'Holiday', isChecked: false },
-    { id: 4, type: 'Science', isChecked: false },
-    { id: 5, type:'Tech', isChecked: false },
-    { id: 6, type: 'Food & Drink', isChecked: false },
-    { id: 7, type: 'Film & Media', isChecked: false },
-    { id: 8, type:'Fashion', isChecked: false },
-    { id: 9, type: 'Travel & Outdoor', isChecked: false },
-    { id: 10, type: 'Home & Lifestyle', isChecked: false },
-    { id: 11, type: 'School Activities', isChecked: false },
-    { id: 12, type: 'Auto Boat & Air', isChecked: false },
-    { id: 13, type: 'Other', isChecked: false },
-    { id: 14, type: 'Spirituality', isChecked: false },
-    { id: 15, type: 'Sports & Fitness', isChecked: false }, 
-    { id: 16, type: 'Government', isChecked: false },
-    { id: 17, type: 'Family & Education', isChecked: false },
-    { id: 18, type: 'Charity & Causes', isChecked: false },
-    { id: 19, type: 'Health', isChecked: false },
-    { id: 20, type: 'Arts', isChecked: false },
-    { id: 21, type: 'Hobbies', isChecked: false }]
+    { id: 1, type:'Concert', isChecked: false },
+    {id: 2, type: 'Theater', isChecked: false },
+    { id: 3, type:'Comedy', isChecked: false },
+    { id: 4, type: 'Dance', isChecked: false },
+    { id: 5, type:'Classical', isChecked: false },
+    { id: 6, type: 'Broadway', isChecked: false },
+    { id: 7, type: 'Sports', isChecked: false },
+    { id: 8, type:'Film', isChecked: false },
+    { id: 9, type: 'Family', isChecked: false },
+    { id: 10, type: 'Literacy', isChecked: false },
+    // { id: 11, type: 'School Activities', isChecked: false },
+    // { id: 12, type: 'Auto Boat & Air', isChecked: false },
+    // { id: 13, type: 'Other', isChecked: false },
+    // { id: 14, type: 'Spirituality', isChecked: false },
+    // { id: 15, type: 'Sports & Fitness', isChecked: false }, 
+    // { id: 16, type: 'Government', isChecked: false },
+    // { id: 17, type: 'Family & Education', isChecked: false },
+    // { id: 18, type: 'Charity & Causes', isChecked: false },
+    // { id: 19, type: 'Health', isChecked: false },
+    // { id: 20, type: 'Arts', isChecked: false },
+    // { id: 21, type: 'Hobbies', isChecked: false }
+]
 
 function Item ({ item }) {
     const [isSelected, setSelection] = useState(userInterests);
+	
     return (
     <View style={{flexDirection: 'row',marginBottom: 20,}}>
         <Checkbox disabled={false} value={isSelected} onValueChange={setSelection}
@@ -58,39 +60,39 @@ export default function Interest (props) {
 
   const selectInterest = (renderData) => {
       return (
-       <View>
-         <FlatList
-        data={renderData}
-        numColumns={3}
-        renderItem={({ item }) => (
-            <View style={{ marginTop: 20}} >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flex: 1,
-                    margin: 2,
-                }}>
-                <Checkbox
-                  value={item.isChecked}
-                  onValueChange={() => {
-                    handleChange(item.id);
-                  }}
-                  style={{ alignSelf: 'center' }}
-                />
-                <Text>{item.type}</Text>
-              </View>
-            </View>
-        )}
-      />
-       </View>
-     );
-  } 
+		<View>
+		<FlatList
+	   data={renderData}
+	   numColumns={3}
+	   renderItem={({ item }) => (
+		   <View style={{ marginTop: 20}} >
+			 <View
+			   style={{
+				 flexDirection: 'row',
+				 flex: 1,
+				   margin: 2,
+			   }}>
+			   <Checkbox
+				 value={item.isChecked}
+				 onValueChange={() => {
+				   handleChange(item.id);
+				 }}
+				 style={{ alignSelf: 'center' }}
+			   />
+			   <Text>{item.type}</Text>
+			 </View>
+		   </View>
+	   )}
+	 />
+	  </View>
+	);
+ } 
 
   return (
           <SafeAreaView>
-            <View style={{ flex: .5 }}>{selectInterest(isSelected)}</View>
-            <Text>Selected </Text>
-            <View style={{ flex: .5 }}>{selectInterest(selected)}</View>
+            <View style={{ padding: 5 }}>{selectInterest(isSelected)}</View>
+            <Text style={{ paddingTop: 10 }}>Selected </Text>
+            <View style={{ paddingTop: 3 }}>{selectInterest(selected)}</View>
           </SafeAreaView>
         );
 }
