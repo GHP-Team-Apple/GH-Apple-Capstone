@@ -54,7 +54,7 @@ const EventMap = () => {
             } else {
                 events = await getEventsFromSeatGeek(['concert'], currentLocation.coords.latitude, currentLocation.coords.longitude, maxDistance[0]);
             }
-            
+
             setSeatGeekEvents(events);
             await loadLocalEvents()
 
@@ -189,7 +189,7 @@ const EventMap = () => {
                 const newStatus = categoryList[i].isChecked;
             }
         }
-        
+
         const selectedCat = categoryList.filter(cat => cat.isChecked).map(catObj => catObj.value);
         setCategoryList(categoryList);
         setFilteredCat(selectedCat);
@@ -238,7 +238,7 @@ const EventMap = () => {
                     }}
                     onRegionChangeComplete={(region) => handleRegionChange(region)}
                 >
-                    {   seatGeekEvents ?
+                    {seatGeekEvents ?
                         seatGeekEvents.map((event, idx) => (
                             <Marker
                                 key={`sg-${idx}`}
@@ -253,19 +253,38 @@ const EventMap = () => {
                         ))
                         : null
                     }
-                    {   localEvents ?
-                        localEvents.map((event, idx) => (
-                            <Marker
-                                key={`le-${idx}`}
-                                pinColor={'green'}
-                                coordinate={{
-                                    latitude: Number(event.location.lat),
-                                    longitude: Number(event.location.lon),
-                                }}
-                                title={event.name}
-                                onPress={() => handleSelectEvent(event)}
-                            />
-                        ))
+                    {localEvents ?
+                        localEvents.map((event, idx) => {
+                            const eventIsFree = event.isFree ? event.isFree : false;
+                            const eventLat = event.location.lat;
+                            const eventLon = event.location.lon;
+                            const myLat = currentRegion.latitude;
+                            const myLon = currentRegion.longitude;
+                            const category = event.type;
+                            const city = event.city;
+                            const distanceFromEvent = getDistance(
+                                myLat,
+                                eventLat,
+                                myLon,
+                                eventLon
+                            ); // mi
+                            if (
+                                (filteredCat.includes(category) || filteredCat.length === 0) &&
+                                (filteredCity.includes(city) || filteredCity.length === 0)
+                                && (distanceFromEvent <= maxDistance)
+                                && (eventIsFree === isFreeChecked || isFreeChecked === false)
+                            )
+                                return (<Marker
+                                    key={`le-${idx}`}
+                                    pinColor={'green'}
+                                    coordinate={{
+                                        latitude: Number(event.location.lat),
+                                        longitude: Number(event.location.lon),
+                                    }}
+                                    title={event.name}
+                                    onPress={() => handleSelectEvent(event)}
+                                />)
+                        })
                         : null
                     }
                 </MapView>

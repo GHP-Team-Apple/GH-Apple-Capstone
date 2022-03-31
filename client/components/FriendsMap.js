@@ -84,10 +84,6 @@ const FriendsMap = (props) => {
         const isChecked = categoryList[i].isChecked;
         categoryList[i].isChecked = !isChecked;
         const newStatus = categoryList[i].isChecked;
-        // const tmp = categoryList[i].value;
-        // if (newStatus) {
-        //   catArray.push(tmp);
-        // }
       }
     }
     const selectedCat = categoryList.filter(cat => cat.isChecked).map(catObj => catObj.value);
