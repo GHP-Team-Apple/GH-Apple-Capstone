@@ -1,7 +1,7 @@
 import { FIREBASE_KEY } from '@env';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 
 const firebaseConfig = {
@@ -26,3 +26,12 @@ export function signUp(email,password){
     return createUserWithEmailAndPassword(auth, email, password)
 }
 
+export function userSignOut(){
+    console.log('inside sigout function')
+    signOut(auth).then(() => {
+      this.props.navigator.immediatelyResetRouteStack([{ name: 'Login' }])
+  // Sign-out successful.
+}).catch((error) => {
+  console.log(error)
+})
+}

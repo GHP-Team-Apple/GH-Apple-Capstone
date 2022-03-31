@@ -24,9 +24,6 @@ const EventMap = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const [selectedEventType, setSelectedEventType] = useState('concert');
-    const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
-    const [isMaxRadiusOpen, setIsMaxRadiusOpen] = useState(false);
     const [savedEventsIDArr, setSavedEventsIDArr] = useState([]);
 
     //Integrating Filter
@@ -273,22 +270,11 @@ const EventMap = () => {
                     }
                 </MapView>
                 <View style={styles.selection}>
-                    {/* 
-                    <Pressable
-                        style={styles.icon}
-                        onPress={() => {
-                            const eventTypePicker = !isEventTypeOpen;
-                            setIsEventTypeOpen(eventTypePicker);
-                        }}
-                    >
-                        <AntDesign name="search1" size={20} color="white" />
-                    </Pressable> */}
-
                     <Pressable
                         style={styles.icon}
                         onPress={() => handleFilterPage(true)}
                     >
-                        <Ionicons name="options" size={20} color="white" />
+                        <Ionicons name="options" size={20} color="#b29ef8" />
                     </Pressable>
                 </View>
 
@@ -309,30 +295,6 @@ const EventMap = () => {
                 />
             ) : null
             }
-            {/* {isEventTypeOpen
-                ? (<View>
-                    <Picker
-                        selectedValue={selectedEventType}
-                        onValueChange={value => {
-                            setSelectedEventType(value);
-                            setIsEventTypeOpen(false);
-                        }}
-                    >
-                        <Picker.Item label='Concert' value='concert' />
-                        <Picker.Item label='Theater' value='theater' />
-                        <Picker.Item label='Comedy' value='comedy' />
-                        <Picker.Item label='Dance' value='dance_performance_tour' />
-                        <Picker.Item label='Classical' value='classical' />
-                        <Picker.Item label='Broadway' value='broadway_tickets_national' />
-                        <Picker.Item label='Sports' value='sports' />
-                        <Picker.Item label='Film' value='film' />
-                        <Picker.Item label='Family' value='family' />
-                        <Picker.Item label='Literacy' value='literacy' />
-                    </Picker>
-                </View>)
-                : null}
-            */}
-
             <EventList
                 seatGeek={seatGeekEvents}
                 localEvents={localEvents}
@@ -375,7 +337,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         padding: 7,
-        backgroundColor: "#AD40AF",
+        backgroundColor: "#003566",
         borderRadius: 50,
         alignSelf: 'center',
         marginTop: 5
