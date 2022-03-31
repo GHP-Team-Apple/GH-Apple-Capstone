@@ -179,10 +179,9 @@ const FriendsMap = (props) => {
                 (filteredCat.includes(category) || filteredCat.length === 0) &&
                 (filteredCity.includes(city) || filteredCity.length === 0)
 
-                /* 
                 && (distanceFromEvent <= maxDistance) 
                 && (eventIsFree === isFreeChecked || isFreeChecked === false) 
-                */
+                
               ) {
                 return (
                   <Marker
@@ -220,6 +219,7 @@ const FriendsMap = (props) => {
           handleMaxDistance={handleMaxDistance}
           handleIsFreeChecked={handleIsFreeChecked}
           isFreeChecked={isFreeChecked}
+          maxDistance={maxDistance}
         />
       ) : null}
     </View>
