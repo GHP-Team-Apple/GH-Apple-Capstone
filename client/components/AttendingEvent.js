@@ -30,19 +30,28 @@ const AttendingEvents = (props) => {
     }
   }, []);
 
-//   useEffect(async () => {
-//     const friends = [];
-//     if (friendEvents.length > 0) {
-//       friendEvents.map(async (friendEvent) => {
-//         // check if another friend is attending the same event
-//         if (event.id === friendEvent.id && friendEvent.checkIn) {
-//           let friend = await getUserById(friendEvent.userId);
-//           friends.push(friend);
-//         }
-//       });
-//     }
-//     setFriendsAttending(friends);
-//   }, []);
+  useEffect(async () => {
+    const friends = [];
+    if (friendEvents.length > 0) {
+      for (let i = 0; i < friendEvents.length; i++) {
+        let currentEvent = friendEvents[i];
+        if (event.id === currentEvent.id && currentEvent.checkIn) {
+          let friend = await getUserById(currentEvent.userId);
+          friends.push(friend);
+        }
+      }
+      // friendEvents.map(async (friendEvent) => {
+      //   // check if another friend is attending the same event
+      //   if (event.id === friendEvent.id && friendEvent.checkIn) {
+      //     let friend = await getUserById(friendEvent.userId);
+      //     console.log('friend attending event');
+      //     friends.push(friend);
+      //   }
+      // });
+    }
+    console.log('FRIENDS', friends)
+    setFriendsAttending(friends);
+  }, [friendEvents]);
 
   const handleLink = useCallback(async () => {
     const supported = await Linking.canOpenURL(supportedUrl);
@@ -102,6 +111,22 @@ const AttendingEvents = (props) => {
           <Pressable style={{ ...styles.button, backgroundColor: "#4D96FF" }}>
             <Text>More Details</Text>
           </Pressable>
+
+          <ScrollView>
+            <Text>Friends Attending:</Text>
+            { friendsAttending.length !== 0 ?
+              friendsAttending.map(friend => {
+              const image = getImage(friend.profilePicture);
+              return (
+                <View key={friend.uid} style={styles.friend}>
+                  <Image source={image} style={{ width: 30, height: 30, marginRight: 5 }}/>
+                  <Text style={{ fontSize: 15 }}>{friend.username}</Text>
+                </View>
+              );
+            }) : null
+            }
+          </ScrollView>
+
         </View>
       ) : (
         <View style={styles.container}>
@@ -132,16 +157,16 @@ const AttendingEvents = (props) => {
 
           <ScrollView>
             <Text>Friends Attending:</Text>
-            {
-            // friendsAttending.map(async (friend) => {
-            //   // const image = getImage(friend.profilePicture);
-            //   return (
-            //     <View key={friend.uid} style={styles.friend}>
-            //       {/* <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }}/> */}
-            //       <Text style={{ fontSize: 20 }}>{friend.username}</Text>
-            //     </View>
-            //   );
-            // })
+            { friendsAttending.length !== 0 ?
+              friendsAttending.map(friend => {
+              const image = getImage(friend.profilePicture);
+              return (
+                <View key={friend.uid} style={styles.friend}>
+                  <Image source={image} style={{ width: 30, height: 30, marginRight: 5 }}/>
+                  <Text style={{ fontSize: 15 }}>{friend.username}</Text>
+                </View>
+              );
+            }) : null
             }
           </ScrollView>
         </View>

@@ -12,7 +12,7 @@ const CatCheckbox = (props) => {
   const handleCat = props.handleCat;
   const catId = props.category.id
   const value = props.category.isChecked
-  const type = props.category.type;
+  const label = props.category.label;
   const [isChecked, setIsChecked] = useState(value);
 
   const handleChange = () => {
@@ -30,7 +30,7 @@ const CatCheckbox = (props) => {
         onValueChange={handleChange}
         color={isChecked ? "#4630EB" : undefined}
       />
-      <Text style={styles.paragraph}>{`${type}`}</Text>
+      <Text style={styles.paragraph}>{`${label}`}</Text>
     </View>
   );
 };
