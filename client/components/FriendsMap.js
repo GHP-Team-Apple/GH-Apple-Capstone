@@ -20,12 +20,11 @@ const FriendsMap = (props) => {
   const [filterPage, setFilterPage] = useState(false);
   const [categoryList, setCategoryList] = useState(categories);
   const [cityList, setCityList] = useState(cities);
-  // need to test
   const [isFreeChecked, setIsFreeChecked] = useState(false);
   const [filteredCat, setFilteredCat] = useState([]);
   const [filteredCity, setFilteredCity] = useState([]);
-  // need to test
   const [maxDistance, setMaxDistance] = useState(2);
+  
   useEffect(async () => {
     try {
       const friendEvents = await getFriendEvents(userId);
@@ -85,15 +84,15 @@ const FriendsMap = (props) => {
         const isChecked = categoryList[i].isChecked;
         categoryList[i].isChecked = !isChecked;
         const newStatus = categoryList[i].isChecked;
-        const tmp = categoryList[i].type;
-        if (newStatus) {
-          const type = tmp.toLowerCase();
-          catArray.push(type);
-        }
+        // const tmp = categoryList[i].value;
+        // if (newStatus) {
+        //   catArray.push(tmp);
+        // }
       }
     }
-    setCategoryList(categoryList);
-    setFilteredCat(catArray);
+    const selectedCat = categoryList.filter(cat => cat.isChecked).map(catObj => catObj.value);
+        setCategoryList(categoryList);
+        setFilteredCat(selectedCat);
   };
 
   const handleCity = (cityId) => {
@@ -114,7 +113,6 @@ const FriendsMap = (props) => {
   };
 
   const handleMaxDistance = (distance) => {
-    // NEED TO TEST THIS:
     setMaxDistance(distance);
   };
 
