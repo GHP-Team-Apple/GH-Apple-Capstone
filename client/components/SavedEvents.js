@@ -22,6 +22,7 @@ const SavedEvents = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
+
   async function fetchSavedEvents() {
     // const userId1 = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     // const userId = "WalEUjuIy6nEp2DvzVdd";
@@ -53,7 +54,7 @@ const SavedEvents = () => {
       setSelectedEvent(event);
     }
   };
-
+  console.log('MY ID: ', auth.currentUser.uid);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
