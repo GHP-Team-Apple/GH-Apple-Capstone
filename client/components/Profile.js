@@ -45,9 +45,16 @@ export default function Profile({navigation}) {
 			
 		]);
 		setCurrUserData({ ...userData, uid: user.uid })
+<<<<<<< HEAD
 		navigation.navigate('home1');
 	}
 
+=======
+		
+		navigation.navigate('home1');
+	}
+	
+>>>>>>> main
 	const getUserInfo = async () => {
 	const userInfo = await getDoc(doc(db, "User", auth.currentUser.uid))
 	}

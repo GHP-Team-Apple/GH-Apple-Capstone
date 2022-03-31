@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, ScrollView, Image, Button, TouchableOpacity } f
 import { getUserById, getFollowing, getIsFollowing, addFollowing } from '../services/users';
 import { getUsers } from '../../firebase';
 import FriendChat from "../components/FriendChat"
+import { createChannel } from "../services/channel"
+
 
 const FriendList = ({navigation}) => {
     const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
@@ -27,21 +29,13 @@ const FriendList = ({navigation}) => {
     }, [followingArr])
 
 
-    const handlePress = (friendId, friendName,userId) => {
-        // const channelId = `${friendId}${userId}`
-        // setChannelId(channelId)
-        console.log(friendId, friendName,userId)
-        const friend = {"_id":`${friendId}${userId}`,"name":friendName}
+    const handlePress = async(friendId, friendName,userId, friendImage) => {
+        const friend = {"_id":`${friendId}${userId}`,"name":friendName, avatar:"https://expertphotography.b-cdn.net/wp-content/uploads/2018/10/cool-profile-pictures-retouching-1.jpg"}
         setChatUser(friend);
-        console.log("===",friend)
-        console.log("===",chatUser)
+        const channelId = await createChannel(friendId, userId)
         navigation.navigate('FriendChat', {
-            chatUser:friend, myUser:user, chatId:friendId
+            chatUser:friend, myUser:user, chatId:friendId, channelId:channelId
           })
-    }
-
-    const backToFriendList = () => {
-        setChatUser(null);
     }
 
     const checkFriendship = async () => {
@@ -58,17 +52,14 @@ const FriendList = ({navigation}) => {
 
     // console.log('chatUser before return',friends)
     return (
-        //    chatUser !== null
-        //     ? (<FriendChat chatUser={chatUser} user={user} handleBack={backToFriendList}/>)
-        //     : (<>
                 <ScrollView style={styles.container}>
-                <Text style={{ fontSize: 25, margin: 10 }}>Friends:</Text>
+                <Text style={{ fontSize: 25, margin: 10 }}>Friends</Text>
                 {
                     friends.map(friend => {
                         const image = getImage(friend.profilePicture);
                         return (
                             <TouchableOpacity key={friend.id} style={styles.friend} onPress={() =>
-                                handlePress(friend.uid, friend.firstName, userId)
+                                handlePress(friend.uid, friend.firstName, userId, friend.profilePicture)
                             } >
                             <Image source={image} style={{ width: 50, height: 50, marginRight: 10 }}/>
                             <Text style={{ fontSize: 20, marginLeft:30}}>{friend.firstName}</Text>
@@ -77,7 +68,6 @@ const FriendList = ({navigation}) => {
                     })
                 }
                 </ScrollView>
-                // </>)
     )
 }
 
@@ -100,13 +90,16 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         alignContent: 'center',
-        padding: 20
+        padding: 20,
     }, 
     friend: {
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 10,
+        margin: 8,
+        height: 60,
         justifyContent:"flex-start",
+        borderBottomColor: "#D3D3D3",
+        borderBottomWidth: 1,
     }
 })
 

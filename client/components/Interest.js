@@ -43,8 +43,14 @@ function Item ({ item }) {
   
 
 export default function Interest (props) {
+<<<<<<< HEAD
 	const [isSelected, setSelection] = useState(userInterests);
 	const user = props.user;
+=======
+ const [isSelected, setSelection] = useState(userInterests);
+	const user = props.user;
+	
+>>>>>>> main
  const handleChange = (id) => {
     let temp = isSelected.map((select) => {
       if (id === select.id) {

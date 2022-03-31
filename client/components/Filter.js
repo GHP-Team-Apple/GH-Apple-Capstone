@@ -15,7 +15,10 @@ const Filter = (props) => {
   const handleCat = props.handleCat;
   const handleCity = props.handleCity;
   const handleMaxDistance = props.handleMaxDistance;
+  const handleIsFreeChecked = props.handleIsFreeChecked;
+  const value = props.isFreeChecked;
   const [confirmPage, setConfirmPage] = useState(false);
+  const [isFreeChecked, setIsFreeChecked] = useState(value);
   const [sliderOneChanging, setSliderOneChanging] = React.useState(false);
   const [sliderOneValue, setSliderOneValue] = React.useState([2]);
 
@@ -63,10 +66,9 @@ const Filter = (props) => {
             );
           })}
         </ScrollView>
-
+        
         <View style={styles.slideContainer}>
           <Text>Maximum Distance: {sliderOneValue} miles</Text>
-
           <MultiSlider
             values={sliderOneValue}
             sliderLength={280}
@@ -81,6 +83,16 @@ const Filter = (props) => {
             }}
             showStepMarkers={true}
           />
+        </View>
+
+        <View style={styles.section}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isFreeChecked}
+            onValueChange={handleIsFreeChecked}
+            color={isFreeChecked ? "#4630EB" : undefined}
+          />
+          <Text style={styles.paragraph}>Show only Free events</Text>
         </View>
 
         <Pressable
@@ -117,6 +129,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     margin: 10,
+  },
+  section: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  paragraph: {
+    fontSize: 16,
   },
   checkbox: {
     margin: 8,

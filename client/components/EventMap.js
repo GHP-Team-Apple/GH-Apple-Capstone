@@ -152,7 +152,9 @@ const EventMap = () => {
                         seatGeekEvents.map((event, idx) => (
                             <Marker
                                 key={`sg-${idx}`}
-                                coordinate={{ latitude: event.venue.location.lat, longitude: event.venue.location.lon }}
+                                coordinate={{ 
+                                    latitude: Number(event.venue.location.lat), 
+                                    longitude: Number(event.venue.location.lon) }}
                                 onPress={() => handleSelectEvent(event)}
                             >
                                 {CustomMarker(event.type)}
@@ -165,8 +167,8 @@ const EventMap = () => {
                                 key={`le-${idx}`}
                                 pinColor={'green'}
                                 coordinate={{
-                                    latitude: event.location.lat,
-                                    longitude: event.location.lon,
+                                    latitude: Number(event.location.lat),
+                                    longitude: Number(event.location.lon),
                                 }}
                                 title={event.name}
                                 onPress={() => handleSelectEvent(event)}
