@@ -10,21 +10,22 @@ import Filter from "./Filter";
 import { LocalEventObj } from "../templates/localEvents";
 const categories = require("../data/categories");
 const cities = require("../data/cities");
-import { auth, db } from '../../firebase';
+import { auth, db } from "../../firebase";
 
 const FriendsMap = (props) => {
-  const userId = auth.currentUser.uid; // should use auth.currentUser?
+  const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // auth.currentUser.uid;
   const [location, setLocation] = useState(null);
   const [friendEvents, setFriendEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [filterPage, setFilterPage] = useState(false);
-  const [categoryList, setCategoryList] = useState(categories); // need to test if mapping each cat onChanges the isCheck to true
+  const [categoryList, setCategoryList] = useState(categories);
   const [cityList, setCityList] = useState(cities);
-
-  // const [isFreeChecked, setIsFreeChecked] = useState(false);
+  // need to test
+  const [isFreeChecked, setIsFreeChecked] = useState(false);
   const [filteredCat, setFilteredCat] = useState([]);
   const [filteredCity, setFilteredCity] = useState([]);
-  const [maxDistance, setMaxDistance] = useState(null);
+  // need to test
+  const [maxDistance, setMaxDistance] = useState(2);
   useEffect(async () => {
     try {
       const friendEvents = await getFriendEvents(userId);
@@ -67,14 +68,14 @@ const FriendsMap = (props) => {
     }
     setCategoryList(categoryList);
     setFilteredCat(catArray);
-    let cityArray = [];
+    const cityArray = [];
     for (let i = 0; i < cityList.length; i++) {
       cityList[i].isChecked = false;
     }
     setCityList(cityList);
     setFilteredCity(cityArray);
-    console.log(filteredCat);
-    console.log(filteredCity);
+    setMaxDistance(2);
+    setIsFreeChecked(false)
   };
 
   const handleCat = (catId) => {
@@ -93,8 +94,6 @@ const FriendsMap = (props) => {
     }
     setCategoryList(categoryList);
     setFilteredCat(catArray);
-    console.log(categoryList);
-    console.log(catArray);
   };
 
   const handleCity = (cityId) => {
@@ -119,9 +118,10 @@ const FriendsMap = (props) => {
     setMaxDistance(distance);
   };
 
-  // const handleIsFreeChecked = () => {
-  //   setIsFreeChecked(!isFreeChecked);
-  // };
+  // need to test:
+  const handleIsFreeChecked = () => {
+    setIsFreeChecked(!isFreeChecked);
+  };
 
   return (
     <View style={styles.container}>
@@ -152,53 +152,59 @@ const FriendsMap = (props) => {
           </Marker>
         ) : null}
 
-        { location ? (friendEvents.map((event) => {
-          const now = new Date().getTime() / 1000;
-          const startTime = event.startDate.seconds;
-          const endTime = event.visibleUntil.seconds;
-          const checkIn = event.checkIn;
-          const isFreeChecked = event.isFreeChecked;
-          const eventLat = event.location.lat;
-          const eventLon = event.location.lon;
-          const myLat = location.coords.latitude;
-          const myLon = location.coords.longitude;
-          const category = event.type;
-          const city = event.city;
-          const distanceFromEvent = getDistance(
-            myLat,
-            eventLat,
-            myLon,
-            eventLon
-          ); // mi
+        {location
+          ? friendEvents.map((event) => {
+              const now = new Date().getTime() / 1000;
+              const startTime = event.startDate.seconds;
+              const endTime = event.visibleUntil.seconds;
+              const checkIn = event.checkIn;
+              const eventIsFree = event.isFree ? event.isFree : false;
+              const eventLat = event.location.lat;
+              const eventLon = event.location.lon;
+              const myLat = location.coords.latitude;
+              const myLon = location.coords.longitude;
+              const category = event.type;
+              const city = event.city;
+              const distanceFromEvent = getDistance(
+                myLat,
+                eventLat,
+                myLon,
+                eventLon
+              ); // mi
 
-          if (
-            now >= startTime &&
-            now <= endTime &&
-            checkIn &&
-            (filteredCat.includes(category) || filteredCat.length === 0) &&
-            (filteredCity.includes(city) || filteredCity.length === 0)
-          ) {
-            return (
-              <Marker
-                pinColor={"green"}
-                key={event.id}
-                coordinate={{
-                  latitude: event.location.lat,
-                  longitude: event.location.lon,
-                }}
-                // image={image}
-              >
-                <Callout
-                  onPress={() => handlePress(event)}
-                  style={styles.event}
-                >
-                  <Text>{event.name}</Text>
-                </Callout>
-              </Marker>
-            );
-          }
-        })) : null }
+              if (
+                now >= startTime &&
+                now <= endTime &&
+                checkIn &&
+                (filteredCat.includes(category) || filteredCat.length === 0) &&
+                (filteredCity.includes(city) || filteredCity.length === 0)
 
+                /* 
+                && (distanceFromEvent <= maxDistance) 
+                && (eventIsFree === isFreeChecked || isFreeChecked === false) 
+                */
+              ) {
+                return (
+                  <Marker
+                    pinColor={"green"}
+                    key={event.id}
+                    coordinate={{
+                      latitude: event.location.lat,
+                      longitude: event.location.lon,
+                    }}
+                    // image={image}
+                  >
+                    <Callout
+                      onPress={() => handlePress(event)}
+                      style={styles.event}
+                    >
+                      <Text>{event.name}</Text>
+                    </Callout>
+                  </Marker>
+                );
+              }
+            })
+          : null}
       </MapView>
       {selectedEvent ? (
         <AttendingEvents event={selectedEvent} handlePress={handlePress} />
@@ -212,18 +218,13 @@ const FriendsMap = (props) => {
           handleCat={handleCat}
           handleCity={handleCity}
           handleMaxDistance={handleMaxDistance}
+          handleIsFreeChecked={handleIsFreeChecked}
+          isFreeChecked={isFreeChecked}
         />
       ) : null}
     </View>
   );
 };
-
-/*
-
-handleIsFreeChecked={handleIsFreeChecked}
-
-
-*/
 
 // const getImage = (image) => {
 //   switch (image) {
@@ -258,5 +259,3 @@ const styles = StyleSheet.create({
     margin: 5,
   },
 });
-
-export default FriendsMap;
