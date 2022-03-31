@@ -2,30 +2,21 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
-  TextInput,
   View,
-  Button,
-  Dimensions,
   Text,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { db } from "../../firebase";
 import {
   collection,
-  query,
-  deleteDoc,
-  doc,
-  updateDoc,
-  deleteField,
   onSnapshot,
-  where,
 } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 import { makeStyles } from "@mui/styles";
+import {createMessage} from "../services/channel"
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const useStyles = makeStyles((theme) => ({
   customHoverFocus: {
@@ -34,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FriendChat({ route, navigation }) {
-  const { myUser, chatUser, chatId } = route.params;
+  const { myUser, chatUser, chatId, channelId } = route.params;
   const [user, setUser] = useState({
     _id: `${myUser.uid}${chatId}`,
     name: `${myUser.firstName}`,
@@ -43,10 +34,7 @@ export default function FriendChat({ route, navigation }) {
   const classes = useStyles();
 
   useEffect(() => {
-    const chatsRef = query(
-      collection(db, "Chats"),
-      where("user", "in", [user, chatUser])
-    );
+    const chatsRef = collection(db, "Channel", channelId, "Chats")
     const unsubscribe = onSnapshot(chatsRef, (querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
@@ -71,8 +59,7 @@ export default function FriendChat({ route, navigation }) {
   );
 
   async function handleSend(messages) {
-    const writes = messages.map((m) => chatsRef.add(m));
-    await Promise.all(writes);
+     await createMessage(channelId,messages)
   }
 
   const IconButton = ({ onPress, icon }) => (
@@ -82,7 +69,7 @@ export default function FriendChat({ route, navigation }) {
     </TouchableOpacity>
   );
   
-  console.log("user",route.params)
+  // console.log("user",route.params)
   return (
     chatUser !== null
     ? (
@@ -94,11 +81,6 @@ export default function FriendChat({ route, navigation }) {
           icon={<Ionicons name="chevron-back" size={24} color="black" />}
           className={classes.customHoverFocus}
         />
-      {/* <Button
-        title="Back"
-        onPress={() => navigation.goBack()}
-        style={styles.button}
-        /> */}
         <Text style={styles.text}>{chatUser.name}</Text>
         </View>
       <GiftedChat messages={messages} user={user} onSend={handleSend} />
@@ -110,13 +92,11 @@ export default function FriendChat({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
     padding: 10,
     flexDirection: "column",
-    // marginBottom: 10
   },
   input: {
     height: 50,
@@ -127,7 +107,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
   },
   text:{
-    fontSize:24,
+    fontSize:20,
     marginLeft: 132,
   },
   subcontainer:{

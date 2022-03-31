@@ -13,7 +13,8 @@ const cities = require("../data/cities");
 import { auth, db } from '../../firebase';
 
 const FriendsMap = (props) => {
-  const userId = auth.currentUser.uid; // should use auth.currentUser?
+  // const userId = auth.currentUser.uid; // should use auth.currentUser?
+  const userId ="tGBFjYBpoZWCO9lyycynXwlVVza2"
   const [location, setLocation] = useState(null);
   const [friendEvents, setFriendEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
