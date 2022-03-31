@@ -56,7 +56,7 @@ export default SavedEventCard = (props) => {
       <View style={styles.info}>
         <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>{props.event.name}</Text>
         <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{props.event.venueName}</Text>
-        <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{props.event.startDate}</Text>
+        <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{dateFormatter(props.event.startDate)}</Text>
         {props.event.checkIn ? (
           <View style={styles.buttons}>
             <IconButton
@@ -100,6 +100,10 @@ export default SavedEventCard = (props) => {
     </View>
   );
 };
+
+const dateFormatter = (dateStr) => {
+  return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+}
 
 
 const styles = StyleSheet.create({
