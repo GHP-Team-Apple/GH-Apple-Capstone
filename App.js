@@ -3,12 +3,14 @@ import ContextWrapper from './context/ContextWrapper';
 import Main from './Main';
 import 'react-native-gesture-handler';
 import { Text, View, SafeAreaView } from 'react-native';
+import SeedEventbrite from './client/SeedEventbrite';
 
 function App() {
 	return (
 		<ContextWrapper>
 			<Main />
 		</ContextWrapper>
+		// <SeedEventbrite />
 	);
 }
 
