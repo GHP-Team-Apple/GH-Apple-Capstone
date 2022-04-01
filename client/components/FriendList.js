@@ -19,7 +19,7 @@ import {auth} from "../../firebase"
 
 const FriendList = ({ route, navigation }) => {
 //   const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
-console.log("======navigation", navigation)
+
   const userId = auth.currentUser.uid;
   const [user, setUser] = useState({});
   const [followingArr, setFollowingArr] = useState([]);
