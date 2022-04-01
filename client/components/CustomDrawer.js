@@ -15,7 +15,23 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { userSignOut, auth } from '../../firebase';
 
 export default function CustomDrawer(props) {
+<<<<<<< Updated upstream
   const [isSignOut, setSignOut] = useState()
+=======
+	// const [isSignOut, setSignOut] = useState(false);
+	// if(!isSignOut){
+		const navigation = props.navigation
+		 const userSignOut = () => {
+				props.navigation.navigate('Y')
+		// 	  signOut(auth).then(() => {
+		// 		navigation.goBack()
+		// 	  console.log('we signed out')
+		// 	// // Sign-out successful.
+		//   }).catch((error) => {
+		// 	console.log(error)
+		//   })
+		  }
+>>>>>>> Stashed changes
 	return (
 		<View style={{ flex: 1 }}>
 			<DrawerContentScrollView
