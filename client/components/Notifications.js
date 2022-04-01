@@ -4,12 +4,14 @@ import FriendFromContactList from "./SearchFriend";
 import {fetchSuggestedUsers, fetchNoFriendshipFollowers} from "../services/contacts"
 import {addFollower} from "../services/users"
 import FollowingBackList from "./SearchFollowing"
+import {auth} from "../../firebase"
 
 export default function Notifications() {
   const [refreshing, setRefreshing] = React.useState(false);
   const [contacts, setContacts] = useState([]);
   const [followingContacts, setFollowingContacts] = useState([]);
-  const myUserId = "ihzddcHz7WSarDGk6kn3";
+  // const myUserId = "ihzddcHz7WSarDGk6kn3";
+  const userId = auth.currentUser.uid;
   
   //fetchsuggested Users via contactList
   useEffect(async() => {
