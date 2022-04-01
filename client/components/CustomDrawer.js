@@ -12,19 +12,17 @@ import {
 	DrawerItemList,
 } from '@react-navigation/drawer';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import {  auth } from '../../firebase';
+import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
-import {StackActions} from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 
 export default function CustomDrawer(props) {
 	// const [isSignOut, setSignOut] = useState(false);
 	// if(!isSignOut){
-		const navigation = props.navigation
-		console.log('please look in custom drawer',props)
-		 const userSignOut = () => {
-				props.navigation.navigate('Y')
-			  console.log('inside sigout function')
+	const navigation = props.navigation
+	const userSignOut = () => {
+		props.navigation.navigate('Y')
 		// 	  signOut(auth).then(() => {
 		// 		navigation.goBack()
 		// 	  console.log('we signed out')
@@ -32,7 +30,8 @@ export default function CustomDrawer(props) {
 		//   }).catch((error) => {
 		// 	console.log(error)
 		//   })
-		  }
+	}
+
 	return (
 		<View style={{ flex: 1 }}>
 			<DrawerContentScrollView
@@ -61,7 +60,7 @@ export default function CustomDrawer(props) {
 				</View>
 			</DrawerContentScrollView>
 			<View style={{ padding: 20, borderTopWidth: 1, borderTopColor: '#ccc' }}>
-				<TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
+				<TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }}>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Ionicons name="share-social-outline" size={22} />
 						<Text
@@ -74,7 +73,7 @@ export default function CustomDrawer(props) {
 						</Text>
 					</View>
 				</TouchableOpacity>
-				<TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
+				<TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }}>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Ionicons name="exit-outline" size={22} />
 						<Pressable onPress={() => userSignOut()}>
