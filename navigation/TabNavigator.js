@@ -59,23 +59,15 @@ export default function TabNavigator() {
 				component={EventMap}
 				options={{
 					tabBarIcon: () => 
-<<<<<<< HEAD
-						<Ionicons name="map-outline" size={24} color="white" />
-=======
 						<Ionicons name="map-outline" size={24} color="#b29ef8" />
 					
->>>>>>> main
 				}}
 			/>
 			<Tab.Screen
 				name="friends map"
 				component={FriendChatStack}
 				options={{
-<<<<<<< HEAD
-					tabBarIcon: () => <AntDesign name="message1" size={24} color="white" />,
-=======
-					tabBarIcon: () => <Ionicons name="md-add-circle-outline" size={30} color="white" />
->>>>>>> main
+					tabBarIcon: () => <AntDesign name="message1" size={24} color="#b29ef8" />,
 				}}
 				// screenOptions={{ headerShown: false }}
 			/>
@@ -83,12 +75,7 @@ export default function TabNavigator() {
 				name="saved"
 				component={SavedEventsStack}
 				options={{
-<<<<<<< HEAD
-					tabBarIcon: () => <AntDesign name="hearto" size={24} color="white" />,
-					// headerShown: true,
-=======
 					tabBarIcon: () => <AntDesign name="hearto" size={24} color="#b29ef8" />
->>>>>>> main
 				}}
 			/>
 			<Tab.Screen
