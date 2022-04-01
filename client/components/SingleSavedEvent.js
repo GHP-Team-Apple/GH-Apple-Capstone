@@ -26,9 +26,6 @@ const SingleSavedEvent = (props, {navigation}) => {
     }
 
   }, [supportedUrl]);
-
-  console.log("singlesavedevent", props)
-
   return (
     <Modal isVisible={true}>
       {event.hostId ? (
