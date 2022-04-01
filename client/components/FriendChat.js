@@ -2,21 +2,13 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { db } from "../../firebase";
-import {
-  collection,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 import { makeStyles } from "@mui/styles";
-import {createMessage} from "../services/channel"
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { createMessage } from "../services/channel";
+import ParsedText from "react-native-parsed-text";
 
 const useStyles = makeStyles((theme) => ({
   customHoverFocus: {
@@ -33,8 +25,8 @@ export default function FriendChat({ route, navigation }) {
   const [messages, setMessages] = useState([]);
   const classes = useStyles();
 
-  useEffect(() => {
-    const chatsRef = collection(db, "Channel", channelId, "Chats")
+  useEffect(async() => {
+    const chatsRef = collection(db, "Channel", channelId, "Chats");
     const unsubscribe = onSnapshot(chatsRef, (querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
@@ -59,7 +51,11 @@ export default function FriendChat({ route, navigation }) {
   );
 
   async function handleSend(messages) {
-     await createMessage(channelId,messages)
+    await createMessage(channelId, messages);
+  }
+
+  function handleUrlPress(url, matchIndex /*: number*/) {
+    LinkingIOS.openURL(url);
   }
 
   const IconButton = ({ onPress, icon }) => (
@@ -68,26 +64,30 @@ export default function FriendChat({ route, navigation }) {
       {/* <Text style={{ fontSize: 12 }}>{title}</Text> */}
     </TouchableOpacity>
   );
-  
-  // console.log("user",route.params)
-  return (
-    chatUser !== null
-    ? (
-    <View style={styles.container}>
-      <View style={styles.subcontainer}>
-      <IconButton
-          // title={"Back"}
-          onPress={() => navigation.goBack()}
-          icon={<Ionicons name="chevron-back" size={24} color="black" />}
-          className={classes.customHoverFocus}
-        />
-        <Text style={styles.text}>{chatUser.name}</Text>
+
+  if (chatUser !== null) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.subcontainer}>
+          <IconButton
+            // title={"Back"}
+            onPress={() => navigation.goBack()}
+            icon={<Ionicons name="chevron-back" size={24} color="black" />}
+            className={classes.customHoverFocus}
+          />
+          <Text style={styles.text}>{chatUser.name}</Text>
         </View>
-      <GiftedChat messages={messages} user={user} onSend={handleSend} />
-    </View>
-    )
-    : null
-  );
+        <GiftedChat messages={messages} user={user} onSend={handleSend}  />
+        <ParsedText
+          style={styles.text1}
+          parse={[{ type: "url", style: styles.url, onPress: handleUrlPress }]}
+          childrenProps={{ allowFontScaling: false }}
+        ></ParsedText>
+      </View>
+    );
+  } else {
+    return null;
+  }
 }
 
 const styles = StyleSheet.create({
@@ -106,13 +106,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderColor: "gray",
   },
-  text:{
-    fontSize:20,
+  text: {
+    fontSize: 20,
     marginLeft: 132,
   },
-  subcontainer:{
-    display:"flex",
-    marginTop:10,
+  subcontainer: {
+    display: "flex",
+    marginTop: 10,
     flexDirection: "row",
+  },
+  url: {
+    color: "red",
+    textDecorationLine: "underline",
   },
 });
