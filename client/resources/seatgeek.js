@@ -1,10 +1,13 @@
 const axios = require('axios');
 import { SEAT_GEEK_KEY } from '@env';
 
-const getEventsFromSeatGeek = async (type, lat, lon, maxRadius) => {
+const getEventsFromSeatGeek = async (eventTypes, lat, lon, maxRadius) => {
     try {
         const key = SEAT_GEEK_KEY;
-        const { data } = await axios.get(`https://api.seatgeek.com/2/events?taxonomies.name=${type}&lat=${lat}&lon=${lon}&range=${maxRadius}mi&per_page=10&client_id=${key}`);
+        const typesArr = eventTypes.map(type => `taxonomies.name=${type}`);
+        const types = typesArr.join('&');
+        const { data } = await axios.get(`https://api.seatgeek.com/2/events?${types}&lat=${lat}&lon=${lon}&range=${maxRadius}mi&per_page=10&client_id=${key}`);
+        // const { data } = await axios.get(`https://api.seatgeek.com/2/events?taxonomies.name=concert&lat=${lat}&lon=${lon}&range=${maxRadius}mi&per_page=10&client_id=${key}`);
         
         // set filter for events happening within the next 10 days
         const filteredEvents = data.events.filter(event => {

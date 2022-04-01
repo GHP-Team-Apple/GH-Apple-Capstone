@@ -10,6 +10,10 @@ import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } fro
 import { LocalEventObj } from '../templates/localEvents';
 import { Picker } from '@react-native-picker/picker';
 import { auth, db } from '../../firebase';
+import Filter from "./Filter";
+const categories = require("../data/categories");
+const cities = require("../data/cities");
+import { getDistance } from "../services/distance";
 
 const EventMap = () => {
     // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
@@ -20,11 +24,17 @@ const EventMap = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const [selectedEventType, setSelectedEventType] = useState('concert');
-    const [selectedMaxRadius, setSetlectedMaxRadius] = useState(2);
-    const [isEventTypeOpen, setIsEventTypeOpen] = useState(false);
-    const [isMaxRadiusOpen, setIsMaxRadiusOpen] = useState(false);
     const [savedEventsIDArr, setSavedEventsIDArr] = useState([]);
+
+    //Integrating Filter
+    const [filterPage, setFilterPage] = useState(false);
+    const [categoryList, setCategoryList] = useState(categories);
+    const [cityList, setCityList] = useState(cities);
+    const [isFreeChecked, setIsFreeChecked] = useState(false);
+    const [filteredCat, setFilteredCat] = useState([]);
+    const [filteredCity, setFilteredCity] = useState([]);
+    const [maxDistance, setMaxDistance] = useState([2]);
+    let events;
 
     useEffect(() => {
         (async () => {
@@ -39,7 +49,11 @@ const EventMap = () => {
             setLocation(currentLocation);
 
             // get Seat Geek events near current location
-            const events = await getEventsFromSeatGeek(selectedEventType, currentLocation.coords.latitude, currentLocation.coords.longitude, selectedMaxRadius);
+            if (filteredCat.length !== 0) {
+                events = await getEventsFromSeatGeek(filteredCat, currentLocation.coords.latitude, currentLocation.coords.longitude, maxDistance[0]);
+            } else {
+                events = await getEventsFromSeatGeek(['concert'], currentLocation.coords.latitude, currentLocation.coords.longitude, maxDistance[0]);
+            }
 
             setSeatGeekEvents(events);
             await loadLocalEvents()
@@ -56,17 +70,27 @@ const EventMap = () => {
     useEffect(async () => {
         if (currentRegion) {
             const { latitude, longitude } = currentRegion;
-            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, selectedMaxRadius);
+            if (filteredCat.length !== 0) {
+                events = await getEventsFromSeatGeek(filteredCat, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
+            } else {
+                events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
+            }
+            // const events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             setSeatGeekEvents(events);
         }
     }, [currentRegion]);
 
     useEffect(async () => {
         if (currentRegion) {
-            const events = await getEventsFromSeatGeek(selectedEventType, currentRegion.latitude, currentRegion.longitude, selectedMaxRadius);
+            if (filteredCat.length !== 0) {
+                events = await getEventsFromSeatGeek(filteredCat, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
+            } else {
+                events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
+            }
+            // const events = await getEventsFromSeatGeek(filteredCat, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             setSeatGeekEvents(events);
         }
-    }, [selectedEventType, selectedMaxRadius])
+    }, [filteredCat, maxDistance])
 
     const loadLocalEvents = async () => {
         try {
@@ -134,6 +158,72 @@ const EventMap = () => {
         }
     }
 
+    //=====================================================
+
+    const handleFilterPage = (boolean) => {
+        setFilterPage(boolean);
+    };
+
+    const handleNoFilter = () => {
+        const catArray = [];
+        for (let i = 0; i < categoryList.length; i++) {
+            categoryList[i].isChecked = false;
+        }
+        setCategoryList(categoryList);
+        setFilteredCat(catArray);
+        const cityArray = [];
+        for (let i = 0; i < cityList.length; i++) {
+            cityList[i].isChecked = false;
+        }
+        setCityList(cityList);
+        setFilteredCity(cityArray);
+        setMaxDistance(2);
+        setIsFreeChecked(false)
+    };
+
+    const handleCat = (catId) => {
+        for (let i = 0; i < categoryList.length; i++) {
+            if (categoryList[i].id === catId) {
+                const isChecked = categoryList[i].isChecked;
+                categoryList[i].isChecked = !isChecked;
+                const newStatus = categoryList[i].isChecked;
+            }
+        }
+
+        const selectedCat = categoryList.filter(cat => cat.isChecked).map(catObj => catObj.value);
+        setCategoryList(categoryList);
+        setFilteredCat(selectedCat);
+    };
+
+    const handleCity = (cityId) => {
+        for (let i = 0; i < cityList.length; i++) {
+            if (cityList[i].id === cityId) {
+                const isChecked = cityList[i].isChecked;
+                cityList[i].isChecked = !isChecked;
+            }
+        }
+        setCityList(cityList);
+
+        const filtCity = cityList.map((city) => {
+            if (city.isChecked) {
+                return city.city;
+            }
+        });
+        setFilteredCity(filtCity);
+    };
+
+    const handleMaxDistance = (distance) => {
+        setMaxDistance(distance);
+    };
+
+    // need to test:
+    const handleIsFreeChecked = () => {
+        setIsFreeChecked(!isFreeChecked);
+    };
+
+
+    //=====================================================
+
     return location ? (
         <View style={{ flex: 1 }}>
             <View style={styles.container}>
@@ -148,101 +238,82 @@ const EventMap = () => {
                     }}
                     onRegionChangeComplete={(region) => handleRegionChange(region)}
                 >
-                    {
+                    {seatGeekEvents ?
                         seatGeekEvents.map((event, idx) => (
                             <Marker
                                 key={`sg-${idx}`}
-                                coordinate={{ 
-                                    latitude: Number(event.venue.location.lat), 
-                                    longitude: Number(event.venue.location.lon) }}
+                                coordinate={{
+                                    latitude: Number(event.venue.location.lat),
+                                    longitude: Number(event.venue.location.lon)
+                                }}
                                 onPress={() => handleSelectEvent(event)}
                             >
                                 {CustomMarker(event.type)}
                             </Marker>
                         ))
+                        : null
                     }
-                    {
-                        localEvents.map((event, idx) => (
-                            <Marker
-                                key={`le-${idx}`}
-                                pinColor={'green'}
-                                coordinate={{
-                                    latitude: Number(event.location.lat),
-                                    longitude: Number(event.location.lon),
-                                }}
-                                title={event.name}
-                                onPress={() => handleSelectEvent(event)}
-                            />
-                        ))
+                    {localEvents ?
+                        localEvents.map((event, idx) => {
+                            const eventIsFree = event.isFree ? event.isFree : false;
+                            const eventLat = event.location.lat;
+                            const eventLon = event.location.lon;
+                            const myLat = currentRegion.latitude;
+                            const myLon = currentRegion.longitude;
+                            const category = event.type;
+                            const city = event.city;
+                            const distanceFromEvent = getDistance(
+                                myLat,
+                                eventLat,
+                                myLon,
+                                eventLon
+                            ); // mi
+                            if (
+                                (filteredCat.includes(category) || filteredCat.length === 0) &&
+                                (filteredCity.includes(city) || filteredCity.length === 0)
+                                && (distanceFromEvent <= maxDistance)
+                                && (eventIsFree === isFreeChecked || isFreeChecked === false)
+                            )
+                                return (<Marker
+                                    key={`le-${idx}`}
+                                    pinColor={'green'}
+                                    coordinate={{
+                                        latitude: Number(event.location.lat),
+                                        longitude: Number(event.location.lon),
+                                    }}
+                                    title={event.name}
+                                    onPress={() => handleSelectEvent(event)}
+                                />)
+                        })
+                        : null
                     }
                 </MapView>
                 <View style={styles.selection}>
                     <Pressable
                         style={styles.icon}
-                        onPress={() => {
-                            const maxRadiusPicker = !isMaxRadiusOpen;
-                            setIsMaxRadiusOpen(maxRadiusPicker);
-                        }}
+                        onPress={() => handleFilterPage(true)}
                     >
-                        <MaterialCommunityIcons name="map-marker-distance" size={20} color="white" />
-                    </Pressable>
-                    <Pressable
-                        style={styles.icon}
-                        onPress={() => {
-                            const eventTypePicker = !isEventTypeOpen;
-                            setIsEventTypeOpen(eventTypePicker);
-                        }}
-                    >
-                        <AntDesign name="search1" size={20} color="white" />
+                        <Ionicons name="options" size={20} color="#b29ef8" />
                     </Pressable>
                 </View>
 
             </View>
-            {isEventTypeOpen
-                ? (<View>
-                    <Picker
-                        selectedValue={selectedEventType}
-                        onValueChange={value => {
-                            setSelectedEventType(value);
-                            setIsEventTypeOpen(false);
-                        }}
-                    >
-                        <Picker.Item label='Concert' value='concert' />
-                        <Picker.Item label='Theater' value='theater' />
-                        <Picker.Item label='Comedy' value='comedy' />
-                        <Picker.Item label='Dance' value='dance_performance_tour' />
-                        <Picker.Item label='Classical' value='classical' />
-                        <Picker.Item label='Broadway' value='broadway_tickets_national' />
-                        <Picker.Item label='Sports' value='sports' />
-                        <Picker.Item label='Film' value='film' />
-                        <Picker.Item label='Family' value='family' />
-                        <Picker.Item label='Literacy' value='literacy' />
 
-
-
-                    </Picker>
-                </View>)
-                : null}
-
-            {isMaxRadiusOpen
-                ? (<View>
-                    <Picker
-                        selectedValue={selectedEventType}
-                        onValueChange={value => {
-                            setSetlectedMaxRadius(value);
-                            setIsMaxRadiusOpen(false);
-                        }}
-                    >
-                        <Picker.Item label='1 mile' value={1} />
-                        <Picker.Item label='2 miles' value={2} />
-                        <Picker.Item label='3 miles' value={3} />
-                        <Picker.Item label='4 miles' value={4} />
-                        <Picker.Item label='5 miles' value={5} />
-                    </Picker>
-                </View>)
-                : null}
-
-
+            {filterPage ? (
+                <Filter
+                    categoryList={categoryList}
+                    cityList={cityList}
+                    handleFilterPage={handleFilterPage}
+                    handleNoFilter={handleNoFilter}
+                    handleCat={handleCat}
+                    handleCity={handleCity}
+                    handleMaxDistance={handleMaxDistance}
+                    handleIsFreeChecked={handleIsFreeChecked}
+                    isFreeChecked={isFreeChecked}
+                    maxDistance={maxDistance}
+                />
+            ) : null
+            }
             <EventList
                 seatGeek={seatGeekEvents}
                 localEvents={localEvents}
@@ -285,7 +356,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         padding: 7,
-        backgroundColor: "#AD40AF",
+        backgroundColor: "#003566",
         borderRadius: 50,
         alignSelf: 'center',
         marginTop: 5

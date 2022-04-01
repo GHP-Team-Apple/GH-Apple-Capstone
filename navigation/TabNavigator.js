@@ -43,7 +43,7 @@ export default function TabNavigator() {
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
-                tabBarStyle: {backgroundColor: '#AD40AF'},
+                tabBarStyle: {backgroundColor: '#003566' },
                 tabBarInactiveTintColor: '#fff',
                 tabBarActiveTintColor: 'yellow',
               }}>
@@ -51,7 +51,7 @@ export default function TabNavigator() {
 				name="home2"
 				component={HomeStack}
 				options={{
-					tabBarIcon: () => <AntDesign name="home" size={24} color="white" />
+					tabBarIcon: () => <AntDesign name="home" size={24} color='#b29ef8' />
 				}}
 			/>
 			<Tab.Screen
@@ -59,14 +59,23 @@ export default function TabNavigator() {
 				component={EventMap}
 				options={{
 					tabBarIcon: () => 
+<<<<<<< HEAD
 						<Ionicons name="map-outline" size={24} color="white" />
+=======
+						<Ionicons name="map-outline" size={24} color="#b29ef8" />
+					
+>>>>>>> main
 				}}
 			/>
 			<Tab.Screen
 				name="friends map"
 				component={FriendChatStack}
 				options={{
+<<<<<<< HEAD
 					tabBarIcon: () => <AntDesign name="message1" size={24} color="white" />,
+=======
+					tabBarIcon: () => <Ionicons name="md-add-circle-outline" size={30} color="white" />
+>>>>>>> main
 				}}
 				// screenOptions={{ headerShown: false }}
 			/>
@@ -74,15 +83,19 @@ export default function TabNavigator() {
 				name="saved"
 				component={SavedEventsStack}
 				options={{
+<<<<<<< HEAD
 					tabBarIcon: () => <AntDesign name="hearto" size={24} color="white" />,
 					// headerShown: true,
+=======
+					tabBarIcon: () => <AntDesign name="hearto" size={24} color="#b29ef8" />
+>>>>>>> main
 				}}
 			/>
 			<Tab.Screen
 				name="profile"
 				component={Profile}
 				options={{
-					tabBarIcon: () => <AntDesign name="user" size={24} color="white" />,
+					tabBarIcon: () => <AntDesign name="user" size={24} color="#b29ef8" />,
 				}}
 			/>
 		</Tab.Navigator>

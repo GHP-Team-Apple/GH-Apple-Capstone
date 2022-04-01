@@ -17,10 +17,11 @@ const Filter = (props) => {
   const handleMaxDistance = props.handleMaxDistance;
   const handleIsFreeChecked = props.handleIsFreeChecked;
   const value = props.isFreeChecked;
+  const maxDistance = props.maxDistance;
   const [confirmPage, setConfirmPage] = useState(false);
   const [isFreeChecked, setIsFreeChecked] = useState(value);
   const [sliderOneChanging, setSliderOneChanging] = React.useState(false);
-  const [sliderOneValue, setSliderOneValue] = React.useState([2]);
+  const [sliderOneValue, setSliderOneValue] = React.useState([maxDistance]);
 
   const sliderOneValuesChangeStart = () => setSliderOneChanging(true);
 
@@ -159,8 +160,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   catContainer: {
-    // flex: 1,
-    // flexDirection: "column",
-    // height: "35%",
+    flex: 1,
+    flexDirection: "column",
+    height: "35%",
   },
 });
