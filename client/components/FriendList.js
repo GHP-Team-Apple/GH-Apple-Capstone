@@ -7,6 +7,8 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  SafeAreaView,
+  RefreshControl
 } from "react-native";
 import {
   getUserById,
@@ -21,6 +23,7 @@ const FriendList = ({ route, navigation }) => {
 //   const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
 
   const userId = auth.currentUser.uid;
+  const [refreshing, setRefreshing] = React.useState(false);
   const [user, setUser] = useState({});
   const [followingArr, setFollowingArr] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -41,6 +44,16 @@ const FriendList = ({ route, navigation }) => {
   useEffect(async () => {
     await checkFriendship();
   }, [followingArr]);
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+  //fresh the screen
+  const onRefresh = React.useCallback(async () => {
+    await checkFriendship();
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const handlePress = async (friendId, friendName, userId, friendImage) => {
     const friend = {
@@ -72,8 +85,15 @@ const FriendList = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* <Text style={{ fontSize: 25, margin: 10 }}>Friends</Text> */}
+    <SafeAreaView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+    {/* <ScrollView style={styles.container}>
+      <Text style={{ fontSize: 25, margin: 10 }}>Friends</Text> */}
       {friends.map((friend) => {
         const image = getImage(friend.profilePicture);
         return (
@@ -100,6 +120,7 @@ const FriendList = ({ route, navigation }) => {
         );
       })}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

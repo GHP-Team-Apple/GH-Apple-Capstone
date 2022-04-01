@@ -46,16 +46,21 @@ export const getIsFollowing = async (userId, otherUserId) => {
     return followingDoc.exists();
 }
 
-export const getUsersNumbers = async () => {
-    const q = query(collection(db, "Users"), where("number", "!=", null));
-    const querySnapshot = await getDocs(q);
-    const numArr = [];
-    querySnapshot.forEach((doc) => {
-      const data = doc.data().number;
-      numArr.push(data);
-    });
-    return numArr;
-  };
+export const getUserFromNumbers = async (contactNumbers) => {
+  if (contactNumbers.length > 10) {
+    contactNumbers = contactNumbers.slice(0, 10);
+  }
+  const q = query(
+    collection(db, "Users"),
+    where("number", "in", contactNumbers)
+  );
+  const querySnapshot = await getDocs(q);
+  const contactUsers = [];
+  querySnapshot.forEach((doc) => {
+    contactUsers.push(doc.data());
+  });
+  return contactUsers;
+};
 
   export const getUsersByPhoneNumbers = async (numbers) => {
     const q = query(collection(db, "Users"), where("number", "in", numbers));

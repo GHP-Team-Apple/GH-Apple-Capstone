@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { makeStyles } from "@mui/styles";
-
+import {auth} from "../../firebase"
 
 const useStyles = makeStyles((theme) => ({
   customHoverFocus: {
@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SuggestContact(props) {
-  const myUserId = "ihzddcHz7WSarDGk6kn3";
+  // const myUserId = "ihzddcHz7WSarDGk6kn3";
+  const myUserId = auth.currentUser.uid;
   const [image, setImage] = useState("../../assets/rabbit.png")
   const classes = useStyles();
   const IconButton = ({ title, onPress, icon }) => (
