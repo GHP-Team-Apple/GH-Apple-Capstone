@@ -24,7 +24,7 @@ const FriendsMap = (props) => {
   const [filteredCat, setFilteredCat] = useState([]);
   const [filteredCity, setFilteredCity] = useState([]);
   const [maxDistance, setMaxDistance] = useState(2);
-  
+
   useEffect(async () => {
     try {
       const friendEvents = await getFriendEvents(userId);
@@ -87,8 +87,8 @@ const FriendsMap = (props) => {
       }
     }
     const selectedCat = categoryList.filter(cat => cat.isChecked).map(catObj => catObj.value);
-        setCategoryList(categoryList);
-        setFilteredCat(selectedCat);
+    setCategoryList(categoryList);
+    setFilteredCat(selectedCat);
   };
 
   const handleCity = (cityId) => {
@@ -118,104 +118,114 @@ const FriendsMap = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Pressable onPress={() => handleFilterPage(true)}>
-        <Ionicons name="options" size={28} />
-      </Pressable>
-
-      <MapView
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 35.7128,
-          longitude: -104.006,
-          latitudeDelta: 38,
-          longitudeDelta: 38,
-        }}
-      >
+    <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         {location ? (
-          <Marker
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
+          <MapView
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            initialRegion={{
+              latitude: 0 || location.coords.latitude,
+              longitude: 0 || location.coords.longitude,
+              latitudeDelta: 0.05,
+              longitudeDelta: 0.05,
             }}
           >
-            <Callout>
-              <Text>Working at Google</Text>
-            </Callout>
-          </Marker>
-        ) : null}
+            {/* {location ? ( */}
+            <Marker
+              coordinate={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }}
+            >
+              <Callout>
+                <Text>Working at Google</Text>
+              </Callout>
+            </Marker>
 
-        {location
-          ? friendEvents.map((event) => {
-              const now = new Date().getTime() / 1000;
-              const startTime = event.startDate.seconds;
-              const endTime = event.visibleUntil.seconds;
-              const checkIn = event.checkIn;
-              const eventIsFree = event.isFree ? event.isFree : false;
-              const eventLat = event.location.lat;
-              const eventLon = event.location.lon;
-              const myLat = location.coords.latitude;
-              const myLon = location.coords.longitude;
-              const category = event.type;
-              const city = event.city;
-              const distanceFromEvent = getDistance(
-                myLat,
-                eventLat,
-                myLon,
-                eventLon
-              ); // mi
+            {
+              friendEvents.map((event) => {
+                const now = new Date().getTime() / 1000;
+                const startTime = event.startDate.seconds;
+                const endTime = event.visibleUntil.seconds;
+                const checkIn = event.checkIn;
+                const eventIsFree = event.isFree ? event.isFree : false;
+                const eventLat = event.location.lat;
+                const eventLon = event.location.lon;
+                const myLat = location.coords.latitude;
+                const myLon = location.coords.longitude;
+                const category = event.type;
+                const city = event.city;
+                const distanceFromEvent = getDistance(
+                  myLat,
+                  eventLat,
+                  myLon,
+                  eventLon
+                ); // mi
 
-              if (
-                now >= startTime &&
-                now <= endTime &&
-                checkIn &&
-                (filteredCat.includes(category) || filteredCat.length === 0) &&
-                (filteredCity.includes(city) || filteredCity.length === 0)
+                if (
+                  now >= startTime &&
+                  now <= endTime &&
+                  checkIn &&
+                  (filteredCat.includes(category) || filteredCat.length === 0) &&
+                  (filteredCity.includes(city) || filteredCity.length === 0)
 
-                && (distanceFromEvent <= maxDistance) 
-                && (eventIsFree === isFreeChecked || isFreeChecked === false) 
-                
-              ) {
-                return (
-                  <Marker
-                    pinColor={"green"}
-                    key={event.id}
-                    coordinate={{
-                      latitude: event.location.lat,
-                      longitude: event.location.lon,
-                    }}
+                  && (distanceFromEvent <= maxDistance)
+                  && (eventIsFree === isFreeChecked || isFreeChecked === false)
+
+                ) {
+                  return (
+                    <Marker
+                      pinColor={"green"}
+                      key={event.id}
+                      coordinate={{
+                        latitude: event.location.lat,
+                        longitude: event.location.lon,
+                      }}
                     // image={image}
-                  >
-                    <Callout
-                      onPress={() => handlePress(event)}
-                      style={styles.event}
                     >
-                      <Text>{event.name}</Text>
-                    </Callout>
-                  </Marker>
-                );
+                      <Callout
+                        onPress={() => handlePress(event)}
+                        style={styles.event}
+                      >
+                        <Text>{event.name}</Text>
+                      </Callout>
+                    </Marker>
+                  );
+                }
               }
-            })
-          : null}
-      </MapView>
-      {selectedEvent ? (
-        <AttendingEvents event={selectedEvent} handlePress={handlePress} />
-      ) : null}
-      {filterPage ? (
-        <Filter
-          categoryList={categoryList}
-          cityList={cityList}
-          handleFilterPage={handleFilterPage}
-          handleNoFilter={handleNoFilter}
-          handleCat={handleCat}
-          handleCity={handleCity}
-          handleMaxDistance={handleMaxDistance}
-          handleIsFreeChecked={handleIsFreeChecked}
-          isFreeChecked={isFreeChecked}
-          maxDistance={maxDistance}
-        />
-      ) : null}
+              )}
+          </MapView >
+          ) : null
+          }
+
+        <View style={styles.selection}>
+          <Pressable
+            style={styles.icon}
+            onPress={() => handleFilterPage(true)}>
+            <Ionicons name="options" size={28} color="#b29ef8" />
+          </Pressable>
+        </View>
+
+        {selectedEvent ? (
+          <AttendingEvents event={selectedEvent} handlePress={handlePress} />
+        ) : null}
+        {filterPage ? (
+          <Filter
+            categoryList={categoryList}
+            cityList={cityList}
+            handleFilterPage={handleFilterPage}
+            handleNoFilter={handleNoFilter}
+            handleCat={handleCat}
+            handleCity={handleCity}
+            handleMaxDistance={handleMaxDistance}
+            handleIsFreeChecked={handleIsFreeChecked}
+            isFreeChecked={isFreeChecked}
+            maxDistance={maxDistance}
+          />
+        ) : null}
+      </View>
+
     </View>
   );
 };
@@ -237,14 +247,29 @@ const FriendsMap = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    // flex: 1,
+    // backgroundColor: "#fff",
+    // alignItems: "center",
+    // justifyContent: "center",
+    justifyContent: 'flex-end',
+    margin: 0
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.75,
+    height: Dimensions.get("window").height * 0.65,
+  },
+  selection: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    padding: 5,
+    flexDirection: 'column',
+  },
+  icon: {
+    padding: 7,
+    backgroundColor: "#003566",
+    borderRadius: 50,
+    alignSelf: 'center',
+    marginTop: 5
   },
   event: {
     flexDirection: "row",

@@ -341,7 +341,6 @@ const EventMap = () => {
             }
             <EventList
                 seatGeek={seatGeekEvents}
-                // filterEventFunc={filterLocalEvents}
                 localEvents={filterLocalEvents(localEvents)}
                 handleSelectEvent={handleSelectEvent}
                 updateSaveEventID={updateSaveEventID}
