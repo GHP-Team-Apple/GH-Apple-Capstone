@@ -13,7 +13,7 @@ import { saveEvent } from "../services/events";
 import { LocalEventView } from "../templates/localEvents";
 import { auth, db } from '../../firebase';
 
-const SingleEvent = (props) => {
+const SingleSavedEvent = (props, {navigation}) => {
   // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
   const userId = auth.currentUser.uid;
   const event = props.event;
@@ -24,37 +24,10 @@ const SingleEvent = (props) => {
     if (supported) {
       await Linking.openURL(supportedUrl);
     }
+
   }, [supportedUrl]);
 
-  // const handleSaveEvent = async () => {
-  //     const savedEvent = {
-  //         userId: userId,
-  //         id: event.id,
-  //         name: event.name,
-  //         type: event.type,
-  //         startDate: event.date,
-  //         visibleUntil: event.visible,
-  //         venueName: event.venue.name,
-  //         venueAddress: event.venue.address + ', ' + event.venue.extended_address,
-  //         location: {
-  //             lat: event.venue.location.lat,
-  //             lon: event.venue.location.lon
-  //         },
-  //         checkIn: false,
-  //         imageUrl: event.imageUrl
-  //     }
-
-  //     //check if the user has already saved the event
-  //     // if not, then save the event
-  //     await saveEvent(userId, savedEvent);
-
-  //     //close modal after saving the event
-  //     props.handlePress(null);
-  // }
-
-  // if (event.hostId) {
-  //     const LocalEventView = LocalEventModal(event)
-  // }
+  console.log("singlesavedevent", props)
 
   return (
     <Modal isVisible={true}>
@@ -109,15 +82,17 @@ const SingleEvent = (props) => {
           </Text>
           <Text style={{ marginBottom: 10 }}>{event.venueAddress}</Text>
 
-          {/* <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>
-                        <Text>Save Event</Text>
-                    </Pressable> */}
-
           <Pressable
             style={{ ...styles.button, backgroundColor: "#4D96FF" }}
             onPress={handleLink}
           >
             <Text>Get Tickets</Text>
+          </Pressable>
+
+          <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={() => {
+            props.handleShare(event.eventUrl);
+            }}>
+                        <Text>Share with</Text>
           </Pressable>
         </View>
       )}
@@ -155,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SingleEvent;
+export default SingleSavedEvent;

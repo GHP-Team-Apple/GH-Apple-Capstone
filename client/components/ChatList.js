@@ -155,7 +155,7 @@ export default function ChatList({ navigation }) {
                   {friend.firstName}
                 </Text>
                 <View style={styles.message}>
-                  <Text style={{ fontSize: 14, marginLeft: 30, color: "gray" }}>
+                  <Text numberOfLines={1} style={{ fontSize: 14, marginLeft: 30, color: "gray", maxWidth: "60%"}}>
                     {friend.lastMessage.text}
                   </Text>
                   <Text

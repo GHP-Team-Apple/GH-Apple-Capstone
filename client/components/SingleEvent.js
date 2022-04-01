@@ -34,7 +34,8 @@ const SingleEvent = (props) => {
                 lon: event.venue.location.lon
             },
             checkIn: false,
-            imageUrl: event.imageUrl
+            imageUrl: event.imageUrl,
+            eventUrl: event.eventUrl
         }
 
         //check if the user has already saved the event
@@ -117,6 +118,7 @@ const SingleEvent = (props) => {
                     <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={handleLink}>
                         <Text>Get Tickets</Text>
                     </Pressable>
+
                 </View>)
             }
             
