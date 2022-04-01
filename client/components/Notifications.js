@@ -16,6 +16,7 @@ export default function Notifications() {
   //fetchsuggested Users via contactList
   useEffect(async() => {
     const userArr = await fetchSuggestedUsers(myUserId)
+    console.log("My contacts:", userArr);
     setContacts(userArr);
     const followingUserArr = await fetchNoFriendshipFollowers(myUserId)
     setFollowingContacts(followingUserArr)

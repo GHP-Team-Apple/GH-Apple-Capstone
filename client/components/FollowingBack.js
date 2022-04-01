@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { makeStyles } from "@mui/styles";
+import {auth} from "../../firebase"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FollowingBack(props) {
-  const myUserId = "ihzddcHz7WSarDGk6kn3";
+  // const myUserId = "ihzddcHz7WSarDGk6kn3";
+  const myUserId = auth.currentUser.uid;
   const classes = useStyles();
   const IconButton = ({ title, onPress, icon }) => (
     <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
