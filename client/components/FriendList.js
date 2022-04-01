@@ -15,9 +15,12 @@ import {
   addFollowing,
 } from "../services/users";
 import { createChannel } from "../services/channel";
+import {auth} from "../../firebase"
 
 const FriendList = ({ route, navigation }) => {
-  const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+//   const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+console.log("======navigation", navigation)
+  const userId = auth.currentUser.uid;
   const [user, setUser] = useState({});
   const [followingArr, setFollowingArr] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -38,19 +41,6 @@ const FriendList = ({ route, navigation }) => {
   useEffect(async () => {
     await checkFriendship();
   }, [followingArr]);
-
-  // useEffect(async () => {
-  //     console.log(route.params.eventUrl)
-  //     copiedEvent(route.params.eventUrl)
-  // }, [])
-
-  // const copiedEvent = (routeUrl) => {
-  //     if (routeUrl === undefined) {
-  //         return;
-  //     } else {
-  //         setEventUrl(routeUrl)
-  //     }
-  // }
 
   const handlePress = async (friendId, friendName, userId, friendImage) => {
     const friend = {
@@ -81,10 +71,9 @@ const FriendList = ({ route, navigation }) => {
     setFriends(currentFriends);
   };
 
-  // console.log('chatUser before return',friends)
   return (
     <ScrollView style={styles.container}>
-      <Text style={{ fontSize: 25, margin: 10 }}>Friends</Text>
+      {/* <Text style={{ fontSize: 25, margin: 10 }}>Friends</Text> */}
       {friends.map((friend) => {
         const image = getImage(friend.profilePicture);
         return (

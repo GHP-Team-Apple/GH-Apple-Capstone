@@ -22,11 +22,12 @@ import {
   limit,
   orderBy,
 } from "firebase/firestore";
-import { db } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { set } from "react-native-reanimated";
 
 export default function ChatList({ navigation }) {
-  const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+  // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
+  const userId = auth.currentUser.uid;
   const [refreshing, setRefreshing] = React.useState(false);
   const [user, setUser] = useState({});
   const [followingArr, setFollowingArr] = useState([]);
@@ -125,9 +126,9 @@ export default function ChatList({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <TouchableOpacity onPress={() => handle()}>
+        {/* <TouchableOpacity onPress={() => handle()}>
         <Text style={{ fontSize: 25, margin: 10 }}>Chat</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {chatedFriend.map((friend) => {
           const image = getImage(friend.profilePicture);
           const dateTime = getDateTime(

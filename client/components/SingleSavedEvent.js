@@ -52,15 +52,14 @@ const SingleSavedEvent = (props, {navigation}) => {
 
           <Text style={{ marginBottom: 10 }}>{event.venueAddress}</Text>
 
-          {/* <Pressable
-                      style={{ ...styles.button, backgroundColor: "#FF6B6B" }}
-                      onPress={handleSaveEvent}
-                    >
-                      <Text>Save Event</Text>
-                    </Pressable> */}
-
           <Pressable style={{ ...styles.button, backgroundColor: "#4D96FF" }}>
             <Text>More Details</Text>
+          </Pressable>
+
+          <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={() => {
+            props.handleShare(event.eventUrl);
+            }}>
+              <Text style={{ color: "white", fontWeight: "bold" }}>Share</Text>
           </Pressable>
         </View>
       ) : (
@@ -86,13 +85,13 @@ const SingleSavedEvent = (props, {navigation}) => {
             style={{ ...styles.button, backgroundColor: "#4D96FF" }}
             onPress={handleLink}
           >
-            <Text>Get Tickets</Text>
+            <Text style={{ color: "white", fontWeight: "bold"}}>Get Tickets</Text>
           </Pressable>
 
           <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={() => {
             props.handleShare(event.eventUrl);
             }}>
-                        <Text>Share with</Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>Share</Text>
           </Pressable>
         </View>
       )}
