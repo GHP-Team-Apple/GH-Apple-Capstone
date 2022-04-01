@@ -49,7 +49,7 @@ const AttendingEvents = (props) => {
       //   }
       // });
     }
-    console.log('FRIENDS', friends)
+    console.log("FRIENDS", friends);
     setFriendsAttending(friends);
   }, [friendEvents]);
 
@@ -114,19 +114,21 @@ const AttendingEvents = (props) => {
 
           <ScrollView>
             <Text>Friends Attending:</Text>
-            { friendsAttending.length !== 0 ?
-              friendsAttending.map(friend => {
-              const image = getImage(friend.profilePicture);
-              return (
-                <View key={friend.uid} style={styles.friend}>
-                  <Image source={image} style={{ width: 30, height: 30, marginRight: 5 }}/>
-                  <Text style={{ fontSize: 15 }}>{friend.username}</Text>
-                </View>
-              );
-            }) : null
-            }
+            {friendsAttending.length !== 0
+              ? friendsAttending.map((friend) => {
+                  const image = getImage(friend.profilePicture);
+                  return (
+                    <View key={friend.uid} style={styles.friend}>
+                      <Image
+                        source={image}
+                        style={{ width: 30, height: 30, marginRight: 5 }}
+                      />
+                      <Text style={{ fontSize: 15 }}>{friend.username}</Text>
+                    </View>
+                  );
+                })
+              : null}
           </ScrollView>
-
         </View>
       ) : (
         <View style={styles.container}>
@@ -157,17 +159,20 @@ const AttendingEvents = (props) => {
 
           <ScrollView>
             <Text>Friends Attending:</Text>
-            { friendsAttending.length !== 0 ?
-              friendsAttending.map(friend => {
-              const image = getImage(friend.profilePicture);
-              return (
-                <View key={friend.uid} style={styles.friend}>
-                  <Image source={image} style={{ width: 30, height: 30, marginRight: 5 }}/>
-                  <Text style={{ fontSize: 15 }}>{friend.username}</Text>
-                </View>
-              );
-            }) : null
-            }
+            {friendsAttending.length !== 0
+              ? friendsAttending.map((friend) => {
+                  const image = getImage(friend.profilePicture);
+                  return (
+                    <View key={friend.uid} style={styles.friend}>
+                      <Image
+                        source={image}
+                        style={{ width: 30, height: 30, marginRight: 5 }}
+                      />
+                      <Text style={{ fontSize: 15 }}>{friend.username}</Text>
+                    </View>
+                  );
+                })
+              : null}
           </ScrollView>
         </View>
       )}
@@ -195,6 +200,14 @@ const getImage = (image) => {
       return require("../../assets/dog.png");
     case "koala.png":
       return require("../../assets/koala.png");
+    case "penguin.png":
+      return require("../../assets/penguin.png");
+    case "panda.png":
+      return require("../../assets/panda.png");
+    case "elephant.png":
+      return require("../../assets/elephant.png");
+    case "duck.png":
+      return require("../../assets/duck.png");
   }
 };
 

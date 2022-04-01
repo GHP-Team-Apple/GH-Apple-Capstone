@@ -68,6 +68,14 @@ const getImage = (image) => {
             return require('../../assets/dog.png');
         case 'koala.png':
             return require('../../assets/koala.png');
+        case "penguin.png":
+          return require("../../assets/penguin.png");
+        case "panda.png":
+          return require("../../assets/panda.png");
+        case "elephant.png":
+          return require("../../assets/elephant.png");
+        case "duck.png":
+          return require("../../assets/duck.png");
     }
 }
 
