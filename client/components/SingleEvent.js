@@ -64,8 +64,8 @@ const SingleEvent = (props) => {
                       <Text style={{ fontSize: 10 }}>{"[close x]"}</Text>
                     </Pressable>
               
-                    <Text style={{ fontSize: 25, fontWeight: "bold" }}>{event.name}</Text>
-                    <Text style={{ fontSize: 20 }}>{dateFormatter(event.date)}</Text>
+                    <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>{event.name}</Text>
+                    <Text style={{ fontSize: 20 }}>{event.date}</Text>
                     <Text style={{ fontSize: 16 }}>({event.type})</Text>
               
                     <Image source={{ uri: event.imageUrl }} style={styles.image} />
@@ -101,7 +101,7 @@ const SingleEvent = (props) => {
                     >
                         <Text>{'[close x]'}</Text>
                     </Pressable>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{event.name}</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', textAlign: 'center' }}>{event.name}</Text>
                         <Text style={{ fontSize: 20, }}>{dateFormatter(event.date)}</Text>
                         <Text style={{ fontSize: 16 }}>({event.type.split('_')[0]})</Text>
 
@@ -125,7 +125,7 @@ const SingleEvent = (props) => {
 }
 
 const dateFormatter = (dateStr) => {
-    return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+    return `${new Date(dateStr+'Z')}`.slice(0, 21);
 }
 
 const dateFormatterLocal = (timestamp) => {

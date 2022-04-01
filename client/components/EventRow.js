@@ -80,7 +80,7 @@ const EventRow = (props) => {
 }
 
 const dateFormatter = (dateStr) => {
-    return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+    return `${new Date(dateStr + 'Z')}`.slice(0, 21);
 }
 
 const styles = StyleSheet.create({
