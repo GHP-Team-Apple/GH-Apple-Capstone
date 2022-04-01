@@ -11,7 +11,7 @@ export default function Notifications() {
   const [contacts, setContacts] = useState([]);
   const [followingContacts, setFollowingContacts] = useState([]);
   // const myUserId = "ihzddcHz7WSarDGk6kn3";
-  const userId = auth.currentUser.uid;
+  const myUserId = auth.currentUser.uid;
   
   //fetchsuggested Users via contactList
   useEffect(async() => {
