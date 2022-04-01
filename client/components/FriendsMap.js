@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { StyleSheet, Pressable, View, Dimensions, Text } from "react-native";
+import { StyleSheet, Pressable, View, Dimensions, Text, Switch } from "react-native";
 import * as Location from "expo-location";
 import { getFriendEvents } from "../services/events";
 import { getDistance } from "../services/distance";
@@ -23,7 +23,9 @@ const FriendsMap = (props) => {
   const [isFreeChecked, setIsFreeChecked] = useState(false);
   const [filteredCat, setFilteredCat] = useState([]);
   const [filteredCity, setFilteredCity] = useState([]);
-  const [maxDistance, setMaxDistance] = useState(2);
+  const [maxDistance, setMaxDistance] = useState([2]);
+  const setEventViewStatus = props.setEventViewStatus;
+  const eventView = props.eventView;
 
   useEffect(async () => {
     try {
@@ -196,15 +198,24 @@ const FriendsMap = (props) => {
               }
               )}
           </MapView >
-          ) : null
-          }
-
+        ) : null
+        }
+        <View style={styles.switch}>
+          <Switch
+            trackColor={{ false: "#b29ef8", true: "#b29ef8" }}
+            thumbColor={eventView ? "#003566" : "#003566"}
+            onValueChange={() => setEventViewStatus()}
+            value={!eventView}
+          />
+        </View>
         <View style={styles.selection}>
           <Pressable
             style={styles.icon}
-            onPress={() => handleFilterPage(true)}>
-            <Ionicons name="options" size={28} color="#b29ef8" />
+            onPress={() => handleFilterPage(true)}
+          >
+            <Ionicons name="options" size={20} color="#b29ef8" />
           </Pressable>
+
         </View>
 
         {selectedEvent ? (
@@ -258,9 +269,14 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.65,
   },
-  selection: {
+  switch: {
     position: 'absolute',
     alignSelf: 'flex-end',
+    padding: 5,
+  },
+  selection: {
+    position: 'absolute',
+    alignSelf: 'flex-start',
     padding: 5,
     flexDirection: 'column',
   },
@@ -268,8 +284,8 @@ const styles = StyleSheet.create({
     padding: 7,
     backgroundColor: "#003566",
     borderRadius: 50,
-    alignSelf: 'center',
-    marginTop: 5
+    alignSelf: 'flex-start',
+    marginRight: 5
   },
   event: {
     flexDirection: "row",
