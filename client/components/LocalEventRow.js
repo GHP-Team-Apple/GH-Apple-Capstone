@@ -61,7 +61,7 @@ const LocalEventRow = (props) => {
             />
             <View style={styles.text}>
                 <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.name}</Text>
-                <Text style={{ fontSize: 15 }}>{dateFormatterLocal(event.startDate)}</Text>
+                <Text style={{ fontSize: 15 }}>{dateFormatterLocal(event.startDate.seconds)}</Text>
                 <Text style={{ fontSize: 15 }}>{event.venueName}</Text>
 
                 <Pressable
