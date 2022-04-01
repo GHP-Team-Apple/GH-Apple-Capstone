@@ -16,7 +16,6 @@ const cities = require("../data/cities");
 import { getDistance } from "../services/distance";
 
 const EventMap = () => {
-    // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const userId = auth.currentUser.uid;
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);

@@ -6,7 +6,6 @@ import { auth, db } from '../../firebase';
 
 
 const EventRow = (props) => {
-    // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const userId = auth.currentUser.uid;
     const event = props.event;
     const handlePress = props.handlePress;
