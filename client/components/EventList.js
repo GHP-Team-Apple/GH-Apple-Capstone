@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, Pressable, View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import SingleEvent from './SingleEvent';
 import EventRow from './EventRow';
+import LocalEventRow from './LocalEventRow';
 import { getSavedEventsByUserId } from '../services/events';
 
 const EventList = (props) => {
@@ -20,29 +21,38 @@ const EventList = (props) => {
                         event={event}
                         handlePress={handlePress}
                         savedEventsIDArr={props.savedEventsIDArr}
-                        updateSaveEventID={props.updateSaveEventID} />
+                        updateSaveEventID={props.updateSaveEventID} 
+                    />
                 ))
             }
-            { /* {
+            {
                 localEvents.map((event, idx) => (
-                    <Pressable key={`le-${idx}`} style={styles.event}
-                        onPress={() => handlePress(event)}
-                    >
-                        <Image
-                            style={styles.image}
-                            source={{
-                                uri: event.imageUrl,
-                            }}
-                        />
-                        <View style={styles.text}>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
-                            <Text style={{ fontWeight: 'bold' }}>{event.venueName}</Text>
-                            <Text>{event.venueAddress}</Text>
-                            <Text style={{ fontWeight: 'bold' }}>{dateFormatterLocal(event.startDate.seconds)}</Text>
-                        </View>
-                    </Pressable>
+                    <LocalEventRow
+                        key={event.id}
+                        event={event}
+                        handlePress={handlePress}
+                        savedEventsIDArr={props.savedEventsIDArr}
+                        updateSaveEventID={props.updateSaveEventID} 
+                    />
+
+                    // <Pressable key={`le-${idx}`} style={styles.event}
+                    //     onPress={() => handlePress(event)}
+                    // >
+                    //     <Image
+                    //         style={styles.image}
+                    //         source={{
+                    //             uri: event.imageUrl,
+                    //         }}
+                    //     />
+                    //     <View style={styles.text}>
+                    //         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{event.name}</Text>
+                    //         <Text style={{ fontWeight: 'bold' }}>{event.venueName}</Text>
+                    //         <Text>{event.venueAddress}</Text>
+                    //         <Text style={{ fontWeight: 'bold' }}>{dateFormatterLocal(event.startDate.seconds)}</Text>
+                    //     </View>
+                    // </Pressable>
                 ))
-            } */}
+            }
             {
                 selectedEvent
                     ? <SingleEvent
