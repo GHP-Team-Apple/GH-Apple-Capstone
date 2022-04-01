@@ -34,7 +34,8 @@ const SingleEvent = (props) => {
                 lon: event.venue.location.lon
             },
             checkIn: false,
-            imageUrl: event.imageUrl
+            imageUrl: event.imageUrl,
+            eventUrl: event.eventUrl
         }
 
         //check if the user has already saved the event
@@ -83,11 +84,11 @@ const SingleEvent = (props) => {
                       style={{ ...styles.button, backgroundColor: "#FF6B6B" }}
                       onPress={handleSaveEvent}
                     >
-                      <Text>Save Event</Text>
+                      <Text style={{color: "white", fontWeight: "bold" }}>Save Event</Text>
                     </Pressable>
               
                     <Pressable style={{ ...styles.button, backgroundColor: "#4D96FF" }}>
-                      <Text>More Details</Text>
+                      <Text style={{color: "white", fontWeight: "bold" }}>More Details</Text>
                     </Pressable>
               
                   </View>
@@ -111,12 +112,13 @@ const SingleEvent = (props) => {
                         <Text style={{ marginBottom: 10 }}>{`${event.venue.address}, ${event.venue.extended_address}`}</Text>
 
                     <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>
-                        <Text>Save Event</Text>
+                        <Text style={{color: "white", fontWeight: "bold" }}>Save Event</Text>
                     </Pressable>
 
                     <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={handleLink}>
-                        <Text>Get Tickets</Text>
+                        <Text style={{color: "white", fontWeight: "bold" }}>Get Tickets</Text>
                     </Pressable>
+
                 </View>)
             }
             

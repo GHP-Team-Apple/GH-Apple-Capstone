@@ -4,11 +4,13 @@ import Main from './Main';
 import 'react-native-gesture-handler';
 import { Text, View, SafeAreaView } from 'react-native';
 import SeedEventbrite from './client/SeedEventbrite';
+import Toast from 'react-native-toast-message';
 
 function App() {
 	return (
 		<ContextWrapper>
 			<Main />
+			<Toast />
 		</ContextWrapper>
 		// <SeedEventbrite />
 	);

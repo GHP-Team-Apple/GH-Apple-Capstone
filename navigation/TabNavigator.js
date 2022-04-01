@@ -7,6 +7,8 @@ import Home from '../client/components/Home';
 import EventMap from '../client/components/EventMap';
 import Profile from '../client/components/Profile';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
+import FriendChatStack from "./FriendChatStack"
+import SavedEventsStack from "./SavedEventsStack"
 
 
 const Tab = createBottomTabNavigator();
@@ -63,14 +65,15 @@ export default function TabNavigator() {
 			/>
 			<Tab.Screen
 				name="friends map"
-				component={Empty}
+				component={FriendChatStack}
 				options={{
-					tabBarIcon: () => <Ionicons name="md-add-circle-outline" size={30} color="white" />
+					tabBarIcon: () => <AntDesign name="message1" size={24} color="#b29ef8" />,
 				}}
+				// screenOptions={{ headerShown: false }}
 			/>
 			<Tab.Screen
 				name="saved"
-				component={SavedEvents}
+				component={SavedEventsStack}
 				options={{
 					tabBarIcon: () => <AntDesign name="hearto" size={24} color="#b29ef8" />
 				}}

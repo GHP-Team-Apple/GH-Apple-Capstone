@@ -10,18 +10,18 @@ import {
   TouchableOpacity,
   RefreshControl,
   SafeAreaView,
+  Clipboard
 } from "react-native";
 import { getSavedEventsByUserId } from "../services/events";
 import SavedEventCard from "./SavedEventCard";
 import SingleSavedEvent from "./SingleSavedEvent";
-import { auth, db } from '../../firebase';
+import { auth, db } from "../../firebase";
+import Toast from 'react-native-toast-message'
 
-
-const SavedEvents = () => {
+const SavedEvents = ({ navigation }) => {
   const [events, setEvents] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-
 
   async function fetchSavedEvents() {
     // const userId1 = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
@@ -46,7 +46,6 @@ const SavedEvents = () => {
   }, []);
 
   const showEventCard = (event) => {
-    console.log("========",event)
     if (event && event.hostId) {
       const eventObj = LocalEventObj(event);
       setSelectedEvent(eventObj);
@@ -54,7 +53,20 @@ const SavedEvents = () => {
       setSelectedEvent(event);
     }
   };
-  console.log('MY ID: ', auth.currentUser.uid);
+
+  const handleShare = (eventUrl) => {
+    if (eventUrl === null || eventUrl === undefined) {
+      return;
+    }
+    Clipboard.setString(`Check out this event:\n${eventUrl}`);
+    Toast.show({
+      type: 'info',
+      text1: 'Event link has been copied to clipboard.'
+    });
+    navigation.navigate("FriendList");
+    setSelectedEvent(null);
+  };
+  // console.log('MY ID: ', auth.currentUser.uid);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -89,7 +101,11 @@ const SavedEvents = () => {
           ))
         )}
         {selectedEvent ? (
-          <SingleSavedEvent event={selectedEvent} handlePress={showEventCard} />
+          <SingleSavedEvent
+            event={selectedEvent}
+            handlePress={showEventCard}
+            handleShare={handleShare}
+          />
         ) : null}
       </ScrollView>
     </SafeAreaView>
