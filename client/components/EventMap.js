@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
-import { StyleSheet, View, Text, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Dimensions, Switch } from 'react-native';
 import * as Location from "expo-location";
 import getEventsFromSeatGeek from '../resources/seatgeek';
 import { getLocalEvents, getSavedEventsByUserId } from '../services/events';
@@ -14,9 +14,9 @@ import Filter from "./Filter";
 const categories = require("../data/categories");
 const cities = require("../data/cities");
 import { getDistance } from "../services/distance";
+import FriendsMap from './FriendsMap';
 
 const EventMap = () => {
-    // const userId = "mNBpiFdzucPgNIWnrAtuVJUUsUM2";
     const userId = auth.currentUser.uid;
     const [seatGeekEvents, setSeatGeekEvents] = useState([]);
     const [localEvents, setLocalEvents] = useState([]);
@@ -25,6 +25,7 @@ const EventMap = () => {
     const [errorMsg, setErrorMsg] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [savedEventsIDArr, setSavedEventsIDArr] = useState([]);
+    const [eventView, setEventView] = useState(true);
 
     //Integrating Filter
     const [filterPage, setFilterPage] = useState(false);
@@ -221,121 +222,167 @@ const EventMap = () => {
         setIsFreeChecked(!isFreeChecked);
     };
 
-
     //=====================================================
 
-    return location ? (
-        <View style={{ flex: 1 }}>
-            <View style={styles.container}>
-                <MapView
-                    style={styles.map}
-                    provider={PROVIDER_GOOGLE}
-                    initialRegion={{
-                        latitude: location.coords.latitude,
-                        longitude: location.coords.longitude,
-                        latitudeDelta: 0.05,
-                        longitudeDelta: 0.05
-                    }}
-                    onRegionChangeComplete={(region) => handleRegionChange(region)}
-                >
-                    {seatGeekEvents ?
-                        seatGeekEvents.map((event, idx) => (
-                            <Marker
-                                key={`sg-${idx}`}
-                                coordinate={{
-                                    latitude: Number(event.venue.location.lat),
-                                    longitude: Number(event.venue.location.lon)
-                                }}
-                                onPress={() => handleSelectEvent(event)}
-                            >
-                                {CustomMarker(event.type)}
-                            </Marker>
-                        ))
-                        : null
-                    }
-                    {localEvents ?
-                        localEvents.map((event, idx) => {
-                            const eventIsFree = event.isFree ? event.isFree : false;
-                            const eventLat = event.location.lat;
-                            const eventLon = event.location.lon;
-                            const myLat = currentRegion.latitude;
-                            const myLon = currentRegion.longitude;
-                            const category = event.type;
-                            const city = event.city;
-                            const distanceFromEvent = getDistance(
-                                myLat,
-                                eventLat,
-                                myLon,
-                                eventLon
-                            ); // mi
-                            if (
-                                (filteredCat.includes(category) || filteredCat.length === 0) &&
-                                (filteredCity.includes(city) || filteredCity.length === 0)
-                                && (distanceFromEvent <= maxDistance)
-                                && (eventIsFree === isFreeChecked || isFreeChecked === false)
-                            )
-                                return (<Marker
-                                    key={`le-${idx}`}
-                                    pinColor={'green'}
-                                    coordinate={{
-                                        latitude: Number(event.location.lat),
-                                        longitude: Number(event.location.lon),
-                                    }}
-                                    title={event.name}
-                                    onPress={() => handleSelectEvent(event)}
-                                />)
-                        })
-                        : null
-                    }
-                </MapView>
-                <View style={styles.selection}>
-                    <Pressable
-                        style={styles.icon}
-                        onPress={() => handleFilterPage(true)}
+    const filterLocalEvents = (eventArr) => {
+        return eventArr.filter(event => {
+            const eventIsFree = event.isFree ? event.isFree : false;
+            const eventLat = event.location.lat;
+            const eventLon = event.location.lon;
+            const myLat = currentRegion.latitude;
+            const myLon = currentRegion.longitude;
+            const category = event.type;
+            const city = event.city;
+            const distanceFromEvent = getDistance(
+                myLat,
+                eventLat,
+                myLon,
+                eventLon
+            ); // mi
+
+            if (
+                (filteredCat.includes(category) || filteredCat.length === 0) &&
+                (filteredCity.includes(city) || filteredCity.length === 0)
+                && (distanceFromEvent <= maxDistance)
+                && (eventIsFree === isFreeChecked || isFreeChecked === false)
+            )
+                return event;
+        });
+    }
+
+    const setEventViewStatus = () => {
+        const status = eventView; // true or false
+        setEventView(!status);
+    }
+
+    if (eventView) {
+        return location ? (
+            <View style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <MapView
+                        style={styles.map}
+                        provider={PROVIDER_GOOGLE}
+                        initialRegion={{
+                            latitude: location.coords.latitude,
+                            longitude: location.coords.longitude,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05
+                        }}
+                        onRegionChangeComplete={(region) => handleRegionChange(region)}
                     >
-                        <Ionicons name="options" size={20} color="#b29ef8" />
-                    </Pressable>
+                        {seatGeekEvents ?
+                            seatGeekEvents.map((event, idx) => (
+                                <Marker
+                                    key={`sg-${idx}`}
+                                    coordinate={{
+                                        latitude: Number(event.venue.location.lat),
+                                        longitude: Number(event.venue.location.lon)
+                                    }}
+                                    onPress={() => handleSelectEvent(event)}
+                                >
+                                    {CustomMarker(event.type)}
+                                </Marker>
+                            ))
+                            : null
+                        }
+                        {localEvents ?
+                            localEvents.map((event, idx) => {
+                                const eventIsFree = event.isFree ? event.isFree : false;
+                                const eventLat = event.location.lat;
+                                const eventLon = event.location.lon;
+                                const myLat = currentRegion.latitude;
+                                const myLon = currentRegion.longitude;
+                                const category = event.type;
+                                const city = event.city;
+                                const distanceFromEvent = getDistance(
+                                    myLat,
+                                    eventLat,
+                                    myLon,
+                                    eventLon
+                                ); // mi
+                                if (
+                                    (filteredCat.includes(category) || filteredCat.length === 0) &&
+                                    (filteredCity.includes(city) || filteredCity.length === 0)
+                                    && (distanceFromEvent <= maxDistance)
+                                    && (eventIsFree === isFreeChecked || isFreeChecked === false)
+                                )
+                                    return (<Marker
+                                        key={`le-${idx}`}
+                                        pinColor={'green'}
+                                        coordinate={{
+                                            latitude: Number(event.location.lat),
+                                            longitude: Number(event.location.lon),
+                                        }}
+                                        title={event.name}
+                                        onPress={() => handleSelectEvent(event)}
+                                    />)
+                            })
+                            : null
+                        }
+                    </MapView>
+                    <View style={styles.switch}>
+                        <Switch
+                            trackColor={{ false: "#b29ef8", true: "#b29ef8" }}
+                            thumbColor={eventView ? "#003566" : "#003566"}
+                            onValueChange={() => setEventViewStatus()}
+                            value={!eventView}
+                        />
+                    </View>
+                    <View style={styles.selection}>
+                        <Pressable
+                            style={styles.icon}
+                            onPress={() => handleFilterPage(true)}
+                        >
+                            <Ionicons name="options" size={20} color="#b29ef8" />
+                        </Pressable>
+
+
+                    </View>
+
+
                 </View>
 
-            </View>
-
-            {filterPage ? (
-                <Filter
-                    categoryList={categoryList}
-                    cityList={cityList}
-                    handleFilterPage={handleFilterPage}
-                    handleNoFilter={handleNoFilter}
-                    handleCat={handleCat}
-                    handleCity={handleCity}
-                    handleMaxDistance={handleMaxDistance}
-                    handleIsFreeChecked={handleIsFreeChecked}
-                    isFreeChecked={isFreeChecked}
-                    maxDistance={maxDistance}
+                {
+                    filterPage ? (
+                        <Filter
+                            categoryList={categoryList}
+                            cityList={cityList}
+                            handleFilterPage={handleFilterPage}
+                            handleNoFilter={handleNoFilter}
+                            handleCat={handleCat}
+                            handleCity={handleCity}
+                            handleMaxDistance={handleMaxDistance}
+                            handleIsFreeChecked={handleIsFreeChecked}
+                            isFreeChecked={isFreeChecked}
+                            maxDistance={maxDistance}
+                        />
+                    ) : null
+                }
+                <EventList
+                    seatGeek={seatGeekEvents}
+                    localEvents={filterLocalEvents(localEvents)}
+                    handleSelectEvent={handleSelectEvent}
+                    updateSaveEventID={updateSaveEventID}
+                    savedEventsIDArr={savedEventsIDArr}
                 />
-            ) : null
-            }
-            <EventList
-                seatGeek={seatGeekEvents}
-                localEvents={localEvents}
-                handleSelectEvent={handleSelectEvent}
-                updateSaveEventID={updateSaveEventID}
-                savedEventsIDArr={savedEventsIDArr}
-            />
 
-            {
-                selectedEvent ?
-                    <SingleEvent
-                        event={selectedEvent}
-                        handlePress={handleSelectEvent}
-                        updateSaveEventID={updateSaveEventID}
-                        savedEventsIDArr={savedEventsIDArr}
-                    />
-                    : null
-            }
+                {
+                    selectedEvent ?
+                        <SingleEvent
+                            event={selectedEvent}
+                            handlePress={handleSelectEvent}
+                            updateSaveEventID={updateSaveEventID}
+                            savedEventsIDArr={savedEventsIDArr}
+                        />
+                        : null
+                }
 
-        </View>
-    )
-        : null
+            </View >
+        )
+            : null
+    } else {
+        return (<FriendsMap eventView={eventView} setEventViewStatus={setEventViewStatus} />)
+    }
 
 }
 
@@ -348,9 +395,14 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height * 0.65,
     },
-    selection: {
+    switch: {
         position: 'absolute',
         alignSelf: 'flex-end',
+        padding: 5, 
+    },
+    selection: {
+        position: 'absolute',
+        alignSelf: 'flex-start',
         padding: 5,
         flexDirection: 'column',
     },
@@ -358,8 +410,8 @@ const styles = StyleSheet.create({
         padding: 7,
         backgroundColor: "#003566",
         borderRadius: 50,
-        alignSelf: 'center',
-        marginTop: 5
+        alignSelf: 'flex-start',
+        marginRight: 5
     }
 });
 

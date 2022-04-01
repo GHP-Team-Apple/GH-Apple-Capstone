@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, Pressable, View, ScrollView } from "react-native";
+import { StyleSheet, Text, Pressable, View, ScrollView, Dimensions } from "react-native";
 import Checkbox from "expo-checkbox";
 import Modal from "react-native-modal";
 import CatCheckbox from "./CatCheckbox";
@@ -21,7 +21,7 @@ const Filter = (props) => {
   const [confirmPage, setConfirmPage] = useState(false);
   const [isFreeChecked, setIsFreeChecked] = useState(value);
   const [sliderOneChanging, setSliderOneChanging] = React.useState(false);
-  const [sliderOneValue, setSliderOneValue] = React.useState([maxDistance]);
+  const [sliderOneValue, setSliderOneValue] = React.useState(maxDistance);
 
   const sliderOneValuesChangeStart = () => setSliderOneChanging(true);
 
@@ -41,12 +41,12 @@ const Filter = (props) => {
       <View style={styles.container}>
         <Pressable
           onPress={() => props.handleFilterPage(false)}
-          style={{ alignSelf: "flex-end", margin: 10 }}
+          style={{ alignSelf: "flex-end", margin: 5 }}
         >
           <Text>{"[close x]"}</Text>
         </Pressable>
 
-        <Text>Categories:</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Categories:</Text>
         <ScrollView style={styles.catContainer}>
           {categoryList.map((category, idx) => {
             return (
@@ -59,15 +59,16 @@ const Filter = (props) => {
           })}
         </ScrollView>
 
-        <Text>Cities:</Text>
-        <ScrollView>
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }} >Cities:</Text>
+        <View style={styles.cityContainer}>
           {cityList.map((city, idx) => {
             return (
               <CityCheckbox key={idx} city={city} handleCity={handleCity} />
             );
           })}
-        </ScrollView>
-        
+        </View>
+
+
         <View style={styles.slideContainer}>
           <Text>Maximum Distance: {sliderOneValue} miles</Text>
           <MultiSlider
@@ -96,12 +97,12 @@ const Filter = (props) => {
           <Text style={styles.paragraph}>Show only Free events</Text>
         </View>
 
-        <Pressable
+        {/* <Pressable
           style={{ ...styles.button, backgroundColor: "#FF6B6B" }}
           onPress={() => handleConfirmPage(true)}
         >
           <Text>Clear Filter</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
       {confirmPage ? (
         <Confirm
@@ -119,11 +120,9 @@ export default Filter;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    flex: 1,
-    // alignItems: "center",
-    padding: 10,
-    width: 350,
-    height: 500,
+    height: Dimensions.get("window").height * 0.75,
+    padding: 15,
+    justifyContent: 'center',
   },
   button: {
     borderRadius: 5,
@@ -146,13 +145,11 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   slideContainer: {
-    flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
   },
   sliders: {
-    margin: 20,
+    margin: 10,
     width: 280,
   },
   sliderOne: {
@@ -160,8 +157,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   catContainer: {
-    flex: 1,
     flexDirection: "column",
     height: "35%",
   },
+  cityContainer: {
+    flexDirection: "column",
+    marginBottom: 0
+  }
 });

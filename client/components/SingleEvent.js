@@ -34,7 +34,8 @@ const SingleEvent = (props) => {
                 lon: event.venue.location.lon
             },
             checkIn: false,
-            imageUrl: event.imageUrl
+            imageUrl: event.imageUrl,
+            eventUrl: event.eventUrl
         }
 
         //check if the user has already saved the event
@@ -64,8 +65,8 @@ const SingleEvent = (props) => {
                       <Text style={{ fontSize: 10 }}>{"[close x]"}</Text>
                     </Pressable>
               
-                    <Text style={{ fontSize: 25, fontWeight: "bold" }}>{event.name}</Text>
-                    <Text style={{ fontSize: 20 }}>{dateFormatter(event.date)}</Text>
+                    <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>{event.name}</Text>
+                    <Text style={{ fontSize: 20 }}>{event.date}</Text>
                     <Text style={{ fontSize: 16 }}>({event.type})</Text>
               
                     <Image source={{ uri: event.imageUrl }} style={styles.image} />
@@ -83,11 +84,11 @@ const SingleEvent = (props) => {
                       style={{ ...styles.button, backgroundColor: "#FF6B6B" }}
                       onPress={handleSaveEvent}
                     >
-                      <Text>Save Event</Text>
+                      <Text style={{color: "white", fontWeight: "bold" }}>Save Event</Text>
                     </Pressable>
               
                     <Pressable style={{ ...styles.button, backgroundColor: "#4D96FF" }}>
-                      <Text>More Details</Text>
+                      <Text style={{color: "white", fontWeight: "bold" }}>More Details</Text>
                     </Pressable>
               
                   </View>
@@ -101,7 +102,7 @@ const SingleEvent = (props) => {
                     >
                         <Text>{'[close x]'}</Text>
                     </Pressable>
-                        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{event.name}</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 'bold', textAlign: 'center' }}>{event.name}</Text>
                         <Text style={{ fontSize: 20, }}>{dateFormatter(event.date)}</Text>
                         <Text style={{ fontSize: 16 }}>({event.type.split('_')[0]})</Text>
 
@@ -111,12 +112,13 @@ const SingleEvent = (props) => {
                         <Text style={{ marginBottom: 10 }}>{`${event.venue.address}, ${event.venue.extended_address}`}</Text>
 
                     <Pressable style={{ ...styles.button,  backgroundColor: "#FF6B6B" }} onPress={handleSaveEvent}>
-                        <Text>Save Event</Text>
+                        <Text style={{color: "white", fontWeight: "bold" }}>Save Event</Text>
                     </Pressable>
 
                     <Pressable style={{ ...styles.button,  backgroundColor: "#4D96FF" }} onPress={handleLink}>
-                        <Text>Get Tickets</Text>
+                        <Text style={{color: "white", fontWeight: "bold" }}>Get Tickets</Text>
                     </Pressable>
+
                 </View>)
             }
             
@@ -125,7 +127,7 @@ const SingleEvent = (props) => {
 }
 
 const dateFormatter = (dateStr) => {
-    return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+    return `${new Date(dateStr+'Z')}`.slice(0, 21);
 }
 
 const dateFormatterLocal = (timestamp) => {

@@ -98,7 +98,7 @@ const AttendingEvents = (props) => {
           </Pressable>
 
           <Text style={{ fontSize: 25, fontWeight: "bold" }}>{event.name}</Text>
-          <Text style={{ fontSize: 20 }}>{dateFormatter(event.date)}</Text>
+          <Text style={{ fontSize: 20 }}>{event.date}</Text>
           <Text style={{ fontSize: 16 }}>({event.type})</Text>
           <Image source={{ uri: event.imageUrl }} style={styles.image} />
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>
@@ -138,7 +138,7 @@ const AttendingEvents = (props) => {
           </Pressable>
 
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>{event.name}</Text>
-          <Text style={{ fontSize: 16 }}>{dateFormatter(event.date)}</Text>
+          <Text style={{ fontSize: 16 }}>{event.date}</Text>
           <Text style={{ fontSize: 14 }}>({event.type})</Text>
           <Image source={{ uri: event.imageUrl }} style={styles.image} />
           <Text style={{ fontSize: 14, fontWeight: "bold" }}>
@@ -176,7 +176,7 @@ const AttendingEvents = (props) => {
 };
 
 const dateFormatter = (dateStr) => {
-  return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+  return `${new Date(dateStr + 'Z')}`.slice(0, 21);
 };
 
 const dateFormatterLocal = (timestamp) => {
