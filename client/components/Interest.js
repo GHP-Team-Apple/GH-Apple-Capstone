@@ -2,30 +2,27 @@ import { View, Text, FlatList, StyleSheet, SafeAreaView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Checkbox from 'expo-checkbox';
 import { StatusBar } from 'expo-status-bar';
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
+import { updateProfile } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
 
 const userInterests = [
-    { id: 1, type:'Concert', isChecked: false },
-    {id: 2, type: 'Theater', isChecked: false },
-    { id: 3, type:'Comedy', isChecked: false },
-    { id: 4, type: 'Dance', isChecked: false },
-    { id: 5, type:'Classical', isChecked: false },
-    { id: 6, type: 'Broadway', isChecked: false },
-    { id: 7, type: 'Sports', isChecked: false },
-    { id: 8, type:'Film', isChecked: false },
-    { id: 9, type: 'Family', isChecked: false },
-    { id: 10, type: 'Literacy', isChecked: false },
-    // { id: 11, type: 'School Activities', isChecked: false },
-    // { id: 12, type: 'Auto Boat & Air', isChecked: false },
-    // { id: 13, type: 'Other', isChecked: false },
-    // { id: 14, type: 'Spirituality', isChecked: false },
-    // { id: 15, type: 'Sports & Fitness', isChecked: false }, 
-    // { id: 16, type: 'Government', isChecked: false },
-    // { id: 17, type: 'Family & Education', isChecked: false },
-    // { id: 18, type: 'Charity & Causes', isChecked: false },
-    // { id: 19, type: 'Health', isChecked: false },
-    // { id: 20, type: 'Arts', isChecked: false },
-    // { id: 21, type: 'Hobbies', isChecked: false }
+  { id: 1, label: 'Concert', value: "concert", isChecked: false },
+  { id: 2, label: 'Theater', value: "theater", isChecked: false },
+  { id: 3, label: 'Comedy', value: "comedy", isChecked: false },
+  { id: 4, label: 'Dance', value: "dance_performance_tour", isChecked: false },
+  { id: 5, label: 'Classical', value: "classical", isChecked: false },
+  { id: 6, label: 'Broadway', value: "broadway_tickets_national", isChecked: false },
+  { id: 7, label: 'Sports', value: "sports", isChecked: false }, 
+  { id: 8, label: 'Family', value: "family", isChecked: false },
+  { id: 9, label: 'Film', value: "film", isChecked: false },
+  { id: 10, label: 'Literacy', value: "literacy", isChecked: false },
+  { id: 11, label: 'Tech', value: "tech" , isChecked: false },
+  { id: 12, label: 'Food & Drink', value: "food & drink", isChecked: false },
+  { id: 13, label: 'Business', value: "business", isChecked: false },
+  { id: 14, label: 'Travel & Outdoor', value: "travel & outdoor", isChecked: false },
+  { id: 15, label: 'Fashion', value: "fashion", isChecked: false },
+  { id: 16, label: 'Social Activities', value: "social activities", isChecked: false }
 ]
 
 function Item ({ item }) {
@@ -43,14 +40,25 @@ function Item ({ item }) {
   
 
 export default function Interest (props) {
-<<<<<<< HEAD
-	const [isSelected, setSelection] = useState(userInterests);
-	const user = props.user;
-=======
  const [isSelected, setSelection] = useState(userInterests);
+//  const [currUserData, setCurrUserData] = useState(auth.currentUser)
 	const user = props.user;
+
+	// async function handlePress() {
+	// 	const user = auth.currentUser;
+	// 	const userData = {
+	// 		interest: [],	
+	// 	};
+
+	// 	const ThePromise = await Promise.all([
+	// 		updateProfile(user, userData),
+	// 		setDoc(doc(db, 'Users', user.uid), { ...userData, uid: user.uid }),
+			
+	// 	]);
+	// 	setCurrUserData({ ...userData, uid: user.uid })
+	// 	console.log('hje', ThePromise)
+	// }
 	
->>>>>>> main
  const handleChange = (id) => {
     let temp = isSelected.map((select) => {
       if (id === select.id) {
@@ -81,10 +89,11 @@ export default function Interest (props) {
 				 value={item.isChecked}
 				 onValueChange={() => {
 				   handleChange(item.id);
+				//    handlePress(item.id);
 				 }}
 				 style={{ alignSelf: 'center' }}
 			   />
-			   <Text>{item.type}</Text>
+			   <Text>{item.label}</Text>
 			 </View>
 		   </View>
 	   )}
@@ -97,7 +106,7 @@ export default function Interest (props) {
           <SafeAreaView>
             <View style={{ padding: 5 }}>{selectInterest(isSelected)}</View>
             <Text style={{ paddingTop: 10 }}>Selected </Text>
-            <View style={{ paddingTop: 3 }}>{selectInterest(selected)}</View>
+            <View style={{ paddingTop: 3 }} >{selectInterest(selected)}</View>
           </SafeAreaView>
         );
 }
