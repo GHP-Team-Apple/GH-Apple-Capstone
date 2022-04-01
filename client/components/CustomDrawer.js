@@ -12,10 +12,27 @@ import {
 	DrawerItemList,
 } from '@react-navigation/drawer';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { userSignOut, auth } from '../../firebase';
+import {  auth } from '../../firebase';
+import { signOut } from 'firebase/auth';
+import {StackActions} from '@react-navigation/native';
+
 
 export default function CustomDrawer(props) {
-  const [isSignOut, setSignOut] = useState()
+	// const [isSignOut, setSignOut] = useState(false);
+	// if(!isSignOut){
+		const navigation = props.navigation
+		console.log('please look in custom drawer',props)
+		 const userSignOut = () => {
+				props.navigation.navigate('Y')
+			  console.log('inside sigout function')
+		// 	  signOut(auth).then(() => {
+		// 		navigation.goBack()
+		// 	  console.log('we signed out')
+		// 	// // Sign-out successful.
+		//   }).catch((error) => {
+		// 	console.log(error)
+		//   })
+		  }
 	return (
 		<View style={{ flex: 1 }}>
 			<DrawerContentScrollView
@@ -35,7 +52,9 @@ export default function CustomDrawer(props) {
 							marginBottom: 10,
 						}}
 					/>
-					<Text style={{ fontSize: 18 }}>{auth.currentUser.displayName}</Text>
+					<Text style={{ fontSize: 18 }}>
+						{auth.currentUser.providerData[0].displayName}
+					</Text>
 				</ImageBackground>
 				<View style={{ flex: 1, backgroundColor: '#fff', paddingTop: 10 }}>
 					<DrawerItemList {...props} />
@@ -58,7 +77,7 @@ export default function CustomDrawer(props) {
 				<TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Ionicons name="exit-outline" size={22} />
-						{/* <Pressable onPress={() => userSignOut()}> */}
+						<Pressable onPress={() => userSignOut()}>
 							<Text
 								style={{
 									fontSize: 15,
@@ -67,10 +86,14 @@ export default function CustomDrawer(props) {
 							>
 								Sign Out
 							</Text>
-						{/* </Pressable> */}
+						</Pressable>
 					</View>
 				</TouchableOpacity>
 			</View>
 		</View>
 	);
 }
+// else {
+// 	return < />
+// }
+// }

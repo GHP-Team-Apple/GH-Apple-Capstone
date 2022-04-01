@@ -15,6 +15,7 @@ export default function Profile({navigation}) {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [currUserData, setCurrUserData] = useState(null)
+	const [number, setNumber] = useState()
 
 	// useEffect (async () => {
 	// 	await setDoc(doc(db, 'Users', user.uid), { ...userData, uid: user.uid })
@@ -33,7 +34,8 @@ export default function Profile({navigation}) {
 			username,
 			firstName,
 			lastName,
-			interest: [],
+			number,
+			// interest: [],
 			email: user.email,
 		};
 		// if(photoURL){
@@ -143,6 +145,18 @@ export default function Profile({navigation}) {
 						fontSize: 16,
 					}}
 				/>
+				<TextInput
+					placeholder="Phone Number"
+					value={number}
+					onChangeText={setNumber}
+					style={{
+						borderBottomColor: '#b29ef8',
+						marginTop: 20,
+						borderBottomWidth: 3,
+						width: '100%',
+						fontSize: 16,
+					}}
+				/>
 				<View>
 					<Interest/>
 				</View>
@@ -172,7 +186,7 @@ export default function Profile({navigation}) {
 				}}
 			>
 				<Text style={{ fontSize: 22, color: colors.foreground }}>
-					{auth.currentUser.displayName}
+					{auth.currentUser.providerData[0].displayName}
 				</Text>
 				{/* <Text style={{ fontSize: 14, color: 'black', marginTop: 20 }}>
 					Please provide displayName
@@ -195,21 +209,28 @@ export default function Profile({navigation}) {
 						width: '100%',
 						fontSize: 14,
 					}}
-				>{auth.currentUser.firstName}</Text>
+				>{auth.currentUser.providerData[0].firstName}</Text>
 				<Text
 					style={{
 						marginTop: 40,
 						width: '100%',
 						fontSize: 14,
 					}}
-				>{auth.currentUser.lastName}</Text>
+				>{auth.currentUser.providerData[0].lastName}</Text>
 				<Text
 					style={{
 						marginTop: 40,
 						fontSize: 14,
 						width: '100%',
 					}}
-				>{auth.currentUser.username}</Text>
+				>{auth.currentUser.providerData[0].displayName}</Text>
+				<Text
+					style={{
+						marginTop: 40,
+						fontSize: 14,
+						width: '100%',
+					}}
+				>{auth.currentUser.providerData[0].phoneNumber}</Text>
 				<View>
 					<Interest user={currUserData}/>
 				</View>
