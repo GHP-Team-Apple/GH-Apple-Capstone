@@ -21,7 +21,7 @@ export default function CustomDrawer(props) {
 	// const [isSignOut, setSignOut] = useState(false);
 	// if(!isSignOut){
 		const navigation = props.navigation
-		console.log('please look in custom drawer',props)
+		// console.log('please look in custom drawer',props)
 		 const userSignOut = () => {
 				props.navigation.navigate('Y')
 			  console.log('inside sigout function')
