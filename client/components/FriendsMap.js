@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { StyleSheet, Pressable, View, Dimensions, Text, Switch } from "react-native";
+import {
+  StyleSheet,
+  Pressable,
+  View,
+  Dimensions,
+  Text,
+  Switch,
+} from "react-native";
 import * as Location from "expo-location";
 import { getFriendEvents } from "../services/events";
 import { getDistance } from "../services/distance";
@@ -11,6 +18,9 @@ import { LocalEventObj } from "../templates/localEvents";
 const categories = require("../data/categories");
 const cities = require("../data/cities");
 import { auth, db } from "../../firebase";
+import FilteredFriendsList from "./FilteredFriendsList";
+import FriendEventList from "./FriendEventList";
+import { getUserById } from "../services/users";
 
 const FriendsMap = (props) => {
   const userId = "tGBFjYBpoZWCO9lyycynXwlVVza2"; // auth.currentUser.uid;
@@ -26,6 +36,8 @@ const FriendsMap = (props) => {
   const [maxDistance, setMaxDistance] = useState([2]);
   const setEventViewStatus = props.setEventViewStatus;
   const eventView = props.eventView;
+  const [filteredFriendEvents, setFilteredFriendEvents] =
+    useState(friendEvents);
 
   useEffect(async () => {
     try {
@@ -48,6 +60,62 @@ const FriendsMap = (props) => {
       setLocation(location);
     })();
   }, []);
+
+  useEffect(async () => {
+    await filterFriendEvents(friendEvents);
+  }, [filteredCat, maxDistance]);
+
+  const filterFriendEvents = async (friendEvents) => {
+    const friendEventArr = [];
+    // console.log("friendEvents", friendEvents)
+    // const friendEventsFilted = friendEvents.filter(event => event.city !== undefined)
+    for (let i = 0; i < friendEvents.length; i++) {
+      const event = friendEvents[i];
+      const now = new Date().getTime() / 1000;
+      const startTime = event.startDate.seconds;
+      const endTime = event.visibleUntil.seconds;
+      const checkIn = event.checkIn;
+      const eventIsFree = event.isFree ? event.isFree : false;
+      const eventLat = event.location.lat;
+      const eventLon = event.location.lon;
+      // const myLat = location.coords.latitude;
+      // const myLon = location.coords.longitude;
+      const myLat = 40.600181082122;
+      const myLon = -73.98549203006156;
+      const category = event.type;
+      const city = event.city;
+      const distanceFromEvent = getDistance(myLat, eventLat, myLon, eventLon); // mi
+      // console.log("city", city)
+      if (
+        now >= startTime &&
+        now <= endTime &&
+        checkIn &&
+        (filteredCat.includes(category) || filteredCat.length === 0) &&
+        (filteredCity.includes(city) ||
+          filteredCity.length === 0 ||
+          city !== undefined) &&
+        distanceFromEvent <= maxDistance &&
+        (eventIsFree === isFreeChecked || isFreeChecked === false)
+      ) {
+        console.log("eventtttt", event);
+        const friend = await getUserById(event.userId); // returns user object
+        // console.log("friend ====", friend)
+        const profilePicture = friend.profilePicture;
+        const username = friend.username;
+        friendEventArr.push({
+          ...event,
+          userProfilePic: profilePicture,
+          username: username,
+        });
+      }
+    }
+    setFilteredFriendEvents(friendEventArr);
+    // return friendEventArr;
+  };
+
+  // const handleFilterFriendEvent = (filteredFriendEvents) => {
+  //   setFilteredFriendEvents(filteredFriendEvents);
+  // };
 
   const handlePress = (event) => {
     if (event) {
@@ -76,7 +144,7 @@ const FriendsMap = (props) => {
     setCityList(cityList);
     setFilteredCity(cityArray);
     setMaxDistance(2);
-    setIsFreeChecked(false)
+    setIsFreeChecked(false);
   };
 
   const handleCat = (catId) => {
@@ -88,7 +156,9 @@ const FriendsMap = (props) => {
         const newStatus = categoryList[i].isChecked;
       }
     }
-    const selectedCat = categoryList.filter(cat => cat.isChecked).map(catObj => catObj.value);
+    const selectedCat = categoryList
+      .filter((cat) => cat.isChecked)
+      .map((catObj) => catObj.value);
     setCategoryList(categoryList);
     setFilteredCat(selectedCat);
   };
@@ -145,61 +215,15 @@ const FriendsMap = (props) => {
               </Callout>
             </Marker>
 
-            {
-              friendEvents.map((event) => {
-                const now = new Date().getTime() / 1000;
-                const startTime = event.startDate.seconds;
-                const endTime = event.visibleUntil.seconds;
-                const checkIn = event.checkIn;
-                const eventIsFree = event.isFree ? event.isFree : false;
-                const eventLat = event.location.lat;
-                const eventLon = event.location.lon;
-                const myLat = location.coords.latitude;
-                const myLon = location.coords.longitude;
-                const category = event.type;
-                const city = event.city;
-                const distanceFromEvent = getDistance(
-                  myLat,
-                  eventLat,
-                  myLon,
-                  eventLon
-                ); // mi
-
-                if (
-                  now >= startTime &&
-                  now <= endTime &&
-                  checkIn &&
-                  (filteredCat.includes(category) || filteredCat.length === 0) &&
-                  (filteredCity.includes(city) || filteredCity.length === 0)
-
-                  && (distanceFromEvent <= maxDistance)
-                  && (eventIsFree === isFreeChecked || isFreeChecked === false)
-
-                ) {
-                  return (
-                    <Marker
-                      pinColor={"green"}
-                      key={event.id}
-                      coordinate={{
-                        latitude: event.location.lat,
-                        longitude: event.location.lon,
-                      }}
-                    // image={image}
-                    >
-                      <Callout
-                        onPress={() => handlePress(event)}
-                        style={styles.event}
-                      >
-                        <Text>{event.name}</Text>
-                      </Callout>
-                    </Marker>
-                  );
-                }
-              }
-              )}
-          </MapView >
-        ) : null
-        }
+            {location ? (
+              <FilteredFriendsList
+                friendEvents={friendEvents}
+                filteredFriendEvents={filteredFriendEvents}
+              />
+            ) : // filterFriendEventsAndMap(friendEvents)
+            null}
+          </MapView>
+        ) : null}
         <View style={styles.switch}>
           <Switch
             trackColor={{ false: "#b29ef8", true: "#b29ef8" }}
@@ -209,13 +233,9 @@ const FriendsMap = (props) => {
           />
         </View>
         <View style={styles.selection}>
-          <Pressable
-            style={styles.icon}
-            onPress={() => handleFilterPage(true)}
-          >
+          <Pressable style={styles.icon} onPress={() => handleFilterPage(true)}>
             <Ionicons name="options" size={20} color="#b29ef8" />
           </Pressable>
-
         </View>
 
         {selectedEvent ? (
@@ -236,25 +256,30 @@ const FriendsMap = (props) => {
           />
         ) : null}
       </View>
-
+      {/* <View style={styles.friendsList}> */}
+        <FriendEventList
+          filteredFriendEvents={filteredFriendEvents}
+          handlePress={handlePress}
+        />
+      {/* </View> */}
     </View>
   );
 };
 
-// const getImage = (image) => {
-//   switch (image) {
-//     case "alpaca.png":
-//       return require("../../assets/alpaca.png");
-//     case "rabbit.png":
-//       return require("../../assets/rabbit.png");
-//     case "dog.png":
-//       return require("../../assets/dog.png");
-//     case "chameleon.png":
-//       return require("../../assets/chameleon.png");
-//     case "koala.png":
-//       return require("../../assets/koala.png");
-//   }
-// };
+const getImage = (image) => {
+  switch (image) {
+    case "alpaca.png":
+      return require("../../assets/alpaca.png");
+    case "rabbit.png":
+      return require("../../assets/rabbit.png");
+    case "dog.png":
+      return require("../../assets/dog.png");
+    case "chameleon.png":
+      return require("../../assets/chameleon.png");
+    case "koala.png":
+      return require("../../assets/koala.png");
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -262,36 +287,39 @@ const styles = StyleSheet.create({
     // backgroundColor: "#fff",
     // alignItems: "center",
     // justifyContent: "center",
-    justifyContent: 'flex-end',
-    margin: 0
+    justifyContent: "flex-end",
+    margin: 0,
   },
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.65,
   },
   switch: {
-    position: 'absolute',
-    alignSelf: 'flex-end',
+    position: "absolute",
+    alignSelf: "flex-end",
     padding: 5,
   },
   selection: {
-    position: 'absolute',
-    alignSelf: 'flex-start',
+    position: "absolute",
+    alignSelf: "flex-start",
     padding: 5,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   icon: {
     padding: 7,
     backgroundColor: "#003566",
     borderRadius: 50,
-    alignSelf: 'flex-start',
-    marginRight: 5
+    alignSelf: "flex-start",
+    marginRight: 5,
   },
   event: {
     flexDirection: "row",
     // flexWrap: 'wrap',
     alignItems: "center",
     margin: 5,
+  },
+  friendsList: {
+    // container
   },
 });
 

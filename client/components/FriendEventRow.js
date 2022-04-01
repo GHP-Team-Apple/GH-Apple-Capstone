@@ -10,7 +10,7 @@ const FriendEventRow = (props) => {
     const userId = auth.currentUser.uid;
     const event = props.event;
     const handlePress = props.handlePress;
-
+    const image = getImage(event.userProfilePic);
     return (
         <Pressable
             style={styles.event}
@@ -18,16 +18,14 @@ const FriendEventRow = (props) => {
         >
             <Image
                 style={styles.image}
-                source={{
-                    uri: event.userProfilePic,
-                }}
+                source={image}
             />
             <Text>{event.username}</Text>
 
             <View style={styles.text}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.performers[0].name}</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.name}</Text>
                 <Text style={{ fontSize: 15 }}>{dateFormatter(event.startDate.seconds)}</Text>
-                <Text style={{ fontSize: 15 }}>{event.venue.name}</Text>
+                <Text style={{ fontSize: 15 }}>{event.venueName}</Text>
             </View>
 
         </Pressable>
@@ -38,6 +36,21 @@ const dateFormatter = (dateStr) => {
     return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
 }
 
+const getImage = (image) => {
+    switch (image) {
+      case "alpaca.png":
+        return require("../../assets/alpaca.png");
+      case "rabbit.png":
+        return require("../../assets/rabbit.png");
+      case "dog.png":
+        return require("../../assets/dog.png");
+      case "chameleon.png":
+        return require("../../assets/chameleon.png");
+      case "koala.png":
+        return require("../../assets/koala.png");
+    }
+  };
+
 const styles = StyleSheet.create({
     event: {
         flexDirection: 'row',
@@ -45,8 +58,8 @@ const styles = StyleSheet.create({
         margin: 5
     },
     image: {
-        width: 150,
-        height: 90,
+        width: 50,
+        height: 50,
         margin: 2
     },
     text: {
