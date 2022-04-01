@@ -25,7 +25,7 @@ const SeedEventbrite = () => {
             let eventToBeSaved = {
                 city: 'NYC',
                 description: event.description.text,
-                end: event.end.utc,
+                end: new Date(event.end.utc),
                 hostId: `EB_HOST_${event.organization_id}`,
                 id: `EB_${event.id}`,
                 imageUrl: event.logo.original.url,
@@ -35,11 +35,11 @@ const SeedEventbrite = () => {
                     lon: Number(event.venue.longitude),
                 },
                 name: event.name.text,
-                startDate: event.start.utc,
+                startDate: new Date(event.start.utc),
                 type: event.category.name,
                 venueAddress: event.venue.address.localized_address_display,
                 venueName: event.venue.name,
-                visilbleUntil: event.end.utc
+                visibleUntil: new Date(event.end.utc)
             }
             setEventbriteEvents([...eventbriteEvents, eventToBeSaved]);
 
@@ -61,6 +61,9 @@ const SeedEventbrite = () => {
             </View>
         )
     // }
+
+
 }
+
 
 export default SeedEventbrite;

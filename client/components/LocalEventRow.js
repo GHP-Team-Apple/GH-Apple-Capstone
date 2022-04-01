@@ -5,7 +5,7 @@ import { saveEvent, unsaveEvent } from '../services/events';
 import { auth, db } from '../../firebase';
 
 
-const EventRow = (props) => {
+const LocalEventRow = (props) => {
     const userId = auth.currentUser.uid;
     const event = props.event;
     const handlePress = props.handlePress;
@@ -22,19 +22,20 @@ const EventRow = (props) => {
         const savedEvent = {
             userId: userId,
             id: event.id,
-            name: event.performers[0].name,
+            name: event.name,
             type: event.type,
-            startDate: event.datetime_utc,
-            visibleUntil: event.visible_until_utc,
-            venueName: event.venue.name,
-            venueAddress: event.venue.address + ', ' + event.venue.extended_address,
+            startDate: event.startDate,
+            visibleUntil: event.visibleUntil,
+            venueName: event.venueName,
+            venueAddress: event.venueAddress,
             location: {
-                lat: event.venue.location.lat,
-                lon: event.venue.location.lon
+                lat: event.location.lat,
+                lon: event.location.lon
             },
             checkIn: false,
-            imageUrl: event.performers[0].image
+            imageUrl: event.imageUrl
         }
+        
         if (!isSaved) {
             await saveEvent(userId, savedEvent)
             setIsSaved(true);
@@ -55,13 +56,13 @@ const EventRow = (props) => {
             <Image
                 style={styles.image}
                 source={{
-                    uri: event.performers[0].image,
+                    uri: event.imageUrl,
                 }}
             />
             <View style={styles.text}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.performers[0].name}</Text>
-                <Text style={{ fontSize: 15 }}>{dateFormatter(event.datetime_utc)}</Text>
-                <Text style={{ fontSize: 15 }}>{event.venue.name}</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.name}</Text>
+                <Text style={{ fontSize: 15 }}>{dateFormatterLocal(event.startDate.seconds)}</Text>
+                <Text style={{ fontSize: 15 }}>{event.venueName}</Text>
 
                 <Pressable
                     style={styles.icon}
@@ -78,9 +79,9 @@ const EventRow = (props) => {
     )
 }
 
-const dateFormatter = (dateStr) => {
-    return `${new Date(dateStr + 'Z')}`.slice(0, 21);
-}
+const dateFormatterLocal = (timestamp) => {
+    return `${new Date(timestamp * 1000)}`.slice(0, 21);
+  };
 
 const styles = StyleSheet.create({
     event: {
@@ -107,4 +108,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default EventRow;
+export default LocalEventRow;

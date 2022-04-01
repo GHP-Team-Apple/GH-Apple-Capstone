@@ -97,7 +97,7 @@ const SingleSavedEvent = (props, {navigation}) => {
 };
 
 const dateFormatter = (dateStr) => {
-  return `${new Date(Date.parse(dateStr))}`.slice(0, 21);
+  return `${new Date(dateStr + 'Z')}`.slice(0, 21);
 };
 
 const dateFormatterLocal = (timestamp) => {
