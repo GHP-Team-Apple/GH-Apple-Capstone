@@ -59,7 +59,7 @@ const EventRow = (props) => {
                 }}
             />
             <View style={styles.text}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.performers[0].name}</Text>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', alignContent: 'stretch' }}>{event.performers[0].name}</Text>
                 <Text style={{ fontSize: 15 }}>{dateFormatter(event.datetime_utc)}</Text>
                 <Text style={{ fontSize: 15 }}>{event.venue.name}</Text>
 
