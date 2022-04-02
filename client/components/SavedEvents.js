@@ -68,7 +68,10 @@ const SavedEvents = ({ navigation }) => {
   };
   // console.log('MY ID: ', auth.currentUser.uid);
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={{ flex: 1 }}>
+      <View style={styles.header}>
+        <Text style={{ fontSize: 30 }}>My Events</Text>
+      </View>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollView}
@@ -76,10 +79,7 @@ const SavedEvents = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Text style={{ fontSize: 30, marginLeft: 125, marginBottom: 20 }}>
-          {" "}
-          My Events{" "}
-        </Text>
+
         {events.length === 0 ? (
           <View>
             <Text>No Events Saved</Text>
@@ -108,23 +108,29 @@ const SavedEvents = ({ navigation }) => {
           />
         ) : null}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.875,
-    marginTop: 30,
+    height: Dimensions.get("window").height * 0.85,
+    marginTop: 10
   },
   savedEvents: {
     display: "flex",
     borderBottomColor: "gray",
     borderBottomWidth: 1,
     justifyContent: "space-between",
-    margin: 9,
+    margin: 5,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 15
+  }
 });
 
 export default SavedEvents;

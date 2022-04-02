@@ -33,7 +33,8 @@ const LocalEventRow = (props) => {
                 lon: event.location.lon
             },
             checkIn: false,
-            imageUrl: event.imageUrl
+            imageUrl: event.imageUrl,
+            hostId: event.hostId
         }
         
         if (!isSaved) {
