@@ -94,17 +94,3 @@ export default function CustomDrawer(props) {
 	);
 }
 
-const getImage = (image) => {
-	switch (image) {
-	  case "alpaca.png":
-		return require("../../assets/alpaca.png");
-	  case "rabbit.png":
-		return require("../../assets/rabbit.png");
-	  case "chameleon.png":
-		return require("../../assets/chameleon.png");
-	  case "dog.png":
-		return require("../../assets/dog.png");
-	  case "koala.png":
-		return require("../../assets/koala.png");
-	}
-  };
