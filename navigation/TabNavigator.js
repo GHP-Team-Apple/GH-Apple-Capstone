@@ -57,7 +57,6 @@ export default function TabNavigator() {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarLabel: ({ focused, color, position }) => {
-          console.log("color", color)
           return <Text style={{fontSize: 11,color:"white"}}>{focused ? route.name : ""}</Text>
         },
         headerShown: false,
