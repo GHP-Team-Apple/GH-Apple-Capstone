@@ -30,10 +30,12 @@ export default function AppStack() {
 			}}
 		>
 			<Drawer.Screen
-				name="Home"
+				name="Home1"
 				component={TabNavigator}
 				options={{
 					drawerIcon: () => <AntDesign name="home" size={22} color="black" />,
+					headerShown: true,
+					title: 'Ripple',
 				}}
 			/>
 			{/* <Stack.Screen name="Messages" component={FriendList} options={{

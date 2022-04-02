@@ -10,7 +10,7 @@ const SeedEventbrite = () => {
     const eventIds = [];
     // componentDidMount
     useEffect(async () => {
-        const eventIDArrs = [158952760987, 272127539797];
+        // const eventIDArrs = [158952760987, 272127539797];
         saveNYCLocalEventsToDB(eventIDArrs);
     }, []);
 
