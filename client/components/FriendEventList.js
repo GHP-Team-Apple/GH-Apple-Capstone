@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     event: {
         flexDirection: 'row',
         alignItems: 'center',
-        margin: 5,
+        margin: 2,
     },
     image: {
         width: 150,

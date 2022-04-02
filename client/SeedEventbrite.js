@@ -36,7 +36,7 @@ const SeedEventbrite = () => {
                 },
                 name: event.name.text,
                 startDate: new Date(event.start.utc),
-                type: event.category.name,
+                type: event.category.name.toLowerCase(),
                 venueAddress: event.venue.address.localized_address_display,
                 venueName: event.venue.name,
                 visibleUntil: new Date(event.end.utc)
