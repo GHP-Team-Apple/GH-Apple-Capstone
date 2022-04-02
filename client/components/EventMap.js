@@ -6,7 +6,15 @@ import getEventsFromSeatGeek from '../resources/seatgeek';
 import { getLocalEvents, getSavedEventsByUserId } from '../services/events';
 import EventList from './EventList';
 import SingleEvent from './SingleEvent';
-import { AntDesign, Ionicons, MaterialCommunityIcons, FontAwesome5, Entypo } from "@expo/vector-icons";
+import {
+    AntDesign,
+    Ionicons,
+    MaterialCommunityIcons,
+    FontAwesome5,
+    Entypo,
+    FontAwesome,
+    MaterialIcons
+} from "@expo/vector-icons";
 import { LocalEventObj } from '../templates/localEvents';
 import { Picker } from '@react-native-picker/picker';
 import { auth, db } from '../../firebase';
@@ -76,7 +84,6 @@ const EventMap = () => {
             } else {
                 events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             }
-            // const events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             setSeatGeekEvents(events);
         }
     }, [currentRegion]);
@@ -88,7 +95,6 @@ const EventMap = () => {
             } else {
                 events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             }
-            // const events = await getEventsFromSeatGeek(filteredCat, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             setSeatGeekEvents(events);
         }
     }, [filteredCat, maxDistance])
@@ -140,23 +146,6 @@ const EventMap = () => {
 
     const updateSaveEventID = (arr) => {
         setSavedEventsIDArr(arr);
-    }
-
-    const CustomMarker = (eventType) => {
-        switch (eventType) {
-            case "concert":
-            case "music_festival":
-                return <Entypo name="music" size={32} color="#304795" />
-            case "theater":
-            case "broadway_tickets_national":
-                return <FontAwesome5 name="theater-masks" size={28} color="#B93D46" />
-            case "dance_performance_tour":
-                return <FontAwesome5 name="user-friends" size={28} color="#B95821" />
-            case "comedy":
-                return <FontAwesome5 name="laugh-squint" size={30} color="#EA5455" />
-            default:
-                return <Ionicons name="heart-circle" size={33} color="#E06268" />
-        }
     }
 
     //=====================================================
@@ -225,29 +214,31 @@ const EventMap = () => {
     //=====================================================
 
     const filterLocalEvents = (eventArr) => {
-        return eventArr.filter(event => {
-            const eventIsFree = event.isFree ? event.isFree : false;
-            const eventLat = event.location.lat;
-            const eventLon = event.location.lon;
-            const myLat = currentRegion.latitude;
-            const myLon = currentRegion.longitude;
-            const category = event.type;
-            const city = event.city;
-            const distanceFromEvent = getDistance(
-                myLat,
-                eventLat,
-                myLon,
-                eventLon
-            ); // mi
-
-            if (
-                (filteredCat.includes(category) || filteredCat.length === 0) &&
-                (filteredCity.includes(city) || filteredCity.length === 0)
-                && (distanceFromEvent <= maxDistance)
-                && (eventIsFree === isFreeChecked || isFreeChecked === false)
-            )
-                return event;
-        });
+        if (currentRegion) {
+            return eventArr.filter(event => {
+                const eventIsFree = event.isFree ? event.isFree : false;
+                const eventLat = event.location.lat;
+                const eventLon = event.location.lon;
+                const myLat = currentRegion.latitude;
+                const myLon = currentRegion.longitude;
+                const category = event.type.toLowerCase();
+                const city = event.city;
+                const distanceFromEvent = getDistance(
+                    myLat,
+                    eventLat,
+                    myLon,
+                    eventLon
+                ); // mi
+                if (
+                    (filteredCat.includes(category) || filteredCat.length === 0) &&
+                    (filteredCity.includes(city) || filteredCity.length === 0)
+                    && (distanceFromEvent <= maxDistance)
+                    && (eventIsFree === isFreeChecked || isFreeChecked === false)
+                )
+                    return event;
+            });
+        }
+        
     }
 
     const setEventViewStatus = () => {
@@ -280,12 +271,12 @@ const EventMap = () => {
                                     }}
                                     onPress={() => handleSelectEvent(event)}
                                 >
-                                    {CustomMarker(event.type)}
+                                    {CustomMarker(event.type.toLowerCase())}
                                 </Marker>
                             ))
                             : null
                         }
-                        {localEvents ?
+                        { (localEvents && currentRegion) ?
                             localEvents.map((event, idx) => {
                                 const eventIsFree = event.isFree ? event.isFree : false;
                                 const eventLat = event.location.lat;
@@ -306,16 +297,17 @@ const EventMap = () => {
                                     && (distanceFromEvent <= maxDistance)
                                     && (eventIsFree === isFreeChecked || isFreeChecked === false)
                                 )
-                                    return (<Marker
-                                        key={`le-${idx}`}
-                                        pinColor={'green'}
-                                        coordinate={{
-                                            latitude: Number(event.location.lat),
-                                            longitude: Number(event.location.lon),
-                                        }}
-                                        title={event.name}
-                                        onPress={() => handleSelectEvent(event)}
-                                    />)
+                                    return (
+                                        <Marker
+                                            key={`le-${idx}`}
+                                            coordinate={{
+                                                latitude: Number(event.location.lat),
+                                                longitude: Number(event.location.lon),
+                                            }}
+                                            onPress={() => handleSelectEvent(event)}
+                                        >
+                                            {CustomMarker(event.type.toLowerCase())}
+                                        </Marker>)
                             })
                             : null
                         }
@@ -338,10 +330,7 @@ const EventMap = () => {
 
 
                     </View>
-
-
                 </View>
-
                 {
                     filterPage ? (
                         <Filter
@@ -365,7 +354,6 @@ const EventMap = () => {
                     updateSaveEventID={updateSaveEventID}
                     savedEventsIDArr={savedEventsIDArr}
                 />
-
                 {
                     selectedEvent ?
                         <SingleEvent
@@ -376,14 +364,48 @@ const EventMap = () => {
                         />
                         : null
                 }
-
             </View >
         )
             : null
     } else {
         return (<FriendsMap eventView={eventView} setEventViewStatus={setEventViewStatus} />)
     }
+}
 
+const CustomMarker = (eventType) => {
+    switch (eventType.split('_')[0]) {
+        case "concert":
+        case "music":
+            return <Entypo name="music" size={28} color="#304795" />
+        case "theater":
+        case "broadway":
+        case "classical":
+            return <FontAwesome5 name="theater-masks" size={27} color="#B93D46" />
+        case "dance":
+        case "social activities":
+            return <FontAwesome5 name="user-friends" size={23} color="#185ADB" />
+        case "comedy":
+            return <FontAwesome5 name="laugh-squint" size={26} color="#EA5455" />
+        case "family":
+            return <MaterialIcons name="family-restroom" size={32} color="#185ADB" />
+        case "film":
+            return <MaterialCommunityIcons name="filmstrip" size={30} color="#5800FF" />
+        case "literacy":
+            return <FontAwesome name="book" size={28} color="#116530" />
+        case "tech":
+            return <Entypo name="laptop" size={26} color="#A9333A" />
+        case "food & drink":
+            return <MaterialIcons name="fastfood" size={28} color="#FF4848" />
+        case "business":
+            return <MaterialIcons name="business-center" size={30} color="#6B4F4F" />
+        case "travel & outdoor":
+            return <FontAwesome5 name="mountain" size={22} color="#125C13" />
+        case "fashion":
+            return <Ionicons name="ios-shirt" size={26} color="#FF3D68" />
+        default:
+            // return <FontAwesome name="star" size={28} color="#FFD124" />
+            return <MaterialIcons name="sports-football" size={30} color="#BB371A" />
+    }
 }
 
 const styles = StyleSheet.create({
@@ -398,7 +420,7 @@ const styles = StyleSheet.create({
     switch: {
         position: 'absolute',
         alignSelf: 'flex-end',
-        padding: 5, 
+        padding: 5,
     },
     selection: {
         position: 'absolute',

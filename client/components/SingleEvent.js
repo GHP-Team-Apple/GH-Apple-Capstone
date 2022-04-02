@@ -35,7 +35,8 @@ const SingleEvent = (props) => {
             },
             checkIn: false,
             imageUrl: event.imageUrl,
-            eventUrl: event.eventUrl
+            eventUrl: event.eventUrl,
+            hostId: event.hostId || null
         }
 
         //check if the user has already saved the event
