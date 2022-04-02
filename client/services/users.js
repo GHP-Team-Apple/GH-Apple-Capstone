@@ -75,3 +75,14 @@ export const addFollower = async (myUserId, targetUserId) => {
   });
 };
 
+export const getUsersNumbers = async () => {
+  const q = query(collection(db, "Users"), where("number", "!=", null));
+  const querySnapshot = await getDocs(q);
+  const numArr = [];
+  querySnapshot.forEach((doc) => {
+    const data = doc.data().number;
+    numArr.push(data);
+  });
+  return numArr;
+};
+

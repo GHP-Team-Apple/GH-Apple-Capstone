@@ -10,12 +10,12 @@ export default function Notifications() {
   const [refreshing, setRefreshing] = React.useState(false);
   const [contacts, setContacts] = useState([]);
   const [followingContacts, setFollowingContacts] = useState([]);
-  // const myUserId = "ihzddcHz7WSarDGk6kn3";
+  const myUserIdContact = "ihzddcHz7WSarDGk6kn3";
   const myUserId = auth.currentUser.uid;
   
   //fetchsuggested Users via contactList
   useEffect(async() => {
-    const userArr = await fetchSuggestedUsers(myUserId)
+    const userArr = await fetchSuggestedUsers(myUserIdContact)
     console.log("My contacts:", userArr);
     setContacts(userArr);
     const followingUserArr = await fetchNoFriendshipFollowers(myUserId)
@@ -40,7 +40,7 @@ export default function Notifications() {
   }
 //fresh the screen
   const onRefresh = React.useCallback(async() => {
-    const userArr = await fetchSuggestedUsers(myUserId)
+    const userArr = await fetchSuggestedUsers(myUserIdContact)
     setContacts(userArr);
     const followingUserArr = await fetchNoFriendshipFollowers(myUserId)
     setFollowingContacts(followingUserArr)

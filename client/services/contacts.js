@@ -3,7 +3,19 @@ import {
   getUserFromNumbers,
   getUserById,
   getFollowing,
+  getUsersNumbers,
+  getUsersByPhoneNumbers,
+  getIsFollowing,
 } from "../services/users";
+import { db } from "../../firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  where,
+  get
+} from "firebase/firestore";
 
 export const fetchSuggestedUsers = async (userId) => {
   const { status } = await Contacts.requestPermissionsAsync();
@@ -13,30 +25,45 @@ export const fetchSuggestedUsers = async (userId) => {
   const { data } = await Contacts.getContactsAsync({
     fields: [Contacts.Fields.PhoneNumbers],
   });
-  if (data.length === 0) {
-    return [];
+  const numArr = await getUsersNumbers();
+  if (data.length > 0) {
+    const phoneNumbers = data
+      .filter(
+        (item) =>
+          item.phoneNumbers !== undefined && item.phoneNumbers.length > 0
+      )
+      .map((item) => item.phoneNumbers[0].number)
+      .filter((number) => number.length > 0 && numArr.includes(number));
+    // Target phone numbers => Target users from Firebase
+
+    if (phoneNumbers.length > 0) {
+      const userArr = await getUsersByPhoneNumbers(phoneNumbers);
+      //check already followed
+      const following = await getFollowing(userId);
+      const followingNumber = following
+        .filter((user) => user !== undefined && user.number !== null)
+        .map((user) => user.number);
+      const PhoneNumbersNFollowing = phoneNumbers.filter(
+        (number) => !followingNumber.includes(number)
+      );
+      //check if matches my phone number
+      const myUserInfo = await getUserById(userId);
+      const myPhoneNumber = myUserInfo.number;
+      const updatedPhoneNumbersArr = PhoneNumbersNFollowing.filter(
+        (number) => number !== myPhoneNumber
+      );
+      //get users
+      if (updatedPhoneNumbersArr.length <= 0) {
+        return [];
+      } else {
+        const updatedUserArr = await getUsersByPhoneNumbers(
+          updatedPhoneNumbersArr
+        );
+        return updatedUserArr;
+      }
+    }
   }
-  const contactNumbers = formatPhoneNumber(
-    data
-      .map((contact) => contact.phoneNumbers) // get Number from contact
-      .flat() // some user has multiple numbers so we need to flat them into one array
-      .filter((number) => number) // some number may be null
-      .map((number) => number.number)
-  );
-  if (contactNumbers.length === 0) {
-    return [];
-  }
-  // check already followed
-  const followingUsers = await getFollowing(userId);
-  const followingUserNumbers = formatPhoneNumber(
-    followingUsers.map((user) => user.number)
-  );
-  const unfollowingContactNumber = contactNumbers.filter(
-    (number) => !followingUserNumbers.includes(number)
-  );
-  // To get users who are my contact
-  const contactUsers = await getUserFromNumbers(unfollowingContactNumber);
-  return contactUsers;
+  
 };
 
 function formatPhoneNumber(numbers) {
