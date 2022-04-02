@@ -36,12 +36,12 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator
       barStyle={{ backgroundColor: "black" }}
-      initialRouteName="Home1"
+      initialRouteName="Home"
       screenOptions={
         ({route}) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'Home1') {
+          if (route.name === 'Home') {
             iconName = focused
               ? 'ios-home'
               : 'ios-home-outline';
@@ -66,7 +66,7 @@ export default function TabNavigator() {
       })}
     >
       <Tab.Screen
-        name="Home1"
+        name="Home"
         component={HomeStack}
       />
       <Tab.Screen

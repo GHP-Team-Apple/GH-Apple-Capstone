@@ -20,17 +20,16 @@ import { StackActions } from '@react-navigation/native';
 export default function CustomDrawer(props) {
 	// const [isSignOut, setSignOut] = useState(false);
 	// if(!isSignOut){
-	const navigation = props.navigation;
-
+	const navigation = props.navigation
 	const userSignOut = () => {
 		props.navigation.navigate('Y')
-			  signOut(auth).then(() => {
-				navigation.goBack()
-			  console.log('we signed out')
-			// // Sign-out successful.
-		  }).catch((error) => {
-			console.log(error)
-		  })
+		// 	  signOut(auth).then(() => {
+		// 		navigation.goBack()
+		// 	  console.log('we signed out')
+		// 	// // Sign-out successful.
+		//   }).catch((error) => {
+		// 	console.log(error)
+		//   })
 	}
 
 	return (
@@ -44,7 +43,7 @@ export default function CustomDrawer(props) {
 					style={{ padding: 20 }}
 				>
 					<Image
-						source={require('../../assets/penguin.png')}
+						source={require('../../assets/dog.png')}
 						style={{
 							height: 80,
 							width: 80,
@@ -93,4 +92,7 @@ export default function CustomDrawer(props) {
 		</View>
 	);
 }
-
+// else {
+// 	return < />
+// }
+// }

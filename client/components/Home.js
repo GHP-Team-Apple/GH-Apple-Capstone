@@ -33,7 +33,6 @@ export default function Home() {
 
 	useEffect(async () => {
 		const localEventsFromDb = await getLocalEvents('NYC');
-		console.log('this is local events', localEventsFromDb);
 		setLocalEvent(localEventsFromDb);
 	}, []);
 
@@ -43,7 +42,6 @@ export default function Home() {
 				? localEvent.map((event) => {
 						return (
 							<View key={event.id}>
-								{console.log('looking for this', event)}
 								<Image style={styles.image} source={{ uri: event.imageUrl }} />
 								<Text>{event.name}</Text>
 								<View

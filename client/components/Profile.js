@@ -48,7 +48,7 @@ export default function Profile({navigation}) {
 		]);
 		setCurrUserData({ ...userData, uid: user.uid })
 		
-		navigation.navigate('home1');
+		navigation.navigate('Home');
 	}
 	
 	const getUserInfo = async () => {

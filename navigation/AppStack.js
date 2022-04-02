@@ -30,7 +30,7 @@ export default function AppStack() {
 			}}
 		>
 			<Drawer.Screen
-				name="Home"
+				name="Home1"
 				component={TabNavigator}
 				options={{
 					drawerIcon: () => <AntDesign name="home" size={22} color="black" />,
