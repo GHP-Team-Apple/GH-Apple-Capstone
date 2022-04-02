@@ -97,9 +97,8 @@ const FriendsMap = (props) => {
         distanceFromEvent <= maxDistance &&
         (eventIsFree === isFreeChecked || isFreeChecked === false)
       ) {
-        console.log("eventtttt", event);
+
         const friend = await getUserById(event.userId); // returns user object
-        // console.log("friend ====", friend)
         const profilePicture = friend.profilePicture;
         const username = friend.username;
         friendEventArr.push({

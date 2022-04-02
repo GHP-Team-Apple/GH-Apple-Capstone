@@ -49,7 +49,6 @@ const AttendingEvents = (props) => {
       //   }
       // });
     }
-    console.log("FRIENDS", friends);
     setFriendsAttending(friends);
   }, [friendEvents]);
 

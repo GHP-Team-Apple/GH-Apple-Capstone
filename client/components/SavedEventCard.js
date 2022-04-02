@@ -56,7 +56,17 @@ export default SavedEventCard = (props) => {
       <View style={styles.info}>
         <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>{props.event.name}</Text>
         <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{props.event.venueName}</Text>
-        <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{dateFormatter(props.event.startDate)}</Text>
+        {
+          props.event.hostId
+            ? <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>
+                { props.event.startDate.seconds
+                  ? dateFormatterLocal(props.event.startDate.seconds)
+                  : props.event.startDate
+                }
+              </Text>
+            : <Text style={{ fontSize: 14, color: "gray", marginTop: 7 }}>{dateFormatter(props.event.startDate)}</Text>
+        }
+
         {props.event.checkIn ? (
           <View style={styles.buttons}>
             <IconButton
@@ -105,6 +115,9 @@ const dateFormatter = (dateStr) => {
   return `${new Date(dateStr + 'Z')}`.slice(0, 21);
 }
 
+const dateFormatterLocal = (timestamp) => {
+  return `${new Date(timestamp * 1000)}`.slice(0, 21);
+};
 
 const styles = StyleSheet.create({
   event: {

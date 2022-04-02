@@ -1,7 +1,6 @@
 import { View, Text, Button } from 'react-native';
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Chat from '../client/components/Chat';
 import Notifications from '../client/components/Notifications';
 import FriendsMap from '../client/components/FriendsMap';
 import CustomDrawer from '../client/components/CustomDrawer';
