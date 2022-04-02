@@ -214,28 +214,31 @@ const EventMap = () => {
     //=====================================================
 
     const filterLocalEvents = (eventArr) => {
-        return eventArr.filter(event => {
-            const eventIsFree = event.isFree ? event.isFree : false;
-            const eventLat = event.location.lat;
-            const eventLon = event.location.lon;
-            const myLat = currentRegion.latitude;
-            const myLon = currentRegion.longitude;
-            const category = event.type.toLowerCase();
-            const city = event.city;
-            const distanceFromEvent = getDistance(
-                myLat,
-                eventLat,
-                myLon,
-                eventLon
-            ); // mi
-            if (
-                (filteredCat.includes(category) || filteredCat.length === 0) &&
-                (filteredCity.includes(city) || filteredCity.length === 0)
-                && (distanceFromEvent <= maxDistance)
-                && (eventIsFree === isFreeChecked || isFreeChecked === false)
-            )
-                return event;
-        });
+        if (currentRegion) {
+            return eventArr.filter(event => {
+                const eventIsFree = event.isFree ? event.isFree : false;
+                const eventLat = event.location.lat;
+                const eventLon = event.location.lon;
+                const myLat = currentRegion.latitude;
+                const myLon = currentRegion.longitude;
+                const category = event.type.toLowerCase();
+                const city = event.city;
+                const distanceFromEvent = getDistance(
+                    myLat,
+                    eventLat,
+                    myLon,
+                    eventLon
+                ); // mi
+                if (
+                    (filteredCat.includes(category) || filteredCat.length === 0) &&
+                    (filteredCity.includes(city) || filteredCity.length === 0)
+                    && (distanceFromEvent <= maxDistance)
+                    && (eventIsFree === isFreeChecked || isFreeChecked === false)
+                )
+                    return event;
+            });
+        }
+        
     }
 
     const setEventViewStatus = () => {
