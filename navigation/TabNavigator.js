@@ -36,56 +36,55 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator
       barStyle={{ backgroundColor: "black" }}
-      initialRouteName="home2"
-      screenOptions={{
+      initialRouteName="Home1"
+      screenOptions={
+        ({route}) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'Home1') {
+            iconName = focused
+              ? 'ios-home'
+              : 'ios-home-outline';
+          } else if (route.name === 'Explore') {
+            iconName = focused ? 'map' : 'map-outline';
+          } else if (route.name === 'WishList') {
+            iconName = focused ? 'ios-heart' : 'ios-heart-outline';
+          } else if (route.name === 'Messages') {
+            iconName = focused ? 'ios-chatbubble-ellipses' : 'ios-chatbubble-ellipses-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'ios-person' : 'ios-person-outline';
+          } 
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarLabel: ({ focused, color, position }) => {
+          console.log("color", color)
+          return <Text style={{fontSize: 11,color:"white"}}>{focused ? route.name : ""}</Text>
+        },
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: { backgroundColor: "#003566" },
-        tabBarInactiveTintColor: "#fff",
-        tabBarActiveTintColor: "yellow",
-      }}
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: '#c4b4f4',
+        tabBarStyle: { backgroundColor: "#003566" }
+      })}
     >
       <Tab.Screen
-        name="home2"
+        name="Home1"
         component={HomeStack}
-        options={{
-          tabBarIcon: () => <AntDesign name="home" size={24} color="#b29ef8" />,
-        }}
       />
       <Tab.Screen
-        name="explore"
+        name="Explore"
         component={EventMap}
-        options={{
-          tabBarIcon: () => (
-            <Ionicons name="map-outline" size={24} color="#b29ef8" />
-          ),
-        }}
       />
       <Tab.Screen
-        name="saved"
+        name="WishList"
         component={SavedEventsStack}
-        options={{
-          tabBarIcon: () => (
-            <AntDesign name="hearto" size={24} color="#b29ef8" />
-          ),
-        }}
       />
       <Tab.Screen
-        name="friends map"
+        name="Messages"
         component={FriendChatStack}
-        options={{
-          tabBarIcon: () => (
-            <AntDesign name="message1" size={24} color="#b29ef8" />
-          ),
-        }}
-        // screenOptions={{ headerShown: false }}
       />
       <Tab.Screen
-        name="profile"
+        name="Profile"
         component={Profile}
-        options={{
-          tabBarIcon: () => <AntDesign name="user" size={24} color="#b29ef8" />,
-        }}
       />
     </Tab.Navigator>
   );
