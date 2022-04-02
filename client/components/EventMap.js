@@ -273,7 +273,7 @@ const EventMap = () => {
                             ))
                             : null
                         }
-                        {localEvents ?
+                        { (localEvents && currentRegion) ?
                             localEvents.map((event, idx) => {
                                 const eventIsFree = event.isFree ? event.isFree : false;
                                 const eventLat = event.location.lat;
