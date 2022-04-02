@@ -218,6 +218,7 @@ const FriendsMap = (props) => {
               <FilteredFriendsList
                 friendEvents={friendEvents}
                 filteredFriendEvents={filteredFriendEvents}
+                handlePress={handlePress}
               />
             ) : // filterFriendEventsAndMap(friendEvents)
             null}
