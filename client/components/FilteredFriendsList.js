@@ -37,7 +37,7 @@ const FilteredFriendsList = (props) => {
           }}
           image={image}
         >
-          <Callout onPress={() => handlePress(event)} style={styles.event}>
+          <Callout onPress={() => props.handlePress(event)} style={styles.event}>
             <Text>{event.name}</Text>
           </Callout>
         </Marker>
