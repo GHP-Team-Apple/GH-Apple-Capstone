@@ -24,7 +24,6 @@ export default function SignIn() {
 	}
 	return (
 
-		// <View><Text>hey</Text></View>
 		<View
 			style={{
 				justifyContent: 'center',
@@ -34,23 +33,24 @@ export default function SignIn() {
 			}}
 			
 		>
+			
 			<Text
-				style={{ color: colors.foreground, fontSize: 24, marginBottom: 20 }}
+				style={{ color: colors.foreground, fontSize: 24, marginBottom: 20, justifyContent: 'flex-start' }}
 			>
 				Ripple
 			</Text>
-			<Image
+			{/* <Image
 				source={{ uri: 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png' }}
 				style={{ width: 180, height: 180 }}
 				resizeMode="cover"
-			/>
+			/> */}
 			<View style={{ marginTop: 30 }}>
 				<TextInput
 					placeholder="Email"
 					value={email}
 					onChangeText={setEmail}
 					style={{
-						borderBottomColor: colors.primary,
+						borderBottomColor: colors.white,
 						borderBottomWidth: 2,
 						width: 200,
 					}}
@@ -63,7 +63,7 @@ export default function SignIn() {
 					onChangeText={setPassword}
 					secureTextEntry={true}
 					style={{
-						borderBottomColor: colors.primary,
+						borderBottomColor: colors.white,
 						borderBottomWidth: 2,
 						width: 200,
 						marginTop: 20,
@@ -95,27 +95,37 @@ export default function SignIn() {
 				</View>
 				<Text>Is CheckBox selected: {isSelected ? '👍' : '👎'}</Text>
 			</View>
-			<View style={{ marginTop: 20, }}>
+			<View style={{ marginTop: 20, alignItems: "center",
+				backgroundColor: "#000",
+				borderRadius: 5,
+				width: 120,
+				padding: 10  }}>
 				<Button
 					title={mode === 'signUp' ? 'Sign Up' : 'Login'}
 					disabled={!password || !email}
-					color={colors.secondary}
+					color={colors.white}
 					onPress={handlePress}
 					
 				/>
 			</View>
+			
 			<TouchableOpacity
-				style={{ marginTop: 15 }}
+				style={{ marginTop: 15, alignItems: "center",
+				backgroundColor: "#000",
+				borderRadius: 5,
+				padding: 10,
+				 }}
 				onPress={() =>
 					mode === 'signUp' ? setMode('signIn') : setMode('signUp')
 				}
 			>
-				<Text style={{ color: colors.secondaryText }}>
+				<Text style={{ color: colors.white, fontWeight: 'bold' }}>
 					{mode === 'signUp'
 						? 'Already have an account? Sign In'
 						: "Don't have an account Sign Up"}{' '}
 				</Text>
 			</TouchableOpacity>
-		</View>
+			</View>
+	
 	);
 }
