@@ -16,8 +16,7 @@ import {
     MaterialIcons
 } from "@expo/vector-icons";
 import { LocalEventObj } from '../templates/localEvents';
-import { Picker } from '@react-native-picker/picker';
-import { auth, db } from '../../firebase';
+import { auth } from '../../firebase';
 import Filter from "./Filter";
 const categories = require("../data/categories");
 const cities = require("../data/cities");
@@ -415,7 +414,7 @@ const styles = StyleSheet.create({
     },
     map: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.65,
+        height: Dimensions.get('window').height * 0.55,
     },
     switch: {
         position: 'absolute',
