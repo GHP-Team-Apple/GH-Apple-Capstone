@@ -47,7 +47,7 @@ export default function TabNavigator() {
               : 'ios-home-outline';
           } else if (route.name === 'Explore') {
             iconName = focused ? 'map' : 'map-outline';
-          } else if (route.name === 'WishList') {
+          } else if (route.name === 'Favorites') {
             iconName = focused ? 'ios-heart' : 'ios-heart-outline';
           } else if (route.name === 'Messages') {
             iconName = focused ? 'ios-chatbubble-ellipses' : 'ios-chatbubble-ellipses-outline';
@@ -74,7 +74,7 @@ export default function TabNavigator() {
         component={EventMap}
       />
       <Tab.Screen
-        name="WishList"
+        name="Favorites"
         component={SavedEventsStack}
       />
       <Tab.Screen
