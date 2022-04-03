@@ -24,7 +24,6 @@ export default function SignIn() {
 	}
 	return (
 
-		// <View><Text>hey</Text></View>
 		<View
 			style={{
 				justifyContent: 'center',
@@ -52,7 +51,7 @@ export default function SignIn() {
 					value={email}
 					onChangeText={setEmail}
 					style={{
-						borderBottomColor: colors.primary,
+						borderBottomColor: colors.white,
 						borderBottomWidth: 2,
 						width: 200,
 					}}
@@ -65,7 +64,7 @@ export default function SignIn() {
 					onChangeText={setPassword}
 					secureTextEntry={true}
 					style={{
-						borderBottomColor: colors.primary,
+						borderBottomColor: colors.white,
 						borderBottomWidth: 2,
 						width: 200,
 						marginTop: 20,
@@ -90,35 +89,46 @@ export default function SignIn() {
 					<Text
 						style={{
 							margin: 8,
+							color: colors.white
 						}}
 					>
 						18 & Over?
 					</Text>
 				</View>
-				<Text>Is CheckBox selected: {isSelected ? '👍' : '👎'}</Text>
+				<Text style={{color: colors.white}}>Is CheckBox selected: {isSelected ? '👍' : '👎'}</Text>
 			</View>
-			<View style={{ marginTop: 20, }}>
+			<View style={{ marginTop: 20, alignItems: "center",
+				backgroundColor: "#000",
+				borderRadius: 5,
+				width: 120,
+				padding: 10  }}>
 				<Button
 					title={mode === 'signUp' ? 'Sign Up' : 'Login'}
 					disabled={!password || !email}
-					color={colors.secondary}
+					color={colors.white}
 					onPress={handlePress}
 					
 				/>
 			</View>
+			
 			<TouchableOpacity
-				style={{ marginTop: 15 }}
+				style={{ marginTop: 15, alignItems: "center",
+				backgroundColor: "#000",
+				borderRadius: 5,
+				padding: 10,
+				 }}
 				onPress={() =>
 					mode === 'signUp' ? setMode('signIn') : setMode('signUp')
 				}
 			>
-				<Text style={{ color: colors.secondaryText }}>
+				<Text style={{ color: colors.white, fontWeight: 'bold' }}>
 					{mode === 'signUp'
 						? 'Already have an account? Sign In'
 						: "Don't have an account Sign Up"}{' '}
 				</Text>
 			</TouchableOpacity>
-		</View>
+			</View>
+	
 	);
 }
 
