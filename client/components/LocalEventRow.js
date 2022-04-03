@@ -56,9 +56,9 @@ const LocalEventRow = (props) => {
         >
             <Image
                 style={styles.image}
-                source={{
-                    uri: event.imageUrl,
-                }}
+                // source={{
+                //     uri: event.imageUrl,
+                // }}
             />
             <View style={styles.text}>
                 <Text style={{ fontSize: 17, fontWeight: 'bold', alignContent: 'stretch' }}>{event.name}</Text>
