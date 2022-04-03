@@ -42,35 +42,60 @@ export default function SignIn() {
 				source={require('../../assets/loop.gif')}
 				style={{ width: '100%', height: '100%', position: 'absolute' }}
 			>
-				<Text style={{ color: colors.white, fontSize: 24, marginBottom: 20 }}>
-					Ripple
-				</Text>
+				<View style={{ marginTop: 50, flexDirection: 'row', justifyContent: 'center',  }}>
+					<Text
+						style={{
+							color: 'white',
+							fontSize: 40,
+							marginBottom: 20,
+							backgroundColor: 'black',
+							opacity: 0.65,
+							padding: 15,
+							paddingTop: 5, 
+							paddingBottom: 5,
+						}}>
+						Ripple
+					</Text>
+				</View>
 			</ImageBackground>
 
-			<View style={{ marginTop: 30 }}>
+			<View
+				style={{
+					marginTop: 30,
+					backgroundColor: 'white',
+					opacity: 0.65,
+					borderColor: colors.white,
+					borderWidth: 2,
+					borderRadius: 3,
+				}}>
 				<TextInput
 					placeholder="Email"
+					placeholderTextColor={'grey'}
 					value={email}
 					onChangeText={setEmail}
 					style={{
-						borderBottomColor: colors.white,
-						borderBottomWidth: 2,
+
 						width: 200,
+						height: 27,
 					}}
 				/>
 			</View>
-			<View style={{ marginTop: 15 }}>
+			<View style={{ marginTop: 10 }}>
 				<TextInput
 					placeholder="Password"
+					placeholderTextColor={'grey'}
 					value={password}
 					onChangeText={setPassword}
 					secureTextEntry={true}
 					style={{
-						borderBottomColor: colors.white,
-						borderBottomWidth: 2,
+						borderColor: colors.white,
+						borderWidth: 2,
+						borderRadius: 3,
 						width: 200,
-						marginTop: 20,
-						marginBottom: 5,
+						height: 30,
+						marginTop: 15,
+						marginBottom: 10,
+						backgroundColor: 'white', opacity: 0.65
 					}}
 				/>
 			</View>
@@ -95,6 +120,7 @@ export default function SignIn() {
 					<Text
 						style={{
 							marginTop: 9,
+							marginLeft: 5,
 							color: colors.white,
 						}}
 					>
@@ -111,8 +137,8 @@ export default function SignIn() {
 					alignItems: 'center',
 					backgroundColor: '#000',
 					borderRadius: 5,
-					width: 120,
-					padding: 10,
+					width: 100,
+					padding: 5,
 				}}
 			>
 				<Button
@@ -127,7 +153,8 @@ export default function SignIn() {
 				style={{
 					marginTop: 15,
 					alignItems: 'center',
-					backgroundColor: '#000',
+					color: colors.white,
+					backgroundColor: '',
 					borderRadius: 5,
 					padding: 10,
 				}}
