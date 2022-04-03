@@ -1,9 +1,16 @@
-import { View, Text, Image, TextInput, Button, TouchableOpacity, ImageBackground } from 'react-native';
+import {
+	View,
+	Text,
+	Image,
+	TextInput,
+	Button,
+	TouchableOpacity,
+	ImageBackground,
+} from 'react-native';
 import Checkbox from 'expo-checkbox';
 import React, { useContext, useState } from 'react';
 import Context from '../../context/Context';
 import { signIn, signUp } from '../../firebase';
-
 
 export default function SignIn() {
 	const [email, setEmail] = useState('');
@@ -23,7 +30,6 @@ export default function SignIn() {
 		}
 	}
 	return (
-
 		<View
 			style={{
 				justifyContent: 'center',
@@ -31,18 +37,14 @@ export default function SignIn() {
 				flex: 1,
 				backgroundColor: colors.background,
 			}}
-			
 		>
-			
-
-			<ImageBackground 
-				source={require('../../assets/loop.gif')} 
-				style={{width: '100%', height: '100%', position: "absolute"}}>
-					<Text
-						style={{ color: colors.white, fontSize: 24, marginBottom: 20 }}
-					>
-						Ripple
-					</Text>
+			<ImageBackground
+				source={require('../../assets/loop.gif')}
+				style={{ width: '100%', height: '100%', position: 'absolute' }}
+			>
+				<Text style={{ color: colors.white, fontSize: 24, marginBottom: 20 }}>
+					Ripple
+				</Text>
 			</ImageBackground>
 
 			<View style={{ marginTop: 30 }}>
@@ -68,6 +70,7 @@ export default function SignIn() {
 						borderBottomWidth: 2,
 						width: 200,
 						marginTop: 20,
+						marginBottom: 5,
 					}}
 				/>
 			</View>
@@ -76,47 +79,58 @@ export default function SignIn() {
 					style={{
 						flexDirection: 'row',
 						marginBottom: 20,
+						justifyContent: 'center',
 					}}
 				>
 					<Checkbox
 						disabled={false}
 						value={isSelected}
 						onValueChange={setSelection}
+						color={isSelected ? '#4630EB' : undefined}
 						style={{
 							alignSelf: 'center',
+							marginTop: 6,
 						}}
 					/>
 					<Text
 						style={{
-							margin: 8,
-							color: colors.white
+							marginTop: 9,
+							color: colors.white,
 						}}
 					>
 						18 & Over?
 					</Text>
 				</View>
-				<Text style={{color: colors.white}}>Is CheckBox selected: {isSelected ? '👍' : '👎'}</Text>
+				<Text style={{ color: colors.white }}>
+					Is CheckBox selected: {isSelected ? '👍' : '👎'}
+				</Text>
 			</View>
-			<View style={{ marginTop: 20, alignItems: "center",
-				backgroundColor: "#000",
-				borderRadius: 5,
-				width: 120,
-				padding: 10  }}>
+			<View
+				style={{
+					marginTop: 20,
+					alignItems: 'center',
+					backgroundColor: '#000',
+					borderRadius: 5,
+					width: 120,
+					padding: 10,
+				}}
+			>
 				<Button
 					title={mode === 'signUp' ? 'Sign Up' : 'Login'}
 					disabled={!password || !email}
 					color={colors.white}
 					onPress={handlePress}
-					
 				/>
 			</View>
-			
+
 			<TouchableOpacity
-				style={{ marginTop: 15, alignItems: "center",
-				backgroundColor: "#000",
-				borderRadius: 5,
-				padding: 10,
-				 }}
+				style={{
+					marginTop: 15,
+					alignItems: 'center',
+					backgroundColor: '#000',
+					borderRadius: 5,
+					padding: 10,
+				}}
 				onPress={() =>
 					mode === 'signUp' ? setMode('signIn') : setMode('signUp')
 				}
@@ -127,8 +141,6 @@ export default function SignIn() {
 						: "Don't have an account Sign Up"}{' '}
 				</Text>
 			</TouchableOpacity>
-			</View>
-	
+		</View>
 	);
 }
-

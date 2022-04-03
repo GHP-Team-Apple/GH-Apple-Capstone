@@ -16,27 +16,25 @@ import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
 import { StackActions } from '@react-navigation/native';
 
-
 export default function CustomDrawer(props) {
-	// const [isSignOut, setSignOut] = useState(false);
-	// if(!isSignOut){
-	const navigation = props.navigation
+	const navigation = props.navigation;
 	const userSignOut = () => {
-		props.navigation.navigate('Y')
-			  signOut(auth).then(() => {
-				navigation.goBack()
-			  console.log('we signed out')
-			// // Sign-out successful.
-		  }).catch((error) => {
-			console.log(error)
-		  })
-	}
+		props.navigation.navigate('Y');
+		signOut(auth)
+			.then(() => {
+				navigation.goBack();
+				console.log('we signed out');
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
 	return (
 		<View style={{ flex: 1 }}>
 			<DrawerContentScrollView
 				{...props}
-				contentContainerStyle={{ backgroundColor: '#cca000' }}
+				contentContainerStyle={{ backgroundColor: '#c4b4f4' }}
 			>
 				<ImageBackground
 					source={require('../../assets/city-night.gif')}
@@ -45,13 +43,13 @@ export default function CustomDrawer(props) {
 					<Image
 						source={require('../../assets/dog.png')}
 						style={{
-							height: 80,
-							width: 80,
+							height: 100,
+							width: 100,
 							borderRadius: 40,
 							marginBottom: 10,
 						}}
 					/>
-					<Text style={{ color: "white", fontSize: 18 }}>
+					<Text style={{ color: 'white', fontSize: 18 }}>
 						{auth.currentUser.providerData[0].displayName}
 					</Text>
 				</ImageBackground>
@@ -60,7 +58,7 @@ export default function CustomDrawer(props) {
 				</View>
 			</DrawerContentScrollView>
 			<View style={{ padding: 20, borderTopWidth: 1, borderTopColor: '#ccc' }}>
-				<TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }}>
+				<TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Ionicons name="share-social-outline" size={22} />
 						<Text
@@ -73,7 +71,7 @@ export default function CustomDrawer(props) {
 						</Text>
 					</View>
 				</TouchableOpacity>
-				<TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }}>
+				<TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
 					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Ionicons name="exit-outline" size={22} />
 						<Pressable onPress={() => userSignOut()}>
@@ -92,7 +90,3 @@ export default function CustomDrawer(props) {
 		</View>
 	);
 }
-// else {
-// 	return < />
-// }
-// }
