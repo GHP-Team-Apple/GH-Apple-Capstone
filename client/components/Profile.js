@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useState, useEffect } from 'react';
 import Constants from 'expo-constants';
@@ -9,6 +9,7 @@ import { updateProfile } from 'firebase/auth';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import Interest from './Interest'
+
 
 export default function Profile({navigation}) {
 	const [username, setUsername] = useState('');
@@ -108,6 +109,7 @@ export default function Profile({navigation}) {
 						justifyContent: 'center',
 					}}
 				>
+					<Image source={{ uri: './panda.png'} }/>
 				</TouchableOpacity>
 				<TextInput
 					placeholder="Enter First Name"

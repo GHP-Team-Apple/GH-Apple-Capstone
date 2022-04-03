@@ -4,12 +4,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Notifications from '../client/components/Notifications';
 import FriendsMap from '../client/components/FriendsMap';
 import CustomDrawer from '../client/components/CustomDrawer';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import FriendChatStack from './FriendChatStack';
 import TabNavigator from './TabNavigator';
 import FriendList from '../client/components/FriendList';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from '../client/components/SignIn';
+import AddEvent from '../client/components/AddEvent';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -35,7 +36,6 @@ export default function AppStack() {
 				options={{
 					drawerIcon: () => <AntDesign name="home" size={22} color="black" />,
 					headerShown: true,
-					title: 'Ripple',
 				}}
 			/>
 			{/* <Stack.Screen name="Messages" component={FriendList} options={{
@@ -45,22 +45,13 @@ export default function AppStack() {
 		  headerShown: true
         }}/> */}
 			<Drawer.Screen
-				name="Messages"
-				component={FriendChatStack}
+				name="Add Event"
+				component={AddEvent}
 				options={{
 					drawerIcon: () => (
-						<AntDesign name="message1" size={22} color="black" />
+						<MaterialIcons name="add-box" size={22} color="black" />
 					),
 					headerShown: false,
-				}}
-			/>
-			<Drawer.Screen
-				name="Friends Map"
-				component={FriendsMap}
-				options={{
-					drawerIcon: () => (
-						<Ionicons name="timer-outline" size={22} color="black" />
-					),
 				}}
 			/>
 			<Drawer.Screen
