@@ -39,7 +39,7 @@ export default function CustomDrawer(props) {
 				contentContainerStyle={{ backgroundColor: '#cca000' }}
 			>
 				<ImageBackground
-					source={{ uri: 'https://wallpaperaccess.com/full/549719.jpg' }}
+					source={require('../../assets/city-night.gif')}
 					style={{ padding: 20 }}
 				>
 					<Image
@@ -51,7 +51,7 @@ export default function CustomDrawer(props) {
 							marginBottom: 10,
 						}}
 					/>
-					<Text style={{ fontSize: 18 }}>
+					<Text style={{ color: "white", fontSize: 18 }}>
 						{auth.currentUser.providerData[0].displayName}
 					</Text>
 				</ImageBackground>
