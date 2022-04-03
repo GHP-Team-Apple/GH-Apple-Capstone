@@ -43,6 +43,8 @@ const FriendsMap = (props) => {
     try {
       const friendEvents = await getFriendEvents(userId);
       setFriendEvents(friendEvents);
+
+      await filterFriendEvents(friendEvents)
     } catch (err) {
       console.log("error: ", err);
     }
@@ -300,7 +302,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.65,
+    height: Dimensions.get("window").height * 0.55,
   },
   switch: {
     position: "absolute",
