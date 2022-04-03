@@ -103,10 +103,12 @@ const FriendsMap = (props) => {
         const friend = await getUserById(event.userId); // returns user object
         const profilePicture = friend.profilePicture;
         const username = friend.username;
+        const firstName = friend.firstName;
         friendEventArr.push({
           ...event,
           userProfilePic: profilePicture,
           username: username,
+          firstName: firstName
         });
       }
     }
