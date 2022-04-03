@@ -37,7 +37,10 @@ export default function Home() {
 	}, []);
 
 	return (
-		<View style={{ justifyContent: 'center', alignItems: 'center'}}>
+		<View>
+			<ScrollView>
+				<View style={{ justifyContent: 'center', alignItems: 'center'}}>
+			<Text style={{paddingBottom: 10, paddingTop: 10, fontSize: 24}}>Suggested Events</Text>
 			{localEvent.length > 0
 				? localEvent.map((event) => {
 						return (
@@ -57,12 +60,14 @@ export default function Home() {
 									>
 										{event.city}
 									</Text>
-									<Text>{event.description}</Text>
 								</View>
+									<Text style={{alignItems: 'center', marginLeft: 5,}}>{event.description}</Text>
 							</View>
 						);
 				  })
 				: null}
+				</View>
+				</ScrollView>
 		</View>
 	);
 
@@ -138,8 +143,8 @@ const styles = StyleSheet.create({
 		margin: 5,
 	},
 	image: {
-		width: 150,
-		height: 90,
+		width: 200,
+		height: 200,
 		margin: 2,
 	},
 	text: {

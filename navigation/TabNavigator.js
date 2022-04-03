@@ -68,22 +68,37 @@ export default function TabNavigator() {
       <Tab.Screen
         name="Home"
         component={HomeStack}
+        options={{
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="Explore"
         component={EventMap}
+        options={{
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="Favorites"
         component={SavedEventsStack}
+        options={{
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="Messages"
         component={FriendChatStack}
+        options={{
+          headerShown: false,
+        }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
+        options={{
+          headerShown: false,
+        }}
       />
     </Tab.Navigator>
   );

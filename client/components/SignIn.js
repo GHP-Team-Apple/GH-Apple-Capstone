@@ -95,12 +95,13 @@ export default function SignIn() {
 				</View>
 				<Text>Is CheckBox selected: {isSelected ? '👍' : '👎'}</Text>
 			</View>
-			<View style={{ marginTop: 20 }}>
+			<View style={{ marginTop: 20, }}>
 				<Button
 					title={mode === 'signUp' ? 'Sign Up' : 'Login'}
 					disabled={!password || !email}
 					color={colors.secondary}
 					onPress={handlePress}
+					
 				/>
 			</View>
 			<TouchableOpacity
