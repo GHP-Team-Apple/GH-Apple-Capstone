@@ -89,12 +89,13 @@ export default function SignIn() {
 					<Text
 						style={{
 							margin: 8,
+							color: colors.white
 						}}
 					>
 						18 & Over?
 					</Text>
 				</View>
-				<Text>Is CheckBox selected: {isSelected ? '👍' : '👎'}</Text>
+				<Text style={{color: colors.white}}>Is CheckBox selected: {isSelected ? '👍' : '👎'}</Text>
 			</View>
 			<View style={{ marginTop: 20, alignItems: "center",
 				backgroundColor: "#000",
