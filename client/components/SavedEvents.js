@@ -69,9 +69,9 @@ const SavedEvents = ({ navigation }) => {
   // console.log('MY ID: ', auth.currentUser.uid);
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={{ fontSize: 30 }}>My Events</Text>
-      </View>
+      </View> */}
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollView}
