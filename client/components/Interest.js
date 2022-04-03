@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, FlatList, StyleSheet, SafeAreaView, Scr } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Checkbox from 'expo-checkbox';
 import { StatusBar } from 'expo-status-bar';
@@ -91,14 +91,14 @@ export default function Interest (props) {
 				   handleChange(item.id);
 				//    handlePress(item.id);
 				 }}
-				 style={{ alignSelf: 'center' }}
+				 style={{ alignSelf: 'center', borderColor: '#003566', marginLeft: 7, }}
 			   />
 			   <Text>{item.label}</Text>
 			 </View>
 		   </View>
 	   )}
 	 />
-	  </View>
+	   </View>
 	);
  } 
 

@@ -70,22 +70,23 @@ export default function Profile({ navigation }) {
 						alignItems: 'center',
 						justifyContent: 'center',
 						flex: 1,
-						paddingTop: Constants.statusBarHeight + 20,
-						padding: 20,
+						marginTop: 10,
 					}}
 				>
 					<Text style={{ fontSize: 22, color: colors.foreground }}>
-						Profile Info
+						Profile
 					</Text>
 					<TouchableOpacity
 						style={{
-							marginTop: 30,
+							marginTop: 15,
+							marginBottom: 20,
 							borderRadius: 120,
 							width: 120,
 							height: 120,
 							backgroundColor: '#184e77',
 							alignItems: 'center',
 							justifyContent: 'center',
+							
 						}}
 					>
 						<Image source={image} style={{ width: 90, height: 90 }} />
@@ -96,10 +97,14 @@ export default function Profile({ navigation }) {
 						onChangeText={setFirstName}
 						style={{
 							borderBottomColor: '#b29ef8',
-							marginTop: 20,
+							marginTop: 10,
 							borderBottomWidth: 3,
-							width: '100%',
+							width: '90%',
 							fontSize: 16,
+							backgroundColor: '#c4b4f445',
+							paddingTop: 15,
+							borderRadius: 5,
+							paddingLeft: 5,
 						}}
 					/>
 					<TextInput
@@ -108,10 +113,14 @@ export default function Profile({ navigation }) {
 						onChangeText={setLastName}
 						style={{
 							borderBottomColor: '#b29ef8',
-							marginTop: 20,
+							marginTop: 10,
 							borderBottomWidth: 3,
-							width: '100%',
+							width: '90%',
 							fontSize: 16,
+							backgroundColor: '#c4b4f445',
+							paddingTop: 15,
+							borderRadius: 5,
+							paddingLeft: 5,
 						}}
 					/>
 					<TextInput
@@ -120,10 +129,14 @@ export default function Profile({ navigation }) {
 						onChangeText={setUsername}
 						style={{
 							borderBottomColor: '#b29ef8',
-							marginTop: 20,
+							marginTop: 10,
 							borderBottomWidth: 3,
-							width: '100%',
+							width: '90%',
 							fontSize: 16,
+							backgroundColor: '#c4b4f445',
+							paddingTop: 15,
+							borderRadius: 5,
+							paddingLeft: 5,
 						}}
 					/>
 					<TextInput
@@ -132,15 +145,21 @@ export default function Profile({ navigation }) {
 						onChangeText={setNumber}
 						style={{
 							borderBottomColor: '#b29ef8',
-							marginTop: 20,
+							marginTop: 10,
 							borderBottomWidth: 3,
-							width: '100%',
+							width: '90%',
 							fontSize: 16,
+							backgroundColor: '#c4b4f445',
+							paddingTop: 15,
+							borderRadius: 5,
+							paddingLeft: 5,
 						}}
 					/>
-					<View>
+
+					<ScrollView>
 						<Interest />
-					</View>
+					</ScrollView>
+
 					<View style={{ marginTop: 'auto', width: 80 }}>
 						<Button title="Next" color="#184e77" onPress={handlePress} />
 					</View>
@@ -157,8 +176,6 @@ export default function Profile({ navigation }) {
 						alignItems: 'center',
 						justifyContent: 'center',
 						flex: 1,
-						paddingTop: Constants.statusBarHeight + 20,
-						padding: 20,
 					}}
 				>
 					<Text style={{ fontSize: 22, color: colors.foreground }}>
