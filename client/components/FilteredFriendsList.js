@@ -46,19 +46,27 @@ const FilteredFriendsList = (props) => {
 };
 
 const getImage = (image) => {
-  switch (image) {
-    case "alpaca.png":
-      return require("../../assets/alpaca.png");
-    case "rabbit.png":
-      return require("../../assets/rabbit.png");
-    case "dog.png":
-      return require("../../assets/dog.png");
-    case "chameleon.png":
-      return require("../../assets/chameleon.png");
-    case "koala.png":
-      return require("../../assets/koala.png");
+  switch(image) {
+      case 'alpaca.png':
+          return require('../../assets/alpaca.png');
+      case 'rabbit.png':
+          return require('../../assets/rabbit.png');
+      case 'chameleon.png':
+          return require('../../assets/chameleon.png');
+      case 'dog.png':
+          return require('../../assets/dog.png');
+      case 'koala.png':
+          return require('../../assets/koala.png');
+      case "penguin.png":
+        return require("../../assets/penguin.png");
+      case "panda.png":
+        return require("../../assets/panda.png");
+      case "elephant.png":
+        return require("../../assets/elephant.png");
+      case "duck.png":
+        return require("../../assets/duck.png");
   }
-};
+}
 
 const styles = StyleSheet.create({
   event: {
