@@ -44,7 +44,9 @@ export default function Home() {
 												style={styles.image}
 												source={{ uri: event.imageUrl }}
 											/>
-											<Text style={{ ...styles.text, fontWeight: 'bold' }}>{event.name}</Text>
+											<Text style={{ ...styles.text, fontWeight: 'bold' }}>
+												{event.name}
+											</Text>
 											<View
 												style={{
 													flexDirection: 'row',
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
 		width: 200,
 		fontWeight: '500',
 		justifyContent: 'center',
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	icon: {
 		alignSelf: 'flex-end',

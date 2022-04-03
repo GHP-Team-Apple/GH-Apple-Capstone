@@ -86,7 +86,7 @@ export default function TabNavigator() {
 				name="Favorites"
 				component={SavedEventsStack}
 				screenOptions={{
-					headerShown: false,
+					headerShown: true,
 					title: 'Favorites'
 				}}
 			/>

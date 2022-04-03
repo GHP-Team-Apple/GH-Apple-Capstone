@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, FlatList, StyleSheet, SafeAreaView, Scr } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Checkbox from 'expo-checkbox';
 import { StatusBar } from 'expo-status-bar';
@@ -41,23 +41,8 @@ function Item ({ item }) {
 
 export default function Interest (props) {
  const [isSelected, setSelection] = useState(userInterests);
-//  const [currUserData, setCurrUserData] = useState(auth.currentUser)
 	const user = props.user;
 
-	// async function handlePress() {
-	// 	const user = auth.currentUser;
-	// 	const userData = {
-	// 		interest: [],	
-	// 	};
-
-	// 	const ThePromise = await Promise.all([
-	// 		updateProfile(user, userData),
-	// 		setDoc(doc(db, 'Users', user.uid), { ...userData, uid: user.uid }),
-			
-	// 	]);
-	// 	setCurrUserData({ ...userData, uid: user.uid })
-	// 	console.log('hje', ThePromise)
-	// }
 	
  const handleChange = (id) => {
     let temp = isSelected.map((select) => {
@@ -89,16 +74,15 @@ export default function Interest (props) {
 				 value={item.isChecked}
 				 onValueChange={() => {
 				   handleChange(item.id);
-				//    handlePress(item.id);
 				 }}
-				 style={{ alignSelf: 'center' }}
+				 style={{ alignSelf: 'center', borderColor: '#003566', marginLeft: 7, }}
 			   />
 			   <Text>{item.label}</Text>
 			 </View>
 		   </View>
 	   )}
 	 />
-	  </View>
+	   </View>
 	);
  } 
 
