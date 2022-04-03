@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TextInput, Button, TouchableOpacity, ImageBackground } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import React, { useContext, useState } from 'react';
 import Context from '../../context/Context';
@@ -34,16 +34,18 @@ export default function SignIn() {
 			}}
 			
 		>
-			<Text
-				style={{ color: colors.foreground, fontSize: 24, marginBottom: 20 }}
-			>
-				Ripple
-			</Text>
-			<Image
-				source={{ uri: 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30163918/1241-768x591.png' }}
-				style={{ width: 180, height: 180 }}
-				resizeMode="cover"
-			/>
+			
+
+			<ImageBackground 
+				source={require('../../assets/loop.gif')} 
+				style={{width: '100%', height: '100%', position: "absolute"}}>
+					<Text
+						style={{ color: colors.foreground, fontSize: 24, marginBottom: 20 }}
+					>
+						Ripple
+					</Text>
+			</ImageBackground>
+
 			<View style={{ marginTop: 30 }}>
 				<TextInput
 					placeholder="Email"
@@ -119,3 +121,4 @@ export default function SignIn() {
 		</View>
 	);
 }
+
