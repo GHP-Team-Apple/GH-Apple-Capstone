@@ -64,7 +64,6 @@ export default function Profile({ navigation }) {
 		return (
 			<React.Fragment>
 				<StatusBar style="auto" />
-
 				<View
 					style={{
 						alignItems: 'center',
@@ -86,7 +85,6 @@ export default function Profile({ navigation }) {
 							backgroundColor: '#184e77',
 							alignItems: 'center',
 							justifyContent: 'center',
-							
 						}}
 					>
 						<Image source={image} style={{ width: 90, height: 90 }} />
