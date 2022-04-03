@@ -36,6 +36,7 @@ export default function AppStack() {
 				options={{
 					drawerIcon: () => <AntDesign name="home" size={22} color="black" />,
 					headerShown: true,
+					title: 'Ripple'
 				}}
 			/>
 			{/* <Stack.Screen name="Messages" component={FriendList} options={{
@@ -52,6 +53,7 @@ export default function AppStack() {
 						<MaterialIcons name="add-box" size={22} color="black" />
 					),
 					headerShown: false,
+					title: 'Event Map',
 				}}
 			/>
 			<Drawer.Screen

@@ -39,7 +39,7 @@ export default function SignIn() {
 				source={require('../../assets/loop.gif')} 
 				style={{width: '100%', height: '100%', position: "absolute"}}>
 					<Text
-						style={{ color: colors.foreground, fontSize: 24, marginBottom: 20 }}
+						style={{ color: colors.white, fontSize: 24, marginBottom: 20 }}
 					>
 						Ripple
 					</Text>
