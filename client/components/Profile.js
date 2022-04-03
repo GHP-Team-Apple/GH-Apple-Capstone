@@ -18,6 +18,7 @@ export default function Profile({navigation}) {
 	const [currUserData, setCurrUserData] = useState(null)
 	const [number, setNumber] = useState()
 
+	const image = require("../../assets/dog.png")
 	// useEffect (async () => {
 	// 	await setDoc(doc(db, 'Users', user.uid), { ...userData, uid: user.uid })
 	// }, []);
@@ -109,7 +110,7 @@ export default function Profile({navigation}) {
 						justifyContent: 'center',
 					}}
 				>
-					<Image source={{ uri: './panda.png'} }/>
+					<Image source={image } style={{width:90, height:90}}/>
 				</TouchableOpacity>
 				<TextInput
 					placeholder="Enter First Name"
