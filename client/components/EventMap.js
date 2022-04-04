@@ -1,26 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
-import { StyleSheet, View, Text, Pressable, Dimensions, Switch } from 'react-native';
-import * as Location from "expo-location";
+import {
+	StyleSheet,
+	View,
+	Text,
+	Pressable,
+	Dimensions,
+	Switch,
+} from 'react-native';
+import * as Location from 'expo-location';
 import getEventsFromSeatGeek from '../resources/seatgeek';
 import { getLocalEvents, getSavedEventsByUserId } from '../services/events';
 import EventList from './EventList';
 import SingleEvent from './SingleEvent';
 import {
-    AntDesign,
-    Ionicons,
-    MaterialCommunityIcons,
-    FontAwesome5,
-    Entypo,
-    FontAwesome,
-    MaterialIcons
-} from "@expo/vector-icons";
+	AntDesign,
+	Ionicons,
+	MaterialCommunityIcons,
+	FontAwesome5,
+	Entypo,
+	FontAwesome,
+	MaterialIcons,
+} from '@expo/vector-icons';
 import { LocalEventObj } from '../templates/localEvents';
 import { auth } from '../../firebase';
-import Filter from "./Filter";
-const categories = require("../data/categories");
-const cities = require("../data/cities");
-import { getDistance } from "../services/distance";
+import Filter from './Filter';
+const categories = require('../data/categories');
+const cities = require('../data/cities');
+import { getDistance } from '../services/distance';
 import FriendsMap from './FriendsMap';
 
 const EventMap = () => {
@@ -386,68 +393,70 @@ const EventMap = () => {
 }
 
 const CustomMarker = (eventType) => {
-    switch (eventType.split('_')[0]) {
-        case "concert":
-        case "music":
-            return <Entypo name="music" size={28} color="#304795" />
-        case "theater":
-        case "broadway":
-        case "classical":
-            return <FontAwesome5 name="theater-masks" size={27} color="#B93D46" />
-        case "dance":
-        case "social activities":
-            return <FontAwesome5 name="user-friends" size={23} color="#185ADB" />
-        case "comedy":
-            return <FontAwesome5 name="laugh-squint" size={26} color="#EA5455" />
-        case "family":
-            return <MaterialIcons name="family-restroom" size={32} color="#185ADB" />
-        case "film":
-            return <MaterialCommunityIcons name="filmstrip" size={30} color="#5800FF" />
-        case "literacy":
-            return <FontAwesome name="book" size={28} color="#116530" />
-        case "tech":
-            return <Entypo name="laptop" size={26} color="#A9333A" />
-        case "food & drink":
-            return <MaterialIcons name="fastfood" size={28} color="#FF4848" />
-        case "business":
-            return <MaterialIcons name="business-center" size={30} color="#6B4F4F" />
-        case "travel & outdoor":
-            return <FontAwesome5 name="mountain" size={22} color="#125C13" />
-        case "fashion":
-            return <Ionicons name="ios-shirt" size={26} color="#FF3D68" />
-        default:
-            // return <FontAwesome name="star" size={28} color="#FFD124" />
-            return <MaterialIcons name="sports-football" size={30} color="#BB371A" />
-    }
-}
+	switch (eventType.split('_')[0]) {
+		case 'concert':
+		case 'music':
+			return <Entypo name="music" size={28} color="#304795" />;
+		case 'theater':
+		case 'broadway':
+		case 'classical':
+			return <FontAwesome5 name="theater-masks" size={27} color="#B93D46" />;
+		case 'dance':
+		case 'social activities':
+			return <FontAwesome5 name="user-friends" size={23} color="#185ADB" />;
+		case 'comedy':
+			return <FontAwesome5 name="laugh-squint" size={26} color="#EA5455" />;
+		case 'family':
+			return <MaterialIcons name="family-restroom" size={32} color="#185ADB" />;
+		case 'film':
+			return (
+				<MaterialCommunityIcons name="filmstrip" size={30} color="#5800FF" />
+			);
+		case 'literacy':
+			return <FontAwesome name="book" size={28} color="#116530" />;
+		case 'tech':
+			return <Entypo name="laptop" size={26} color="#A9333A" />;
+		case 'food & drink':
+			return <MaterialIcons name="fastfood" size={28} color="#FF4848" />;
+		case 'business':
+			return <MaterialIcons name="business-center" size={30} color="#6B4F4F" />;
+		case 'travel & outdoor':
+			return <FontAwesome5 name="mountain" size={22} color="#125C13" />;
+		case 'fashion':
+			return <Ionicons name="ios-shirt" size={26} color="#FF3D68" />;
+		default:
+			// return <FontAwesome name="star" size={28} color="#FFD124" />
+			return <MaterialIcons name="sports-football" size={30} color="#BB371A" />;
+	}
+};
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'flex-end',
-        margin: 0
-    },
-    map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.55,
-    },
-    switch: {
-        position: 'absolute',
-        alignSelf: 'flex-end',
-        padding: 5,
-    },
-    selection: {
-        position: 'absolute',
-        alignSelf: 'flex-start',
-        padding: 5,
-        flexDirection: 'column',
-    },
-    icon: {
-        padding: 7,
-        backgroundColor: "#003566",
-        borderRadius: 50,
-        alignSelf: 'flex-start',
-        marginRight: 5
-    }
+	container: {
+		justifyContent: 'flex-end',
+		margin: 0,
+	},
+	map: {
+		width: Dimensions.get('window').width,
+		height: Dimensions.get('window').height * 0.55,
+	},
+	switch: {
+		position: 'absolute',
+		alignSelf: 'flex-end',
+		padding: 5,
+	},
+	selection: {
+		position: 'absolute',
+		alignSelf: 'flex-start',
+		padding: 5,
+		flexDirection: 'column',
+	},
+	icon: {
+		padding: 7,
+		backgroundColor: '#003566',
+		borderRadius: 50,
+		alignSelf: 'flex-start',
+		marginRight: 5,
+	},
 });
 
 export default EventMap;

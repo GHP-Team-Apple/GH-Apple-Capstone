@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SuggestContact(props) {
-  // const myUserId = "ihzddcHz7WSarDGk6kn3";
   const myUserId = auth.currentUser.uid;
   const [image, setImage] = useState("../../assets/rabbit.png")
   const classes = useStyles();
