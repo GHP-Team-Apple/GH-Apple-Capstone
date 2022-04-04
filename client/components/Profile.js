@@ -165,7 +165,6 @@ export default function Profile({ navigation }) {
 			</React.Fragment>
 		);
 	} else {
-		getUserInfo();
 		return (
 			<React.Fragment>
 				<StatusBar style="auto" />
