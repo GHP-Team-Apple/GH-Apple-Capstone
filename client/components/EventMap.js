@@ -33,6 +33,17 @@ const EventMap = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [savedEventsIDArr, setSavedEventsIDArr] = useState([]);
     const [eventView, setEventView] = useState(true);
+    const seatGeekCat = [
+        'concert', 
+        'theater', 
+        'comedy', 
+        'dance_performance_tour', 
+        'broadway_tickets_national',
+        'sports',
+        'family',
+        'film',
+        'literacy'
+    ]
 
     //Integrating Filter
     const [filterPage, setFilterPage] = useState(false);
@@ -58,7 +69,8 @@ const EventMap = () => {
 
             // get Seat Geek events near current location
             if (filteredCat.length !== 0) {
-                events = await getEventsFromSeatGeek(filteredCat, currentLocation.coords.latitude, currentLocation.coords.longitude, maxDistance[0]);
+                const filteredSeatGeek = filteredCat.filter(cat => seatGeekCat.includes(cat));
+                events = await getEventsFromSeatGeek(filteredSeatGeek, currentLocation.coords.latitude, currentLocation.coords.longitude, maxDistance[0]);
             } else {
                 events = await getEventsFromSeatGeek(['concert'], currentLocation.coords.latitude, currentLocation.coords.longitude, maxDistance[0]);
             }
@@ -79,7 +91,8 @@ const EventMap = () => {
         if (currentRegion) {
             const { latitude, longitude } = currentRegion;
             if (filteredCat.length !== 0) {
-                events = await getEventsFromSeatGeek(filteredCat, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
+                const filteredSeatGeek = filteredCat.filter(cat => seatGeekCat.includes(cat));
+                events = await getEventsFromSeatGeek(filteredSeatGeek, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             } else {
                 events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             }
@@ -90,7 +103,8 @@ const EventMap = () => {
     useEffect(async () => {
         if (currentRegion) {
             if (filteredCat.length !== 0) {
-                events = await getEventsFromSeatGeek(filteredCat, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
+                const filteredSeatGeek = filteredCat.filter(cat => seatGeekCat.includes(cat));
+                events = await getEventsFromSeatGeek(filteredSeatGeek, currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             } else {
                 events = await getEventsFromSeatGeek(['concert'], currentRegion.latitude, currentRegion.longitude, maxDistance[0]);
             }
