@@ -82,10 +82,8 @@ const FriendsMap = (props) => {
 			const eventIsFree = event.isFree ? event.isFree : false;
 			const eventLat = event.location.lat;
 			const eventLon = event.location.lon;
-			// const myLat = location.coords.latitude;
-			// const myLon = location.coords.longitude;
-			const myLat = 40.600181082122;
-			const myLon = -73.98549203006156;
+			const myLat = location.coords.latitude;
+			const myLon = location.coords.longitude;
 			const category = event.type;
 			const city = event.city;
 			const distanceFromEvent = getDistance(myLat, eventLat, myLon, eventLon); // mi
