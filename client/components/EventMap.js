@@ -53,7 +53,7 @@ const EventMap = () => {
             }
 
             // set map to current location
-            const currentLocation = await Location.getCurrentPositionAsync({});
+            const currentLocation = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced, });
             setLocation(currentLocation);
 
             // get Seat Geek events near current location

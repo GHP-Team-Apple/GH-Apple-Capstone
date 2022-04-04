@@ -58,7 +58,7 @@ const FriendsMap = (props) => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced, });
       setLocation(location);
     })();
   }, []);
