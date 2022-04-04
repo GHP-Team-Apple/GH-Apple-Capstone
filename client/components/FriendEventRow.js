@@ -21,7 +21,7 @@ const FriendEventRow = (props) => {
                     style={styles.image}
                     source={image}
                 />
-                <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.username}</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', alignContent: 'stretch' }}>{event.firstName}</Text>
             </View>
 
             <View style={styles.text}>
