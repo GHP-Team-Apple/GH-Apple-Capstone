@@ -57,7 +57,7 @@ export default function Notifications() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-          <Text>Notifications</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Notifications</Text>
         <FriendFromContactList styles={styles.container} contacts={contacts} handlePress={followUser}/>
         <FollowingBackList styles={styles.container} followingContacts={followingContacts} handlePress={acceptFollowRequest}/>
       </ScrollView>

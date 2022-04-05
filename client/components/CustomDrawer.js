@@ -49,7 +49,7 @@ export default function CustomDrawer(props) {
 							marginBottom: 10,
 						}}
 					/>
-					<Text style={{ color: 'white', fontSize: 18 }}>
+					<Text style={{ color: 'white', fontSize: 24 }}>
 						{auth.currentUser.providerData[0].displayName}
 					</Text>
 				</ImageBackground>
