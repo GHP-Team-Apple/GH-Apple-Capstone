@@ -4,6 +4,7 @@
 ___
 
 ### :writing_hand: Description
+___
 
 Ripple is an event finding mobile app meant to help users explore trending and local events more conveniently. The key feature of Ripple is allowing users to view events over an interactive map with intuitive event icons and extensive filtering capabilities such as filtering by distance, event type and price. Ripple also has a Friends Mode for the event map and chat feature to encourage users to discover and share interesting events with friends who are also using the app. <br>
 <br>
@@ -14,6 +15,7 @@ and [Eventbrite API](https://www.eventbrite.com/platform/api) for events informa
 
 
 ### :wrench: Technologies & Tools
+___
 
 ![](https://img.shields.io/badge/OS-Linux-informational?style=plastic&logo=linux&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/Shell-Bash/Zsh-informational?style=plastic&logo=windowsterminal&logoColor=white&color=c4b4f4)
@@ -34,5 +36,6 @@ ___
 
 
 ### Developers
+___
 
 ![Team Apple](/assets/teamCards.PNG)
