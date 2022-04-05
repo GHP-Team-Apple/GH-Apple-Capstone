@@ -32,3 +32,5 @@ ___
 
 
 ### Developers
+
+![Team Apple](/assets/teamCards.PNG)
