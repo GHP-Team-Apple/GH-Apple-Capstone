@@ -31,7 +31,7 @@ ___
 ![](https://img.shields.io/badge/Tools-Firebase%20Authentication-informational?style=plastic&logo=firebase&logoColor=white&color=c4b4f4)
 
 
-### Visuals
+### :iphone: Visuals
 ___
 
 
