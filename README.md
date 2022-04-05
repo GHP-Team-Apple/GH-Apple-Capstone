@@ -5,6 +5,12 @@ ___
 
 ### :writing_hand: Description
 
+Ripple is an event finding mobile app meant to help users explore trending and local events more conveniently. The key feature of Ripple is allowing users to view events over an interactive map with intuitive event icons and extensive filtering capabilities such as filtering by distance, event type and price. Ripple also has a Friends Mode for the event map and chat feature to encourage users to discover and share interesting events with friends who are also using the app.
+Ripple was built with [React Native](https://reactnative.dev/) and the Expo platform for the frontend to run the app on
+both iOS and Android systems as well as for providing a smooth user experience. We used Firebase
+Firestore for our backend server and Firebase Authentication for security. We also used SeatGeek
+and Eventbrite API for events information based on the user’s geolocation and react native Google maps to display the events. Despite having a rocky start during project conception and research phase, we were able to overcome the learning curve challenges with patience, open communication and dedicated team effort.
+
 
 ### :wrench: Technologies & Tools
 
