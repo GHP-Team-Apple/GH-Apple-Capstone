@@ -40,7 +40,7 @@ https://user-images.githubusercontent.com/82051355/161816197-0b6561b4-069a-4441-
 
 
 
-### Developers
+### :computer: Developers
 ___
 
 ![Team Apple](/assets/teamCards.PNG)
