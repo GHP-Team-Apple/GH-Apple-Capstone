@@ -14,3 +14,4 @@ ___
 ![](https://img.shields.io/badge/<Code>-<React-Native>-informational?style=plastic&logo=react&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/<Tools>-<Firebase%20Firestore>-informational?style=plastic&logo=firebase&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/<Tools>-<Expo>-informational?style=plastic&logo=expo&logoColor=white&color=c4b4f4)
+![](https://img.shields.io/badge/<Tools>-<Eventbrite%20API>-informational?style=plastic&logo=eventbrite&logoColor=white&color=c4b4f4)
