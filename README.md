@@ -5,7 +5,7 @@ ___
 
 ### :writing_hand: Description
 
-## Technologies 
+### :wrench: Technologies & Tools
 
 ![](https://img.shields.io/badge/OS-Linux-informational?style=plastic&logo=linux&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/Shell-Bash/Zsh-informational?style=plastic&logo=windowsterminal&logoColor=white&color=c4b4f4)
