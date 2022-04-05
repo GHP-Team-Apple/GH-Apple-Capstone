@@ -1,7 +1,6 @@
 # Ripple
 
 ![Ripple Logo](/assets/RippleBanner2.png)
-___
 
 ### :writing_hand: Description
 ___
