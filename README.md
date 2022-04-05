@@ -24,7 +24,7 @@ and [Eventbrite API](https://www.eventbrite.com/platform/api) for events informa
 ![](https://img.shields.io/badge/Tools-Expo-informational?style=plastic&logo=expo&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/Tools-Eventbrite%20API-informational?style=plastic&logo=eventbrite&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/Tools-SeatGeeke%20API-informational?style=plastic&logo=&logoColor=white&color=c4b4f4)
-![](https://img.shields.io/badge/Tools-Figma%20API-informational?style=plastic&logo=figma&logoColor=white&color=c4b4f4)
+![](https://img.shields.io/badge/Tools-Figma-informational?style=plastic&logo=figma&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/Code-React-informational?style=plastic&logo=react&logoColor=white&color=c4b4f4)
 
 ### Visuals
