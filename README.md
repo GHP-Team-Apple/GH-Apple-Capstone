@@ -18,5 +18,6 @@ ___
 ![](https://img.shields.io/badge/Tools-Eventbrite%20API-informational?style=plastic&logo=eventbrite&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/Tools-SeatGeeke%20API-informational?style=plastic&logo=&logoColor=white&color=c4b4f4)
 ![](https://img.shields.io/badge/Tools-Figma%20API-informational?style=plastic&logo=figma&logoColor=white&color=c4b4f4)
+![](https://img.shields.io/badge/Code-React-informational?style=plastic&logo=react&logoColor=white&color=c4b4f4)
 
 ### Developers
